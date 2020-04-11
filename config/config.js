@@ -101,7 +101,7 @@ export default {
   targets: { ie: 11, chrome: 49, firefox: 45, safari: 10, edge: 13, ios: 10 },
   // terserOptions: {},
   theme: Theme,
-  title: 'ANTD',
+  title: 'APISIX',
 
   ...plugins,
 };

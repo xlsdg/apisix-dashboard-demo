@@ -1,5 +1,5 @@
 export default {
-  'page.title': 'ANTD',
+  'page.title': 'APISIX',
   'page.404.title': '404',
-  'page.index.title': 'Index',
+  'page.index.title': 'APISIX',
 };
