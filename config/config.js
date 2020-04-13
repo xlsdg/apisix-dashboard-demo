@@ -1,3 +1,4 @@
+import { defineConfig } from 'umi';
 import LodashWebpackPlugin from 'lodash-webpack-plugin';
 
 import Constant from './constant';
@@ -41,7 +42,7 @@ const define = {
 };
 
 // https://umijs.org/config/
-export default {
+export default defineConfig({
   // alias: {},
   // analyze: {},
   // autoprefixer: { flexbox: 'no-2009' },
@@ -70,7 +71,9 @@ export default {
   history: { type: 'browser' }, // browser、hash、memory
   ignoreMomentLocale: true,
   // inlineLimit: 10000,
-  // lessLoader: {},
+  // lessLoader: {
+  //   javascriptEnabled: true,
+  // },
   // links: [{}],
   // manifest: {
   //   fileName: 'manifest.json',
@@ -98,10 +101,10 @@ export default {
   // ssr: false,
   // styleLoader: {},
   // styles: [],
-  targets: { ie: 11, chrome: 49, firefox: 45, safari: 10, edge: 13, ios: 10 },
+  // targets: { chrome: 49, firefox: 64, safari: 10, edge: 13, ios: 10 },
   // terserOptions: {},
   theme: Theme,
   title: 'APISIX',
 
   ...plugins,
-};
+});
