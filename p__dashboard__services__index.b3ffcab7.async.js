@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[9],{Ahvw:function(e,n,a){},UWQ8:function(e,n,a){"use strict";a.r(n);var t=a("q1tI"),o=a.n(t),s=a("Ahvw"),c=a.n(s),w=o.a.memo(e=>o.a.createElement("div",{className:c.a.container},"Stateless Component."));w.defaultProps={},n["default"]=w}}]);

@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[11],{"6JZL":function(e,n,a){},Bayg:function(e,n,a){"use strict";a.r(n);var t=a("q1tI"),o=a.n(t),s=a("6JZL"),c=a.n(s),i=o.a.memo(e=>o.a.createElement("div",{className:c.a.container},"Stateless Component."));i.defaultProps={},n["default"]=i}}]);
