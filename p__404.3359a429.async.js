@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[1],{"8wKn":function(n,e,t){n.exports={container:"container___2RRXp"}},pssB:function(n,e,t){"use strict";t.r(e);var a=t("q1tI"),o=t.n(a),i=t("8wKn"),s=t.n(i),c=o.a.memo(n=>o.a.createElement("div",{className:s.a.container},"404"));c.defaultProps={},c.title="page.404.title",e["default"]=c}}]);
