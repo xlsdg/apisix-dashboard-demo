@@ -1,38 +1,39 @@
 import React from 'react';
 import { connect } from 'umi';
 // import { formatMessage } from 'umi';
+import { Button } from 'antd';
 
-import NAMESPACES from '@/redux/namespaces';
-import { generateSetStateAction } from '@/redux/actions';
+import { createUserStateSelector } from '@/redux/actions/user';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
-  // const {  } = props;
-  // console.log(props);
-  return <div className={styles.container}>Home</div>;
+  const { setState } = props;
+  console.log(props);
+  return (
+    <div className={styles.container}>
+      <Button onClick={() => setState({ banner: [1] })}>User</Button>
+    </div>
+  );
 });
 
 Content.propTypes = {};
 
 Content.defaultProps = {};
 
-function mapStateToProps(state, ownProps) {
-  const namespace = NAMESPACES.HOME;
+const [stateSelector, setStateSelector] = createUserStateSelector('');
 
+function mapStateToProps(state, ownProps) {
   return {
     loading: state.loading,
-    state: state[namespace],
+    state: stateSelector(state),
   };
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const namespace = NAMESPACES.HOME;
-  const action = generateSetStateAction('', namespace);
-
   return {
     // dispatch, // 默认不打开，在这个函数里处理 dispatch
-    setState: state => dispatch(action(state)),
+    setState: setStateSelector(dispatch),
   };
 }
 
@@ -47,6 +48,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
 
-Page.title = 'page.index.title';
+Page.title = 'page.user.title';
 
 export default Page;

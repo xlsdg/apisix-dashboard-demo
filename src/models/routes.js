@@ -3,8 +3,8 @@ import _ from 'lodash';
 import NAMESPACES from '@/redux/namespaces';
 import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
 
-import HomeActions from '@/redux/actions/home';
-import HomeApi from '@/services/home';
+import RoutesActions from '@/redux/actions/routes';
+import RoutesApi from '@/services/routes';
 
 import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
 
@@ -13,7 +13,7 @@ const InitialState = {
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
-// const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.HOME);
+// const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.ROUTES);
 
 const Routes = {
   '/': {
@@ -36,7 +36,7 @@ const Routes = {
 // effects: take, put, all, race, call, apply, cps, fork, spawn, join, cancel, select,
 //          actionChannel, cancelled, flush, getContext, setContext, takeEvery, takeLatest, throttle
 export default {
-  namespace: NAMESPACES.HOME,
+  namespace: NAMESPACES.ROUTES,
   state: _.cloneDeep(InitialState),
   subscriptions: {
     setup: generateSubscriptionByRoutes(Routes),
@@ -46,13 +46,13 @@ export default {
       // const { payload } = action;
       const { put } = effects;
 
-      yield put(HomeActions.getData());
+      yield put(RoutesActions.getData());
     },
     *changePage(action, effects) {
       // const { payload } = action;
       const { put } = effects;
 
-      yield put(HomeActions.getData());
+      yield put(RoutesActions.getData());
     },
     *leavePage(action, effects) {
       // const { payload } = action;
@@ -65,7 +65,7 @@ export default {
       const { put, call } = effects;
 
       // console.log(payload);
-      const resp = yield call(HomeApi.getData, {});
+      const resp = yield call(RoutesApi.getData, {});
       // console.log(resp);
       if (hasArray(resp.banner)) {
         yield put(StateAt({ banner: resp.banner }));

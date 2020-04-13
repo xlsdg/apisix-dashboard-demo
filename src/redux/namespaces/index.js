@@ -20,5 +20,5 @@ export function generateNameSpacesByNames(names = []) {
   );
 }
 
-const NAMES = ['home'];
+const NAMES = ['consumers', 'routes', 'services', 'ssl', 'upstream', 'user'];
 export default generateNameSpacesByNames(NAMES);

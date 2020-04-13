@@ -21,14 +21,14 @@ const BasicLayout = React.memo(props => {
     }
   }, [location]);
 
-  let layout = <DefaultLayout>{children}</DefaultLayout>;
+  let layout = <DefaultLayout location={location}>{children}</DefaultLayout>;
 
   const { pathname } = location;
   const pathString = pathname !== '/' ? _.trimEnd(pathname, '/') : pathname;
   if (_.startsWith(pathString, '/user/')) {
-    layout = <UserLayout>{children}</UserLayout>;
+    layout = <UserLayout location={location}>{children}</UserLayout>;
   } else if (_.startsWith(pathString, '/dashboard/')) {
-    layout = <DashboardLayout>{children}</DashboardLayout>;
+    layout = <DashboardLayout location={location}>{children}</DashboardLayout>;
   }
 
   const config = {

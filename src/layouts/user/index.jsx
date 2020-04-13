@@ -6,15 +6,19 @@ import React from 'react';
 import { Layout } from 'antd';
 // import { formatMessage } from 'umi';
 
+import AuthPage from '@/components/AuthPage';
+
 import styles from './index.less';
 
 const UserLayout = React.memo(props => {
   const { children } = props;
 
   return (
-    <Layout className={styles.container}>
-      <Layout.Content className={styles.content}>{children}</Layout.Content>
-    </Layout>
+    <AuthPage errTo="/404" authTo="/dashboard">
+      <Layout className={styles.container}>
+        <Layout.Content className={styles.content}>{children}</Layout.Content>
+      </Layout>
+    </AuthPage>
   );
 });
 
