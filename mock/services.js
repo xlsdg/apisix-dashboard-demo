@@ -1,0 +1,107 @@
+export default {
+  'GET /apisix/admin/routes': (req, res) => {
+    res.send({
+      node: {
+        nodes: [
+          {
+            value: {
+              priority: 0,
+              methods: ['GET'],
+              uris: ['/AAA'],
+              upstream_id: '00000000000000037021',
+              desc: 'myroute',
+              plugins: {},
+            },
+            createdIndex: 37027,
+            key: '/apisix/routes/00000000000000037022',
+            modifiedIndex: 37027,
+          },
+          {
+            value: {
+              remote_addr: '121',
+              methods: ['POST', 'GET', 'DELETE', 'PUT', 'PATCH', 'HEAD', 'OPTIONS'],
+              uris: ['/hello'],
+              upstream_id: '00000000000000037028',
+              plugins: { 'jwt-auth': { algorithm: 'HS256', secret: '123', key: '12131', exp: 4 } },
+              desc: 'tttt',
+              priority: 0,
+            },
+            createdIndex: 37061,
+            key: '/apisix/routes/00000000000000037029',
+            modifiedIndex: 37061,
+          },
+          {
+            value: {
+              methods: ['POST', 'GET'],
+              upstream_id: '00000000000000037056',
+              service_id: '00000000000000037040',
+              remote_addr: '144.33.13.123',
+              uris: ['t/ttt'],
+              plugins: {},
+              priority: 0,
+              desc: 'tttttttttt',
+              hosts: ['tttttttttt'],
+            },
+            createdIndex: 37074,
+            key: '/apisix/routes/00000000000000037073',
+            modifiedIndex: 37074,
+          },
+          {
+            value: {
+              priority: 0,
+              methods: ['GET'],
+              uris: ['/test.html'],
+              upstream_id: '00000000000000037056',
+              desc: 'ä»£ç†åŽç«¯80æœåŠ¡',
+              plugins: {},
+            },
+            createdIndex: 37058,
+            key: '/apisix/routes/00000000000000037057',
+            modifiedIndex: 37058,
+          },
+          {
+            value: {
+              methods: ['POST', 'GET'],
+              upstream_id: '00000000000000037056',
+              service_id: '00000000000000037040',
+              remote_addr: '192.132.13.13',
+              uris: ['user/login'],
+              plugins: { 'ip-restriction': { blacklist: ['192.23.23.32', '123.25.21.2'] } },
+              priority: 0,
+              desc: 'ç™»å½•æ£€æµ‹',
+              hosts: ['api'],
+            },
+            createdIndex: 37083,
+            key: '/apisix/routes/00000000000000037078',
+            modifiedIndex: 37083,
+          },
+          {
+            value: {
+              priority: 0,
+              plugins: { 'limit-req': { rate: 2, burst: 1, key: 'http_x_real_ip', rejected_code: 201 } },
+              uris: [
+                '/aaaa/aaa',
+                'aaa/aa/aa',
+                '/bbbbbbbbbbbbbbbbbbb',
+                '/cccccccccccccccccccccc',
+                '/dddddddddddddddddddddddddddd',
+                '/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+              ],
+              upstream_id: '00000000000000036985',
+              service_id: '00000000000000037008',
+              desc: 'qq',
+            },
+            createdIndex: 37094,
+            key: '/apisix/routes/00000000000000037024',
+            modifiedIndex: 37094,
+          },
+        ],
+        modifiedIndex: 36613,
+        createdIndex: 36613,
+        key: '/apisix/routes',
+        dir: true,
+      },
+      action: 'get',
+    });
+  },
+};

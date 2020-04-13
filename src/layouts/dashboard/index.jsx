@@ -8,7 +8,7 @@ import { Layout } from 'antd';
 
 import styles from './index.less';
 
-const HomeLayout = React.memo(props => {
+const DashboardLayout = React.memo(props => {
   const { children } = props;
 
   return (
@@ -18,8 +18,8 @@ const HomeLayout = React.memo(props => {
   );
 });
 
-HomeLayout.propTypes = {};
+DashboardLayout.propTypes = {};
 
-HomeLayout.defaultProps = {};
+DashboardLayout.defaultProps = {};
 
-export default HomeLayout;
+export default DashboardLayout;
