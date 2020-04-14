@@ -5,13 +5,19 @@ import React from 'react';
 import { connect } from 'umi';
 // import {  } from 'antd';
 
+import Block from '@/components/Dashboard/Block';
+
 import { createRoutesStateSelector } from '@/redux/actions/routes';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
   // const {  } = props;
-  return <div className={styles.container}>Routes</div>;
+  return (
+    <div className={styles.container}>
+      <Block>Routes</Block>
+    </div>
+  );
 });
 
 Content.propTypes = {};

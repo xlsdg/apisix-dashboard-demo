@@ -5,13 +5,19 @@ import React from 'react';
 import { connect } from 'umi';
 // import {  } from 'antd';
 
+import Block from '@/components/Dashboard/Block';
+
 import { createUpstreamStateSelector } from '@/redux/actions/upstream';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
   // const {  } = props;
-  return <div className={styles.container}>Upstream</div>;
+  return (
+    <div className={styles.container}>
+      <Block>Upstream</Block>
+    </div>
+  );
 });
 
 Content.propTypes = {};

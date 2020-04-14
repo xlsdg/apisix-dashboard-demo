@@ -5,13 +5,19 @@ import React from 'react';
 import { connect } from 'umi';
 // import {  } from 'antd';
 
+import Block from '@/components/Dashboard/Block';
+
 import { createSslStateSelector } from '@/redux/actions/ssl';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
   // const {  } = props;
-  return <div className={styles.container}>SSL</div>;
+  return (
+    <div className={styles.container}>
+      <Block>SSL</Block>
+    </div>
+  );
 });
 
 Content.propTypes = {};

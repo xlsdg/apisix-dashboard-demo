@@ -21,7 +21,7 @@ const Logo = React.memo(props => {
   const { collapsed } = props;
 
   const { formatMessage } = useIntl();
-  const title = collapsed ? null : <span className={styles.title}>{formatMessage({ id: 'page.title' })}</span>;
+  const title = collapsed ? null : <h1 className={styles.title}>{formatMessage({ id: 'page.title' })}</h1>;
 
   return (
     <div className={styles.logo}>

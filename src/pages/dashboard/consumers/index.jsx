@@ -5,13 +5,19 @@ import React from 'react';
 import { connect } from 'umi';
 // import {  } from 'antd';
 
+import Block from '@/components/Dashboard/Block';
+
 import { createConsumersStateSelector } from '@/redux/actions/consumers';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
   // const {  } = props;
-  return <div className={styles.container}>Consumers</div>;
+  return (
+    <div className={styles.container}>
+      <Block>Consumers</Block>
+    </div>
+  );
 });
 
 Content.propTypes = {};
