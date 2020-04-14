@@ -66,7 +66,7 @@ export default {
       // console.log(payload);
       const resp = yield call(UserTransforms.login, payload);
       if (resp) {
-        yield call(setToken, 'true');
+        yield call(setToken, `${_.now()}`);
         if (hasString(payload.redirect)) {
           window.location.href = payload.redirect;
         } else {
