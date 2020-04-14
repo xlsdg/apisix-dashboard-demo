@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[10],{Ahvw:function(e,n,a){},UWQ8:function(e,n,a){"use strict";a.r(n);var t=a("q1tI"),c=a.n(t),o=a("Ahvw"),s=a.n(o),i=c.a.memo(e=>c.a.createElement("div",{className:s.a.container},"Services"));i.defaultProps={},n["default"]=i}}]);
