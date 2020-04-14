@@ -226,7 +226,7 @@ const DashboardHeader = React.memo(props => {
 const DashboardLayout = React.memo(props => {
   const { children, location } = props;
 
-  const loginUri = `/user/login?redirect_uri=${window.encodeURIComponent(window.location.href)}`;
+  const loginUri = `/user/login?redirect=${window.encodeURIComponent(window.location.href)}`;
   return (
     <PrivatePage authority={isLoggedIn} errTo="/403" authTo={loginUri}>
       <Layout className={styles.container}>
