@@ -8,17 +8,15 @@ import { Redirect } from 'umi';
 
 import PageLoading from '@/components/PageLoading';
 
-import { isLoggedIn } from '@/utils/store';
-
 const PrivatePage = React.memo(props => {
-  const { children, errTo, authTo } = props;
+  const { children, authority, errTo, authTo } = props;
 
   const [auth, setAuth] = React.useState(undefined);
 
   React.useEffect(() => {
     let unMounting = false;
 
-    isLoggedIn()
+    authority()
       .then(isAuth => {
         if (unMounting) {
           return;
@@ -37,7 +35,7 @@ const PrivatePage = React.memo(props => {
     return () => {
       unMounting = true;
     };
-  }, []);
+  }, [authority]);
 
   return _.isUndefined(auth) ? (
     <PageLoading />
@@ -51,6 +49,7 @@ const PrivatePage = React.memo(props => {
 });
 
 PrivatePage.propTypes = {
+  authority: PropTypes.func.isRequired,
   errTo: PropTypes.string.isRequired,
   authTo: PropTypes.string.isRequired,
 };

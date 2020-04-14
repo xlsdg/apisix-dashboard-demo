@@ -1,20 +1,17 @@
+// import _ from 'lodash';
 import React from 'react';
+// import PropTypes from 'prop-types';
+// import ClassNames from 'classnames';
 import { connect } from 'umi';
-// import { formatMessage } from 'umi';
-import { Button } from 'antd';
+// import {  } from 'antd';
 
 import { createUserStateSelector } from '@/redux/actions/user';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
-  const { setState } = props;
-  console.log(props);
-  return (
-    <div className={styles.container}>
-      <Button onClick={() => setState({ banner: [1] })}>User</Button>
-    </div>
-  );
+  // const { state, setState } = props;
+  return <div className={styles.container}>User</div>;
 });
 
 Content.propTypes = {};

@@ -8,13 +8,15 @@ import { Layout } from 'antd';
 
 import AuthPage from '@/components/AuthPage';
 
+import { isLoggedIn } from '@/utils/store';
+
 import styles from './index.less';
 
 const UserLayout = React.memo(props => {
   const { children } = props;
 
   return (
-    <AuthPage errTo="/404" authTo="/dashboard">
+    <AuthPage authority={isLoggedIn} errTo="/403" authTo="/dashboard">
       <Layout className={styles.container}>
         <Layout.Content className={styles.content}>{children}</Layout.Content>
       </Layout>

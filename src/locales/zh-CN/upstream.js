@@ -1,1 +1,3 @@
-export default {};
+export default {
+  'page.upstream.title': 'Upstream',
+};

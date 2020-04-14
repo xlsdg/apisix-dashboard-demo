@@ -14,5 +14,6 @@ export default {
   ...User,
 
   'page.title': 'APISIX',
+  'page.403.title': '403',
   'page.404.title': '404',
 };

@@ -10,7 +10,7 @@ import styles from './index.less';
 
 const Page = React.memo(props => {
   // const {  } = props;
-  return <div className={styles.container}>Stateless Component.</div>;
+  return <div className={styles.container}>Routes</div>;
 });
 
 Page.propTypes = {};
