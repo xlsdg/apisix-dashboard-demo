@@ -1,5 +1,5 @@
 import Fetch from '@/utils/fetch';
 
 export default {
-  getData: Fetch.internal.api.get('/apisix/admin/consumers'),
+  getRecords: Fetch.internal.auth.get('/apisix/admin/consumers'),
 };

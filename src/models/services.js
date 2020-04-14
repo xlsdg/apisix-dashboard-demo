@@ -4,19 +4,19 @@ import NAMESPACES from '@/redux/namespaces';
 import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
 
 import ServicesActions from '@/redux/actions/services';
-import ServicesApi from '@/services/services';
+import * as ServicesTransforms from '@/transforms/services';
 
 import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
 
 const InitialState = {
-  banner: [],
+  records: [],
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
 // const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.SERVICES);
 
 const Routes = {
-  '/': {
+  '/dashboard/services': {
     onEnter: ({ dispatch, ...others }) => {
       // console.log('Enter /');
       return dispatch(PageActions.enterPage(others));
@@ -46,13 +46,13 @@ export default {
       // const { payload } = action;
       const { put } = effects;
 
-      yield put(ServicesActions.getData());
+      yield put(ServicesActions.getRecords());
     },
     *changePage(action, effects) {
       // const { payload } = action;
       const { put } = effects;
 
-      yield put(ServicesActions.getData());
+      yield put(ServicesActions.getRecords());
     },
     *leavePage(action, effects) {
       // const { payload } = action;
@@ -60,15 +60,15 @@ export default {
 
       yield put(StateAt(_.cloneDeep(InitialState)));
     },
-    *getData(action, effects) {
+    *getRecords(action, effects) {
       // const { payload } = action;
       const { put, call } = effects;
 
       // console.log(payload);
-      const resp = yield call(ServicesApi.getData, {});
+      const resp = yield call(ServicesTransforms.getRecords, {});
       // console.log(resp);
-      if (hasArray(resp.banner)) {
-        yield put(StateAt({ banner: resp.banner }));
+      if (hasArray(resp.records)) {
+        yield put(StateAt({ records: resp.records }));
       }
     },
   },

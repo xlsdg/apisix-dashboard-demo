@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
 import { Redirect } from 'umi';
 // import {  } from 'antd';
-// import { formatMessage } from 'umi-plugin-react/locale';
 
 import PageLoading from '@/components/PageLoading';
 

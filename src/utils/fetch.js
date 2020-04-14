@@ -8,7 +8,7 @@ import UmiRequest from 'umi-request';
 import { ResponseError } from './error';
 import { hasString, hasPlainObject, hasArray, hasValue, hasStringThen, getValue, mergeObject } from './helper';
 
-export const addAuthorizationToHeader = () => ({ Authorization: 'xxxx' });
+export const addAuthorizationToHeader = () => ({ 'X-API-KEY': API_KEY });
 
 export const addTimestampToData = () => ({ _t: _.now() });
 
@@ -161,7 +161,7 @@ export function request(method, url, data = {}, options = {}) {
     // timeout: 1000,
     // prefix: '',
     // suffix: '',
-    // credentials: 'same-origin',
+    // credentials: 'include', // 'same-origin',
     // useCache: false,
     // validateCache: (url, options) => {},
     // ttl: 60000,
@@ -262,15 +262,15 @@ export const fetch = (method, methodOptions = {}) => (url, urlOptions = {}) => (
 export const internalAuthMethodOptions = {
   baseURL: AUTH_HOST,
   header: [addAuthorizationToHeader],
-  response: [addAuthCheckerToResponse, addCodeCheckerToResponse],
-  error: [addAuthHandlerToError, addMsgHandlerToError],
+  // response: [addAuthCheckerToResponse, addCodeCheckerToResponse],
+  // error: [addAuthHandlerToError, addMsgHandlerToError],
 };
 
 export const internalApiMethodOptions = {
   baseURL: BASE_HOST,
   header: [],
-  response: [addCodeCheckerToResponse],
-  error: [addMsgHandlerToError],
+  // response: [addCodeCheckerToResponse],
+  // error: [addMsgHandlerToError],
 };
 
 export const externalMethodOptions = {

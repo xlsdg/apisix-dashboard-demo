@@ -1,4 +1,4 @@
 import { generateTypesByNames } from '@/redux/types';
 
-const NAMES = ['getData'];
+const NAMES = ['login', 'logout'];
 export default generateTypesByNames(NAMES);

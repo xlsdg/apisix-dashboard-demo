@@ -1,30 +1,29 @@
 import _ from 'lodash';
+import { history } from 'umi';
 
 import NAMESPACES from '@/redux/namespaces';
 import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
 
-import UserActions from '@/redux/actions/user';
-import UserApi from '@/services/user';
+import * as UserTransforms from '@/transforms/user';
 
-import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
+import { generateSubscriptionByRoutes, hasString } from '@/utils/helper';
+import { setToken, removeToken } from '@/utils/store';
 
-const InitialState = {
-  banner: [],
-};
+const InitialState = {};
 
 const StateAt = generatePutStateAction(InitialState, 0);
 // const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.USER);
 
 const Routes = {
-  '/': {
-    onEnter: ({ dispatch, ...others }) => {
-      // console.log('Enter /');
-      return dispatch(PageActions.enterPage(others));
-    },
-    onChange: ({ dispatch, ...others }) => {
-      // console.log('Change /');
-      return dispatch(PageActions.changePage(others));
-    },
+  '/user/login': {
+    // onEnter: ({ dispatch, ...others }) => {
+    //   // console.log('Enter /');
+    //   return dispatch(PageActions.enterPage(others));
+    // },
+    // onChange: ({ dispatch, ...others }) => {
+    //   // console.log('Change /');
+    //   return dispatch(PageActions.changePage(others));
+    // },
     onLeave: ({ dispatch, ...others }) => {
       // console.log('Leave /');
       return dispatch(PageActions.leavePage(others));
@@ -42,33 +41,48 @@ export default {
     setup: generateSubscriptionByRoutes(Routes),
   },
   effects: {
-    *enterPage(action, effects) {
-      // const { payload } = action;
-      const { put } = effects;
+    // *enterPage(action, effects) {
+    //   // const { payload } = action;
+    //   const { put } = effects;
 
-      yield put(UserActions.getData());
-    },
-    *changePage(action, effects) {
-      // const { payload } = action;
-      const { put } = effects;
+    //   yield put(UserActions.getData());
+    // },
+    // *changePage(action, effects) {
+    //   // const { payload } = action;
+    //   const { put } = effects;
 
-      yield put(UserActions.getData());
-    },
+    //   yield put(UserActions.getData());
+    // },
     *leavePage(action, effects) {
       // const { payload } = action;
       const { put } = effects;
 
       yield put(StateAt(_.cloneDeep(InitialState)));
     },
-    *getData(action, effects) {
-      // const { payload } = action;
-      const { put, call } = effects;
+    *login(action, effects) {
+      const { payload } = action;
+      const { call } = effects;
 
       // console.log(payload);
-      const resp = yield call(UserApi.getData, {});
-      // console.log(resp);
-      if (hasArray(resp.banner)) {
-        yield put(StateAt({ banner: resp.banner }));
+      const resp = yield call(UserTransforms.login, payload);
+      if (resp) {
+        yield call(setToken, 'true');
+        if (hasString(payload.redirect)) {
+          window.location.href = payload.redirect;
+        } else {
+          yield call(history.push, '/dashboard');
+        }
+      }
+    },
+    *logout(action, effects) {
+      const { payload } = action;
+      const { call } = effects;
+
+      // console.log(payload);
+      const resp = yield call(UserTransforms.logout, payload);
+      if (resp) {
+        yield call(removeToken);
+        yield call(history.push, '/');
       }
     },
   },

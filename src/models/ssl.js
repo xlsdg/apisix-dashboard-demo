@@ -4,19 +4,19 @@ import NAMESPACES from '@/redux/namespaces';
 import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
 
 import SslActions from '@/redux/actions/ssl';
-import SslApi from '@/services/ssl';
+import * as SslTransforms from '@/transforms/ssl';
 
 import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
 
 const InitialState = {
-  banner: [],
+  records: [],
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
 // const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.SSL);
 
 const Routes = {
-  '/': {
+  '/dashboard/ssl': {
     onEnter: ({ dispatch, ...others }) => {
       // console.log('Enter /');
       return dispatch(PageActions.enterPage(others));
@@ -46,13 +46,13 @@ export default {
       // const { payload } = action;
       const { put } = effects;
 
-      yield put(SslActions.getData());
+      yield put(SslActions.getRecords());
     },
     *changePage(action, effects) {
       // const { payload } = action;
       const { put } = effects;
 
-      yield put(SslActions.getData());
+      yield put(SslActions.getRecords());
     },
     *leavePage(action, effects) {
       // const { payload } = action;
@@ -60,15 +60,15 @@ export default {
 
       yield put(StateAt(_.cloneDeep(InitialState)));
     },
-    *getData(action, effects) {
+    *getRecords(action, effects) {
       // const { payload } = action;
       const { put, call } = effects;
 
       // console.log(payload);
-      const resp = yield call(SslApi.getData, {});
+      const resp = yield call(SslTransforms.getRecords, {});
       // console.log(resp);
-      if (hasArray(resp.banner)) {
-        yield put(StateAt({ banner: resp.banner }));
+      if (hasArray(resp.records)) {
+        yield put(StateAt({ records: resp.records }));
       }
     },
   },

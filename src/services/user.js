@@ -1,5 +1,6 @@
-import Fetch from '@/utils/fetch';
+// import Fetch from '@/utils/fetch';
 
 export default {
-  getData: Fetch.internal.api.get('/apisix/admin/user'),
+  login: data => new Promise(resolve => setTimeout(() => resolve(data), 1000)),
+  logout: data => new Promise(resolve => setTimeout(() => resolve(data), 1000)),
 };
