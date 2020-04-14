@@ -104,7 +104,7 @@ export default defineConfig({
   // targets: { chrome: 49, firefox: 64, safari: 10, edge: 13, ios: 10 },
   // terserOptions: {},
   theme: Theme,
-  title: 'APISIX',
+  title: 'page.title',
 
   ...plugins,
 });

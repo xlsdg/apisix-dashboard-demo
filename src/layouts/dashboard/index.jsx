@@ -3,7 +3,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
 import { Link, history, useIntl } from 'umi';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Dropdown, Avatar } from 'antd';
 // import { formatMessage } from 'umi';
 import {
   ClusterOutlined,
@@ -11,6 +11,9 @@ import {
   NodeIndexOutlined,
   LockOutlined,
   ToTopOutlined,
+  UserOutlined,
+  SettingOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 
 import PrivatePage from '@/components/PrivatePage';
@@ -65,35 +68,35 @@ const DashboardSider = React.memo(props => {
     // overflowedIndicator: ,
   };
 
-  const intl = useIntl();
-  const title = collapsed ? null : <span className={styles.title}>{intl.formatMessage({ id: 'page.title' })}</span>;
+  const { formatMessage } = useIntl();
+  const title = collapsed ? null : <span className={styles.title}>{formatMessage({ id: 'page.title' })}</span>;
 
   const menus = React.useMemo(() => {
     const items = [
       {
         key: 'routes',
         icon: <ClusterOutlined />,
-        text: 'Routes',
+        text: formatMessage({ id: 'page.routes.menu' }),
       },
       {
         key: 'consumers',
         icon: <ShoppingCartOutlined />,
-        text: 'Consumers',
+        text: formatMessage({ id: 'page.consumers.menu' }),
       },
       {
         key: 'services',
         icon: <NodeIndexOutlined />,
-        text: 'Services',
+        text: formatMessage({ id: 'page.services.menu' }),
       },
       {
         key: 'ssl',
         icon: <LockOutlined />,
-        text: 'SSL',
+        text: formatMessage({ id: 'page.ssl.menu' }),
       },
       {
         key: 'upstream',
         icon: <ToTopOutlined />,
-        text: 'Upstream',
+        text: formatMessage({ id: 'page.upstream.menu' }),
       },
     ];
 
@@ -103,7 +106,7 @@ const DashboardSider = React.memo(props => {
         <span>{item.text}</span>
       </Menu.Item>
     ));
-  }, []);
+  }, [formatMessage]);
 
   return (
     <Layout.Sider className={styles.sider} {...siderProps}>
@@ -120,8 +123,104 @@ const DashboardSider = React.memo(props => {
   );
 });
 
+const UserAvatar = React.memo(props => {
+  // const {} = props;
+  const { formatMessage } = useIntl();
+
+  const menus = React.useMemo(() => {
+    const items = [
+      {
+        key: 'center',
+        icon: <UserOutlined />,
+        text: formatMessage({ id: 'page.user.menu.center' }),
+      },
+      {
+        key: 'settings',
+        icon: <SettingOutlined />,
+        text: formatMessage({ id: 'page.user.menu.settings' }),
+      },
+      {
+        key: 'logout',
+        icon: <LogoutOutlined />,
+        text: formatMessage({ id: 'page.user.menu.logout' }),
+      },
+    ];
+
+    return _.map(items, item => (
+      <Menu.Item key={item.key}>
+        {item.icon}
+        {item.text}
+      </Menu.Item>
+    ));
+  }, [formatMessage]);
+
+  const handleMenuClick = React.useCallback(props => console.log(props), []);
+  const menuProps = {
+    // defaultOpenKeys: ,
+    // defaultSelectedKeys: ,
+    // forceSubMenuRender: ,
+    // inlineCollapsed: ,
+    // inlineIndent: ,
+    // mode: 'inline',
+    // multiple: ,
+    // openKeys: ,
+    selectable: false,
+    // selectedKeys,
+    // subMenuCloseDelay: ,
+    // subMenuOpenDelay: ,
+    // theme: 'dark',
+    onClick: handleMenuClick,
+    // onDeselect: ,
+    // onOpenChange: ,
+    // onSelect: ,
+    // overflowedIndicator: ,
+  };
+
+  const overlay = (
+    <Menu className={styles.menu} {...menuProps}>
+      {menus}
+    </Menu>
+  );
+
+  const dropdownProps = {
+    // disabled: ,
+    // getPopupContainer: ,
+    overlay,
+    // overlayClassName: ,
+    placement: 'bottomRight',
+    trigger: ['hover'],
+    // visible: ,
+    // onVisibleChange: ,
+  };
+
+  const avatarProps = {
+    // icon: ,
+    // shape: 'circle',
+    // size: ,
+    src: ImgLogo,
+    // srcSet: ,
+    alt: 'avatar',
+    // onError: ,
+  };
+
+  return (
+    <Dropdown {...dropdownProps}>
+      <div className={styles.avatar}>
+        <Avatar className={styles.image} {...avatarProps} />
+      </div>
+    </Dropdown>
+  );
+});
+
 const DashboardHeader = React.memo(props => {
-  return <Layout.Header className={styles.header}>123</Layout.Header>;
+  return (
+    <Layout.Header className={styles.header}>
+      <div className={styles.left} />
+      <div className={styles.right}>
+        <UserAvatar />
+      </div>
+    </Layout.Header>
+  );
 });
 
 const DashboardLayout = React.memo(props => {

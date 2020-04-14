@@ -1,3 +1,3 @@
 export function isLoggedIn() {
-  return new Promise(resolve => setTimeout(() => resolve(true), 1000));
+  return new Promise(resolve => setTimeout(() => resolve(false), 1000));
 }
