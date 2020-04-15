@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import NAMESPACES from '@/redux/namespaces';
-import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
+import PageActions, { generatePutStateAction, generateSelectStateFn, setStateReducer } from '@/redux/actions';
 
 import UpstreamActions from '@/redux/actions/upstream';
 import * as UpstreamTransforms from '@/transforms/upstream';
@@ -13,7 +13,7 @@ const InitialState = {
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
-// const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.UPSTREAM);
+const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.UPSTREAM);
 
 const Routes = {
   '/dashboard/upstream': {
@@ -61,14 +61,17 @@ export default {
       yield put(StateAt(_.cloneDeep(InitialState)));
     },
     *getRecords(action, effects) {
-      // const { payload } = action;
-      const { put, call } = effects;
+      const { payload } = action;
+      const { put, call, select } = effects;
 
-      // console.log(payload);
-      const resp = yield call(UpstreamTransforms.getRecords, {});
-      // console.log(resp);
-      if (hasArray(resp.records)) {
-        yield put(StateAt({ records: resp.records }));
+      let { records } = yield select(StateFrom);
+
+      if (!hasArray(records)) {
+        records = yield call(UpstreamTransforms.getRecords, payload);
+      }
+
+      if (hasArray(records)) {
+        yield put(StateAt({ records }));
       }
     },
   },

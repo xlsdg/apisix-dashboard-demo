@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import NAMESPACES from '@/redux/namespaces';
-import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
+import PageActions, { generatePutStateAction, generateSelectStateFn, setStateReducer } from '@/redux/actions';
 
 import ConsumersActions from '@/redux/actions/consumers';
 import * as ConsumersTransforms from '@/transforms/consumers';
@@ -13,7 +13,7 @@ const InitialState = {
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
-// const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.CONSUMERS);
+const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.CONSUMERS);
 
 const Routes = {
   '/dashboard/consumers': {
@@ -61,14 +61,17 @@ export default {
       yield put(StateAt(_.cloneDeep(InitialState)));
     },
     *getRecords(action, effects) {
-      // const { payload } = action;
-      const { put, call } = effects;
+      const { payload } = action;
+      const { put, call, select } = effects;
 
-      // console.log(payload);
-      const resp = yield call(ConsumersTransforms.getRecords, {});
-      // console.log(resp);
-      if (hasArray(resp.records)) {
-        yield put(StateAt({ records: resp.records }));
+      let { records } = yield select(StateFrom);
+
+      if (!hasArray(records)) {
+        records = yield call(ConsumersTransforms.getRecords, payload);
+      }
+
+      if (hasArray(records)) {
+        yield put(StateAt({ records }));
       }
     },
   },
