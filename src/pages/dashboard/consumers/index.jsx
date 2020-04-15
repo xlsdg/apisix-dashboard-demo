@@ -6,34 +6,28 @@ import { connect } from 'umi';
 // import {  } from 'antd';
 
 import Block from '@/components/Dashboard/Block';
+import Average from '@/components/Dashboard/Average';
 import Table from '@/components/Dashboard/Consumers/Table';
 
-import NAMESPACES from '@/redux/namespaces';
-import CONSUMERS_TYPES from '@/redux/types/consumers';
-import { createConsumersStateSelector } from '@/redux/actions/consumers';
-
-import { getValue } from '@/utils/helper';
+import { createStateSelector, createLoadingSelector } from '@/redux/actions/consumers';
 
 import styles from './index.less';
 
 const Header = React.memo(props => {
-  return (
-    <div className={styles.header}>
-      <div className={styles.left}>123</div>
-      <div className={styles.right}>456</div>
-    </div>
-  );
+  const title = <span>Consumers</span>;
+  const btn = '456';
+
+  return <Average left={title} right={btn} />;
 });
 
 const Content = React.memo(props => {
   const { loading, state } = props;
 
-  const fetching = getValue(loading, `effects['${NAMESPACES.CONSUMERS}/${CONSUMERS_TYPES.GET_RECORDS}']`, false);
   return (
     <div className={styles.container}>
       <Block>
         <Header />
-        <Table loading={fetching} dataSource={state.records} />
+        <Table loading={loading} dataSource={state.records} />
       </Block>
     </div>
   );
@@ -43,11 +37,12 @@ Content.propTypes = {};
 
 Content.defaultProps = {};
 
-const [stateSelector, setStateSelector] = createConsumersStateSelector('');
+const [stateSelector, setStateSelector] = createStateSelector('');
+const loadingSelector = createLoadingSelector['getRecords'];
 
 function mapStateToProps(state, ownProps) {
   return {
-    loading: state.loading,
+    loading: loadingSelector(state.loading),
     state: stateSelector(state),
   };
 }

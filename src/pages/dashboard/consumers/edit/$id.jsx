@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'umi';
 // import {  } from 'antd';
 
-import { createConsumersStateSelector } from '@/redux/actions/consumers';
+import { createStateSelector } from '@/redux/actions/consumers';
 
 import styles from './$id.less';
 
@@ -18,7 +18,7 @@ Content.propTypes = {};
 
 Content.defaultProps = {};
 
-const [stateSelector, setStateSelector] = createConsumersStateSelector('');
+const [stateSelector, setStateSelector] = createStateSelector('');
 
 function mapStateToProps(state, ownProps) {
   return {

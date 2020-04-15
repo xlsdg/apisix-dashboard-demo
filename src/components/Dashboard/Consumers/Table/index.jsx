@@ -43,6 +43,14 @@ const DataTable = React.memo(props => {
       // onHeaderCell: '',
       // showSorterTooltip: ,
     },
+    {
+      dataIndex: 'username',
+      title: 'username',
+    },
+    {
+      dataIndex: 'description',
+      title: 'description',
+    },
   ];
 
   const tableProps = {
@@ -57,7 +65,7 @@ const DataTable = React.memo(props => {
     // locale: ,
     pagination: false,
     // rowClassName: ,
-    rowKey: 'id',
+    rowKey: 'key',
     // rowSelection: ,
     // scroll: ,
     // showHeader: ,

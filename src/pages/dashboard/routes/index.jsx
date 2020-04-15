@@ -6,34 +6,28 @@ import { connect } from 'umi';
 // import {  } from 'antd';
 
 import Block from '@/components/Dashboard/Block';
+import Average from '@/components/Dashboard/Average';
 import Table from '@/components/Dashboard/Routes/Table';
 
-import NAMESPACES from '@/redux/namespaces';
-import ROUTES_TYPES from '@/redux/types/routes';
-import { createRoutesStateSelector } from '@/redux/actions/routes';
-
-import { getValue } from '@/utils/helper';
+import { createStateSelector, createLoadingSelector } from '@/redux/actions/routes';
 
 import styles from './index.less';
 
 const Header = React.memo(props => {
-  return (
-    <div className={styles.header}>
-      <div className={styles.left}>123</div>
-      <div className={styles.right}>456</div>
-    </div>
-  );
+  const title = <span>Routes</span>;
+  const btn = '456';
+
+  return <Average left={title} right={btn} />;
 });
 
 const Content = React.memo(props => {
   const { loading, state } = props;
 
-  const fetching = getValue(loading, `effects['${NAMESPACES.ROUTES}/${ROUTES_TYPES.GET_RECORDS}']`, false);
   return (
     <div className={styles.container}>
       <Block>
         <Header />
-        <Table loading={fetching} dataSource={state.records} />
+        <Table loading={loading} dataSource={state.records} />
       </Block>
     </div>
   );
@@ -43,11 +37,12 @@ Content.propTypes = {};
 
 Content.defaultProps = {};
 
-const [stateSelector, setStateSelector] = createRoutesStateSelector('');
+const [stateSelector, setStateSelector] = createStateSelector('');
+const loadingSelector = createLoadingSelector['getRecords'];
 
 function mapStateToProps(state, ownProps) {
   return {
-    loading: state.loading,
+    loading: loadingSelector(state.loading),
     state: stateSelector(state),
   };
 }

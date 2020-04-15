@@ -1,15 +1,18 @@
 import _ from 'lodash';
 
-import RoutesServices from '@/services/routes';
+import Services from '@/services/routes';
 
 import { getValue } from '@/utils/helper';
+import { compareFn } from '@/utils/format';
 
 export function getRecords(data, dataOptions) {
   const request = payload => ({});
   const response = payload =>
     _.map(getValue(payload, 'node.nodes', []), item => ({
+      key: item.key,
       id: item.createdIndex,
-    }));
+      description: getValue(item, 'value.desc'),
+    })).sort((x, y) => -compareFn(x.id, y.id));
 
-  return RoutesServices.getRecords(request(data), dataOptions).then(response);
+  return Services.getRecords(request(data), dataOptions).then(response);
 }

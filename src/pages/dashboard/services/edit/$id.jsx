@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'umi';
 // import {  } from 'antd';
 
-import { createServicesStateSelector } from '@/redux/actions/services';
+import { createStateSelector } from '@/redux/actions/services';
 
 import styles from './$id.less';
 
@@ -18,7 +18,7 @@ Content.propTypes = {};
 
 Content.defaultProps = {};
 
-const [stateSelector, setStateSelector] = createServicesStateSelector('');
+const [stateSelector, setStateSelector] = createStateSelector('');
 
 function mapStateToProps(state, ownProps) {
   return {
