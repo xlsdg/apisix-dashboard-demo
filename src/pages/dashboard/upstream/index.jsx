@@ -18,7 +18,7 @@ const Header = React.memo(props => {
   // const {} = props;
   const { formatMessage } = useIntl();
 
-  const left = <span className={styles.title}>SSL</span>;
+  const left = <span className={styles.title}>Upstream</span>;
 
   const right = (
     <Button type="primary" onClick={() => {}}>
