@@ -27,7 +27,7 @@ const plugins = {
   },
   locale: {
     baseSeparator: '-',
-    default: 'zh-CN',
+    default: 'en-US',
     antd: true,
     title: true,
     baseNavigator: true,

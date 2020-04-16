@@ -2,8 +2,9 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { connect } from 'umi';
-// import {  } from 'antd';
+import { connect, useIntl } from 'umi';
+import { Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
@@ -14,10 +15,19 @@ import { createStateSelector, createLoadingSelector } from '@/redux/actions/serv
 import styles from './index.less';
 
 const Header = React.memo(props => {
-  const title = <span>Services</span>;
-  const btn = '456';
+  // const {} = props;
+  const { formatMessage } = useIntl();
 
-  return <Average left={title} right={btn} />;
+  const left = <span className={styles.title}>Services</span>;
+
+  const right = (
+    <Button type="primary" onClick={() => {}}>
+      <PlusOutlined />
+      {` ${formatMessage({ id: 'page.services.new' })}`}
+    </Button>
+  );
+
+  return <Average left={left} right={right} />;
 });
 
 const Content = React.memo(props => {
