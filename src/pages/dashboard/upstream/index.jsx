@@ -18,7 +18,7 @@ const Header = React.memo(props => {
   // const {} = props;
   const { formatMessage } = useIntl();
 
-  const left = <span className={styles.title}>Upstream</span>;
+  const left = <span className={styles.title}>{formatMessage({ id: 'dashboard.upstream.menu' })}</span>;
 
   const right = (
     <Button type="primary" onClick={() => {}}>

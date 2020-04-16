@@ -18,7 +18,7 @@ const Header = React.memo(props => {
   // const {} = props;
   const { formatMessage } = useIntl();
 
-  const left = <span className={styles.title}>Routes</span>;
+  const left = <span className={styles.title}>{formatMessage({ id: 'dashboard.routes.menu' })}</span>;
 
   const right = (
     <Button type="primary" onClick={() => {}}>

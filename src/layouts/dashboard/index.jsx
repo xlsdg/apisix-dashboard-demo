@@ -23,7 +23,7 @@ const DashboardLayout = React.memo(props => {
       <Layout className={styles.container}>
         <Sider location={location} />
         <Layout className={styles.body}>
-          <Header location={location} />
+          <Header />
           <Layout.Content className={styles.content}>{children}</Layout.Content>
           <Layout.Footer className={styles.footer}>APISIX ©2020 Created by iResty</Layout.Footer>
         </Layout>

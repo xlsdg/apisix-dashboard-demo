@@ -1,3 +1,4 @@
+import Dashboard from '@/locales/zh-CN/dashboard';
 import Consumers from '@/locales/zh-CN/consumers';
 import Routes from '@/locales/zh-CN/routes';
 import Services from '@/locales/zh-CN/services';
@@ -6,6 +7,7 @@ import Upstream from '@/locales/zh-CN/upstream';
 import User from '@/locales/zh-CN/user';
 
 export default {
+  ...Dashboard,
   ...Consumers,
   ...Routes,
   ...Services,
