@@ -15,7 +15,7 @@ const Username = React.memo(props => {
     () => [
       {
         required: true,
-        message: formatMessage({ id: 'page.user.login.form.username.required' }),
+        message: formatMessage({ id: 'user.login.form.username.required' }),
       },
     ],
     [formatMessage]
@@ -26,7 +26,7 @@ const Username = React.memo(props => {
       <Input
         className={styles.input}
         prefix={<UserOutlined className={styles.icon} />}
-        placeholder={formatMessage({ id: 'page.user.login.form.username' })}
+        placeholder={formatMessage({ id: 'user.login.form.username' })}
       />
     </Form.Item>
   );
@@ -39,7 +39,7 @@ const Password = React.memo(props => {
     () => [
       {
         required: true,
-        message: formatMessage({ id: 'page.user.login.form.password.required' }),
+        message: formatMessage({ id: 'user.login.form.password.required' }),
       },
     ],
     [formatMessage]
@@ -51,7 +51,7 @@ const Password = React.memo(props => {
         className={styles.input}
         prefix={<LockOutlined className={styles.icon} />}
         type="password"
-        placeholder={formatMessage({ id: 'page.user.login.form.password' })}
+        placeholder={formatMessage({ id: 'user.login.form.password' })}
       />
     </Form.Item>
   );
@@ -63,7 +63,7 @@ const Submit = React.memo(props => {
   return (
     <Form.Item>
       <Button className={styles.submit} htmlType="submit" type="primary" block>
-        {formatMessage({ id: 'page.user.login.form.submit' })}
+        {formatMessage({ id: 'user.login.form.submit' })}
       </Button>
     </Form.Item>
   );

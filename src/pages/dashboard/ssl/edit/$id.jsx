@@ -45,6 +45,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
 
-Page.title = 'page.ssl.title';
+Page.title = 'dashboard.ssl.title';
 
 export default Page;

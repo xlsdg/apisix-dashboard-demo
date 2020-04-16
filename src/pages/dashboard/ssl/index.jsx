@@ -23,7 +23,7 @@ const Header = React.memo(props => {
   const right = (
     <Button type="primary" onClick={() => {}}>
       <PlusOutlined />
-      {` ${formatMessage({ id: 'page.ssl.new' })}`}
+      {` ${formatMessage({ id: 'dashboard.ssl.new' })}`}
     </Button>
   );
 
@@ -75,6 +75,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
 
-Page.title = 'page.ssl.title';
+Page.title = 'dashboard.ssl.title';
 
 export default Page;

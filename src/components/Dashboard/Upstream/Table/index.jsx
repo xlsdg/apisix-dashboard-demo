@@ -2,16 +2,52 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-// import Link from 'umi/link';
-// import Router from 'umi/router';
-// import Redirect from 'umi/redirect';
-import { Table } from 'antd';
-// import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
+import { Table, Button, Divider } from 'antd';
+
+import { hasValue } from '@/utils/helper';
 
 import styles from './index.less';
 
+function rowSpanRender(text, record, index) {
+  const obj = {
+    children: text,
+    props: {},
+  };
+
+  if (hasValue(record.rowSpan)) {
+    obj.props.rowSpan = record.rowSpan;
+  }
+
+  return obj;
+}
+
+const Action = React.memo(props => {
+  // const {  } = props;
+
+  const { formatMessage } = useIntl();
+
+  return (
+    <>
+      <Button type="link" size="small">
+        {formatMessage({ id: 'dashboard.upstream.edit' })}
+      </Button>
+      <Divider type="vertical" />
+      <Button type="link" size="small" danger>
+        {formatMessage({ id: 'dashboard.upstream.delete' })}
+      </Button>
+    </>
+  );
+});
+
+function actionsRender(text, record, index) {
+  return rowSpanRender(<Action />, record, index);
+}
+
 const DataTable = React.memo(props => {
   const { loading, dataSource } = props;
+
+  const { formatMessage } = useIntl();
 
   const columns = [
     {
@@ -31,11 +67,11 @@ const DataTable = React.memo(props => {
       // filters: '',
       // fixed: '',
       // key: '',
-      // render: ,
+      render: rowSpanRender,
       // sorter: '',
       // sortOrder: '',
       // sortDirections: '',
-      title: 'id',
+      title: formatMessage({ id: 'dashboard.upstream.col.id' }),
       // width: '25%',
       // onCell: '',
       // onFilter: '',
@@ -45,11 +81,35 @@ const DataTable = React.memo(props => {
     },
     {
       dataIndex: 'description',
-      title: 'description',
+      render: rowSpanRender,
+      title: formatMessage({ id: 'dashboard.upstream.col.description' }),
     },
     {
       dataIndex: 'type',
-      title: 'type',
+      render: rowSpanRender,
+      title: formatMessage({ id: 'dashboard.upstream.col.type' }),
+    },
+    {
+      title: formatMessage({ id: 'dashboard.upstream.col.nodes' }),
+      children: [
+        {
+          dataIndex: ['node', 'host'],
+          title: formatMessage({ id: 'dashboard.upstream.col.host' }),
+        },
+        {
+          dataIndex: ['node', 'port'],
+          title: formatMessage({ id: 'dashboard.upstream.col.port' }),
+        },
+        {
+          dataIndex: ['node', 'weights'],
+          title: formatMessage({ id: 'dashboard.upstream.col.weights' }),
+        },
+      ],
+    },
+    {
+      align: 'center',
+      render: actionsRender,
+      title: formatMessage({ id: 'dashboard.upstream.col.actions' }),
     },
   ];
 

@@ -1,7 +1,7 @@
 export default {
-  'page.routes.title': 'Routes',
+  'dashboard.routes.title': 'Routes',
 
-  'page.routes.menu': 'Routes',
+  'dashboard.routes.menu': 'Routes',
 
-  'page.routes.new': 'New router',
+  'dashboard.routes.new': 'New router',
 };

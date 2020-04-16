@@ -45,6 +45,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
 
-Page.title = 'page.consumers.title';
+Page.title = 'dashboard.consumers.title';
 
 export default Page;

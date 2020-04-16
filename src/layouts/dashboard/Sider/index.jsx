@@ -83,27 +83,27 @@ const Sider = React.memo(props => {
       {
         key: 'routes',
         icon: <ClusterOutlined />,
-        text: formatMessage({ id: 'page.routes.menu' }),
+        text: formatMessage({ id: 'dashboard.routes.menu' }),
       },
       {
         key: 'consumers',
         icon: <ShoppingCartOutlined />,
-        text: formatMessage({ id: 'page.consumers.menu' }),
+        text: formatMessage({ id: 'dashboard.consumers.menu' }),
       },
       {
         key: 'services',
         icon: <NodeIndexOutlined />,
-        text: formatMessage({ id: 'page.services.menu' }),
+        text: formatMessage({ id: 'dashboard.services.menu' }),
       },
       {
         key: 'ssl',
         icon: <LockOutlined />,
-        text: formatMessage({ id: 'page.ssl.menu' }),
+        text: formatMessage({ id: 'dashboard.ssl.menu' }),
       },
       {
         key: 'upstream',
         icon: <ToTopOutlined />,
-        text: formatMessage({ id: 'page.upstream.menu' }),
+        text: formatMessage({ id: 'dashboard.upstream.menu' }),
       },
     ];
 

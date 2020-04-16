@@ -23,17 +23,17 @@ const UserAvatar = React.memo(props => {
       // {
       //   key: 'center',
       //   icon: <UserOutlined />,
-      //   text: formatMessage({ id: 'page.user.menu.center' }),
+      //   text: formatMessage({ id: 'user.menu.center' }),
       // },
       // {
       //   key: 'settings',
       //   icon: <SettingOutlined />,
-      //   text: formatMessage({ id: 'page.user.menu.settings' }),
+      //   text: formatMessage({ id: 'user.menu.settings' }),
       // },
       {
         key: 'logout',
         icon: <LogoutOutlined />,
-        text: formatMessage({ id: 'page.user.menu.logout' }),
+        text: formatMessage({ id: 'user.menu.logout' }),
       },
     ];
 

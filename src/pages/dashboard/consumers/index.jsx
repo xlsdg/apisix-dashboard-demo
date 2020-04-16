@@ -23,7 +23,7 @@ const Header = React.memo(props => {
   const right = (
     <Button type="primary" onClick={() => {}}>
       <PlusOutlined />
-      {` ${formatMessage({ id: 'page.consumers.new' })}`}
+      {` ${formatMessage({ id: 'dashboard.consumers.new' })}`}
     </Button>
   );
 
@@ -75,6 +75,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
 
-Page.title = 'page.consumers.title';
+Page.title = 'dashboard.consumers.title';
 
 export default Page;

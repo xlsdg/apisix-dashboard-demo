@@ -1,7 +1,7 @@
 export default {
-  'page.consumers.title': 'Consumers',
+  'dashboard.consumers.title': 'Consumers',
 
-  'page.consumers.menu': 'Consumers',
+  'dashboard.consumers.menu': 'Consumers',
 
-  'page.consumers.new': 'New consumer',
+  'dashboard.consumers.new': 'New consumer',
 };
