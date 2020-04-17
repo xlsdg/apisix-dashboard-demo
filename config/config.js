@@ -30,7 +30,7 @@ const plugins = {
     default: 'en-US',
     antd: true,
     title: true,
-    baseNavigator: true,
+    baseNavigator: false,
   },
 };
 

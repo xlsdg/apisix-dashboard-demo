@@ -2,16 +2,37 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-// import Link from 'umi/link';
-// import Router from 'umi/router';
-// import Redirect from 'umi/redirect';
-import { Table } from 'antd';
-// import { formatMessage } from 'umi-plugin-react/locale';
+import { useIntl } from 'umi';
+import { Table, Button, Divider } from 'antd';
 
 import styles from './index.less';
 
+const Action = React.memo(props => {
+  // const {  } = props;
+
+  const { formatMessage } = useIntl();
+
+  return (
+    <>
+      <Button type="link" size="small">
+        {formatMessage({ id: 'dashboard.services.edit' })}
+      </Button>
+      <Divider type="vertical" />
+      <Button type="link" size="small" danger>
+        {formatMessage({ id: 'dashboard.services.delete' })}
+      </Button>
+    </>
+  );
+});
+
+function actionsRender(text, record, index) {
+  return <Action />;
+}
+
 const DataTable = React.memo(props => {
   const { loading, dataSource } = props;
+
+  const { formatMessage } = useIntl();
 
   const columns = [
     {
@@ -35,7 +56,7 @@ const DataTable = React.memo(props => {
       // sorter: '',
       // sortOrder: '',
       // sortDirections: '',
-      title: 'id',
+      title: formatMessage({ id: 'dashboard.services.col.id' }),
       // width: '25%',
       // onCell: '',
       // onFilter: '',
@@ -45,7 +66,16 @@ const DataTable = React.memo(props => {
     },
     {
       dataIndex: 'description',
-      title: 'description',
+      title: formatMessage({ id: 'dashboard.services.col.description' }),
+    },
+    {
+      dataIndex: 'plugins',
+      title: formatMessage({ id: 'dashboard.services.col.plugins' }),
+    },
+    {
+      align: 'center',
+      render: actionsRender,
+      title: formatMessage({ id: 'dashboard.services.col.actions' }),
     },
   ];
 
