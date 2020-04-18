@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[13],{ZKRj:function(e,t,a){"use strict";a.r(t);var n=a("q1tI"),o=a.n(n),s=a("Ty5D");t["default"]=()=>o.a.createElement(s["c"],{to:"/dashboard/routes"})}}]);

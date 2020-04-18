@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[9],{kjQt:function(e,n,t){"use strict";t.r(n);var a=t("q1tI"),o=t.n(a),s=t("Ty5D");n["default"]=()=>o.a.createElement(s["c"],{to:"/dashboard/consumers"})}}]);
