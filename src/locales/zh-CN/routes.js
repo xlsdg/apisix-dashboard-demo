@@ -11,7 +11,7 @@ export default {
   'dashboard.routes.col.description': 'Description',
   'dashboard.routes.col.uri': 'URI',
   'dashboard.routes.col.host': 'Host',
-  'dashboard.routes.col.remote.address': 'Remote Addr',
+  'dashboard.routes.col.remote.address': 'Remote Address',
   'dashboard.routes.col.upstream': 'Upstream ID',
   'dashboard.routes.col.service': 'Service ID',
   'dashboard.routes.col.methods': 'Methods',

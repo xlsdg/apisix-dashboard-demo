@@ -10,6 +10,7 @@ import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
 
 const InitialState = {
   records: [],
+  record: {},
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
@@ -17,6 +18,20 @@ const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.ROUTES);
 
 const Routes = {
   '/dashboard/routes': {
+    onEnter: ({ dispatch, ...others }) => {
+      // console.log('Enter /');
+      return dispatch(PageActions.enterPage(others));
+    },
+    onChange: ({ dispatch, ...others }) => {
+      // console.log('Change /');
+      return dispatch(PageActions.changePage(others));
+    },
+    onLeave: ({ dispatch, ...others }) => {
+      // console.log('Leave /');
+      return dispatch(PageActions.leavePage(others));
+    },
+  },
+  '/dashboard/routes/edit/:id': {
     onEnter: ({ dispatch, ...others }) => {
       // console.log('Enter /');
       return dispatch(PageActions.enterPage(others));

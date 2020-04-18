@@ -2,20 +2,22 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { connect, history, useIntl } from 'umi';
-import { Breadcrumb, Button } from 'antd';
-import { HomeOutlined, PlusOutlined } from '@ant-design/icons';
+import { connect, useIntl } from 'umi';
+import { Breadcrumb } from 'antd';
+import { HomeOutlined } from '@ant-design/icons';
 
 import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
-import Table from '@/components/Dashboard/Services/Table';
 
+import { generateLoadingSelectorByFilter } from '@/redux/actions';
 import { createStateSelector, createLoadingSelector } from '@/redux/actions/services';
 
-import styles from './index.less';
+import { getValue } from '@/utils/helper';
+
+import styles from './[id].less';
 
 const Header = React.memo(props => {
-  // const {} = props;
+  const { recordId } = props;
   const { formatMessage } = useIntl();
 
   const left = (
@@ -23,29 +25,24 @@ const Header = React.memo(props => {
       <Breadcrumb.Item href="/dashboard">
         <HomeOutlined />
       </Breadcrumb.Item>
-      <Breadcrumb.Item>{formatMessage({ id: 'dashboard.services.menu' })}</Breadcrumb.Item>
+      <Breadcrumb.Item href="/dashboard/services">{formatMessage({ id: 'dashboard.services.menu' })}</Breadcrumb.Item>
+      <Breadcrumb.Item>
+        {formatMessage({ id: `dashboard.services.${recordId === '0' ? 'new' : 'edit'}` })}
+      </Breadcrumb.Item>
     </Breadcrumb>
   );
 
-  const handleClick = React.useCallback(() => history.push('/dashboard/services/edit/0'), []);
-  const right = (
-    <Button type="primary" onClick={handleClick}>
-      <PlusOutlined />
-      {` ${formatMessage({ id: 'dashboard.services.new' })}`}
-    </Button>
-  );
-
+  const right = null;
   return <Average left={left} right={right} />;
 });
 
 const Content = React.memo(props => {
-  const { loading, state } = props;
+  const { recordId } = props;
 
   return (
     <div className={styles.container}>
       <Block>
-        <Header />
-        <Table loading={loading} dataSource={state.records} />
+        <Header recordId={recordId} />
       </Block>
     </div>
   );
@@ -56,7 +53,11 @@ Content.propTypes = {};
 Content.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createStateSelector('');
-const loadingSelector = createLoadingSelector['getRecords'];
+const loadingSelector = generateLoadingSelectorByFilter(createLoadingSelector, [
+  'addRecord',
+  'editRecord',
+  'getRecord',
+]);
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -73,9 +74,10 @@ function mapDispatchToProps(dispatch, ownProps) {
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  // const { location } = ownProps;
+  const { match } = ownProps;
 
   return {
+    recordId: getValue(match, 'params.id'),
     ...stateProps,
     ...dispatchProps,
   };

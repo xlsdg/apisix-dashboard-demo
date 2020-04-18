@@ -70,7 +70,7 @@ export default {
         if (hasString(payload.redirect)) {
           window.location.href = payload.redirect;
         } else {
-          yield call(history.push, '/dashboard');
+          history.push('/dashboard');
         }
       }
     },
@@ -81,8 +81,8 @@ export default {
       // console.log(payload);
       const resp = yield call(UserTransforms.logout, payload);
       if (resp) {
-        yield call(removeToken);
-        yield call(history.push, '/');
+        removeToken();
+        history.push('/');
       }
     },
   },

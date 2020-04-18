@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { history } from 'umi';
 
 import NAMESPACES from '@/redux/namespaces';
 import PageActions, { generatePutStateAction, generateSelectStateFn, setStateReducer } from '@/redux/actions';
@@ -6,10 +7,11 @@ import PageActions, { generatePutStateAction, generateSelectStateFn, setStateRed
 import SslActions from '@/redux/actions/ssl';
 import * as SslTransforms from '@/transforms/ssl';
 
-import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
+import { generateSubscriptionByRoutes, hasArray, hasPlainObject } from '@/utils/helper';
 
 const InitialState = {
   records: [],
+  record: {},
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
@@ -17,6 +19,20 @@ const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.SSL);
 
 const Routes = {
   '/dashboard/ssl': {
+    onEnter: ({ dispatch, ...others }) => {
+      // console.log('Enter /');
+      return dispatch(PageActions.enterPage(others));
+    },
+    onChange: ({ dispatch, ...others }) => {
+      // console.log('Change /');
+      return dispatch(PageActions.changePage(others));
+    },
+    onLeave: ({ dispatch, ...others }) => {
+      // console.log('Leave /');
+      return dispatch(PageActions.leavePage(others));
+    },
+  },
+  '/dashboard/ssl/edit/:id': {
     onEnter: ({ dispatch, ...others }) => {
       // console.log('Enter /');
       return dispatch(PageActions.enterPage(others));
@@ -43,16 +59,42 @@ export default {
   },
   effects: {
     *enterPage(action, effects) {
-      // const { payload } = action;
+      const { payload } = action;
       const { put } = effects;
 
-      yield put(SslActions.getRecords());
+      const { match } = payload;
+      if (!hasArray(match)) {
+        return;
+      }
+
+      if (match[0] === '/dashboard/ssl') {
+        yield put(SslActions.getRecords());
+        return;
+      }
+
+      if (_.startsWith(match[0], '/dashboard/ssl/edit/') && match.length === 2) {
+        yield put(SslActions.getRecord({ key: match[1] }));
+        return;
+      }
     },
     *changePage(action, effects) {
-      // const { payload } = action;
+      const { payload } = action;
       const { put } = effects;
 
-      yield put(SslActions.getRecords());
+      const { match } = payload;
+      if (!hasArray(match)) {
+        return;
+      }
+
+      if (match[0] === '/dashboard/ssl') {
+        yield put(SslActions.getRecords());
+        return;
+      }
+
+      if (_.startsWith(match[0], '/dashboard/ssl/edit/') && match.length === 2) {
+        yield put(SslActions.getRecord({ key: match[1] }));
+        return;
+      }
     },
     *leavePage(action, effects) {
       // const { payload } = action;
@@ -72,6 +114,56 @@ export default {
 
       if (hasArray(records)) {
         yield put(StateAt({ records }));
+      }
+    },
+    // *addRecord(action, effects) {
+    //   const { payload } = action;
+    //   const { call } = effects;
+
+    //   const { key } = yield call(SslTransforms.addRecord(payload.key), payload);
+
+    //   // if (hasString(key)) {
+    //   //   history.push('/dashboard/ssl');
+    //   // }
+    // },
+    *deleteRecord(action, effects) {
+      const { payload } = action;
+      const { put, call } = effects;
+
+      const { key } = yield call(SslTransforms.deleteRecord(payload.key), payload);
+
+      if (key === payload.key) {
+        yield put(SslActions.getRecords());
+      }
+    },
+    // *editRecord(action, effects) {
+    //   const { payload } = action;
+    //   const { put, call, select } = effects;
+
+    //   const { key } = yield call(SslTransforms.editRecord(payload.key), payload);
+
+    //   history.push('/dashboard/ssl');
+    // },
+    *getRecord(action, effects) {
+      const { payload } = action;
+      const { put, call, select } = effects;
+
+      if (payload.key === '0') {
+        return;
+      }
+
+      let { record } = yield select(StateFrom);
+
+      if (!hasPlainObject(record)) {
+        try {
+          record = yield call(SslTransforms.getRecord, payload);
+        } catch (error) {
+          history.push('/dashboard/ssl');
+        }
+      }
+
+      if (hasPlainObject(record)) {
+        yield put(StateAt({ record }));
       }
     },
   },

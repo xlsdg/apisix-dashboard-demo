@@ -2,7 +2,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { useIntl } from 'umi';
+import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
 import { hasValue } from '@/utils/helper';
@@ -23,13 +23,15 @@ function rowSpanRender(text, record, index) {
 }
 
 const Action = React.memo(props => {
-  // const {  } = props;
+  const { recordId } = props;
 
   const { formatMessage } = useIntl();
 
+  const handleClick = React.useCallback(() => history.push(`/dashboard/upstream/edit/${recordId}`), [recordId]);
+
   return (
     <>
-      <Button type="link" size="small">
+      <Button type="link" size="small" onClick={handleClick}>
         {formatMessage({ id: 'dashboard.upstream.edit' })}
       </Button>
       <Divider type="vertical" />
@@ -41,7 +43,7 @@ const Action = React.memo(props => {
 });
 
 function actionsRender(text, record, index) {
-  return rowSpanRender(<Action />, record, index);
+  return rowSpanRender(<Action recordId={record.key} />, record, index);
 }
 
 const DataTable = React.memo(props => {
@@ -52,7 +54,7 @@ const DataTable = React.memo(props => {
   const columns = [
     {
       // align: 'left',
-      // ellipsis: false,
+      ellipsis: false,
       // className: ,
       // colSpan: '',
       dataIndex: 'id',
@@ -80,11 +82,13 @@ const DataTable = React.memo(props => {
       // showSorterTooltip: ,
     },
     {
+      ellipsis: true,
       dataIndex: 'description',
       render: rowSpanRender,
       title: formatMessage({ id: 'dashboard.upstream.col.description' }),
     },
     {
+      ellipsis: true,
       dataIndex: 'type',
       render: rowSpanRender,
       title: formatMessage({ id: 'dashboard.upstream.col.type' }),
@@ -108,6 +112,7 @@ const DataTable = React.memo(props => {
     },
     {
       align: 'center',
+      ellipsis: false,
       render: actionsRender,
       title: formatMessage({ id: 'dashboard.upstream.col.actions' }),
     },

@@ -2,19 +2,21 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { useIntl } from 'umi';
+import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
 import styles from './index.less';
 
 const Action = React.memo(props => {
-  // const {  } = props;
+  const { recordId } = props;
 
   const { formatMessage } = useIntl();
 
+  const handleClick = React.useCallback(() => history.push(`/dashboard/consumers/edit/${recordId}`), [recordId]);
+
   return (
     <>
-      <Button type="link" size="small">
+      <Button type="link" size="small" onClick={handleClick}>
         {formatMessage({ id: 'dashboard.consumers.edit' })}
       </Button>
       <Divider type="vertical" />
@@ -26,7 +28,7 @@ const Action = React.memo(props => {
 });
 
 function actionsRender(text, record, index) {
-  return <Action />;
+  return <Action recordId={record.key} />;
 }
 
 const DataTable = React.memo(props => {
@@ -37,7 +39,7 @@ const DataTable = React.memo(props => {
   const columns = [
     {
       // align: 'left',
-      // ellipsis: false,
+      ellipsis: false,
       // className: ,
       // colSpan: '',
       dataIndex: 'id',
@@ -65,18 +67,22 @@ const DataTable = React.memo(props => {
       // showSorterTooltip: ,
     },
     {
+      ellipsis: true,
       dataIndex: 'username',
       title: formatMessage({ id: 'dashboard.consumers.col.username' }),
     },
     {
+      ellipsis: true,
       dataIndex: 'description',
       title: formatMessage({ id: 'dashboard.consumers.col.description' }),
     },
     {
+      ellipsis: true,
       dataIndex: 'plugins',
       title: formatMessage({ id: 'dashboard.consumers.col.plugins' }),
     },
     {
+      ellipsis: false,
       align: 'center',
       render: actionsRender,
       title: formatMessage({ id: 'dashboard.consumers.col.actions' }),

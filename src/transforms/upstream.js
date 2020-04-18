@@ -3,16 +3,16 @@ import _ from 'lodash';
 import Services from '@/services/upstream';
 
 import { hasArray, getValue } from '@/utils/helper';
-import { compareFn } from '@/utils/format';
+import { compareFn, getRecordKey } from '@/utils/format';
 
-export function getRecords(data, dataOptions) {
+export function getRecords(data = {}, dataOptions) {
   const request = payload => ({});
   const response = payload =>
     _.reduce(
       getValue(payload, 'node.nodes', []),
       (records, item) => {
         const defaultRecord = {
-          key: item.key,
+          key: getRecordKey(item.key),
           id: item.createdIndex,
           description: getValue(item, 'value.desc'),
           type: getValue(item, 'value.type'),
@@ -29,6 +29,7 @@ export function getRecords(data, dataOptions) {
           const [node, weights] = n;
           const record = _.cloneDeep(defaultRecord);
 
+          // 单元格行合并标记
           if (index === 0) {
             record.rowSpan = nodes.length;
           } else {

@@ -7,34 +7,35 @@ import UmiRequest from 'umi-request';
 
 import { ResponseError } from './error';
 import { hasString, hasPlainObject, hasArray, hasValue, hasStringThen, getValue, mergeObject } from './helper';
+import { removeToken } from './store';
 
 export const addAuthorizationToHeader = () => ({ 'X-API-KEY': API_KEY });
 
 export const addTimestampToData = () => ({ _t: _.now() });
 
-export const addAuthCheckerToResponse = response =>
-  getValue(response, 'data.code') === 100 ? new ResponseError({ message: 'No Auth!', response }) : response;
-export const addCodeCheckerToResponse = response =>
-  getValue(response, 'data.code') !== 0 ? new ResponseError({ message: 'Bad Code!', response }) : response;
+// export const addAuthCheckerToResponse = response =>
+//   getValue(response, 'data.code') === 100 ? new ResponseError({ message: 'No Auth!', response }) : response;
+// export const addCodeCheckerToResponse = response =>
+//   getValue(response, 'data.code') !== 0 ? new ResponseError({ message: 'Bad Code!', response }) : response;
 
 export const addAuthHandlerToError = error => {
-  if (error instanceof ResponseError && getValue(error, 'response.data.code') === 100) {
-    // removeUserAuthData();
+  if (!(error instanceof ResponseError) && getValue(error, 'response.status') === 401) {
+    removeToken();
     history.push('/user/login');
   }
 };
 export const addMsgHandlerToError = error =>
-  error instanceof ResponseError && hasStringThen(getValue(error, 'response.data.msg'), message.error);
-export const addActionHandlerToError = handler => error => handler(error);
-export const addResponseHandlerToError = error =>
-  !(error instanceof ResponseError) && hasStringThen(getValue(error, 'response.statusText'), message.error);
-export const addRequestHandlerToError = error =>
-  !(error instanceof ResponseError) && hasStringThen(getValue(error, 'request'), message.error);
-export const addMessageHandlerToError = error =>
-  !(error instanceof ResponseError) &&
-  !getValue(error, 'response') &&
-  !getValue(error, 'request') &&
-  hasStringThen(getValue(error, 'message'), message.error);
+  !(error instanceof ResponseError) && hasStringThen(getValue(error, 'data.message'), message.error);
+// export const addActionHandlerToError = handler => error => handler(error);
+// export const addResponseHandlerToError = error =>
+//   !(error instanceof ResponseError) && hasStringThen(getValue(error, 'response.statusText'), message.error);
+// export const addRequestHandlerToError = error =>
+//   !(error instanceof ResponseError) && hasStringThen(getValue(error, 'request'), message.error);
+// export const addMessageHandlerToError = error =>
+//   !(error instanceof ResponseError) &&
+//   !getValue(error, 'response') &&
+//   !getValue(error, 'request') &&
+//   hasStringThen(getValue(error, 'message'), message.error);
 
 function reduceCallback(accumulator, item) {
   const result = _.isFunction(item) ? item(accumulator) : item;
@@ -263,14 +264,14 @@ export const internalAuthMethodOptions = {
   baseURL: AUTH_HOST,
   header: [addAuthorizationToHeader],
   // response: [addAuthCheckerToResponse, addCodeCheckerToResponse],
-  // error: [addAuthHandlerToError, addMsgHandlerToError],
+  error: [addAuthHandlerToError, addMsgHandlerToError],
 };
 
 export const internalApiMethodOptions = {
   baseURL: BASE_HOST,
   header: [],
   // response: [addCodeCheckerToResponse],
-  // error: [addMsgHandlerToError],
+  error: [addMsgHandlerToError],
 };
 
 export const externalMethodOptions = {
@@ -287,6 +288,9 @@ export default {
       }),
       post: fetch('post', internalAuthMethodOptions),
       form: fetch('form', internalAuthMethodOptions),
+      put: fetch('put', internalAuthMethodOptions),
+      patch: fetch('patch', internalAuthMethodOptions),
+      delete: fetch('delete', internalAuthMethodOptions),
     },
     api: {
       cache: fetch('get', internalApiMethodOptions),
@@ -296,6 +300,9 @@ export default {
       }),
       post: fetch('post', internalApiMethodOptions),
       form: fetch('form', internalApiMethodOptions),
+      put: fetch('put', internalApiMethodOptions),
+      patch: fetch('patch', internalApiMethodOptions),
+      delete: fetch('delete', internalApiMethodOptions),
     },
   },
   external: {
@@ -307,6 +314,9 @@ export default {
       }),
       post: fetch('post', externalMethodOptions),
       form: fetch('form', externalMethodOptions),
+      put: fetch('put', externalMethodOptions),
+      patch: fetch('patch', externalMethodOptions),
+      delete: fetch('delete', externalMethodOptions),
     },
     api: {
       cache: fetch('get', externalMethodOptions),
@@ -316,6 +326,9 @@ export default {
       }),
       post: fetch('post', externalMethodOptions),
       form: fetch('form', externalMethodOptions),
+      put: fetch('put', externalMethodOptions),
+      patch: fetch('patch', externalMethodOptions),
+      delete: fetch('delete', externalMethodOptions),
     },
   },
 };

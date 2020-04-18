@@ -2,9 +2,9 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { connect, useIntl } from 'umi';
-import { Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { connect, history, useIntl } from 'umi';
+import { Breadcrumb, Button } from 'antd';
+import { HomeOutlined, PlusOutlined } from '@ant-design/icons';
 
 import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
@@ -18,10 +18,18 @@ const Header = React.memo(props => {
   // const {} = props;
   const { formatMessage } = useIntl();
 
-  const left = <span className={styles.title}>{formatMessage({ id: 'dashboard.ssl.menu' })}</span>;
+  const left = (
+    <Breadcrumb>
+      <Breadcrumb.Item href="/dashboard">
+        <HomeOutlined />
+      </Breadcrumb.Item>
+      <Breadcrumb.Item>{formatMessage({ id: 'dashboard.ssl.menu' })}</Breadcrumb.Item>
+    </Breadcrumb>
+  );
 
+  const handleClick = React.useCallback(() => history.push('/dashboard/ssl/edit/0'), []);
   const right = (
-    <Button type="primary" onClick={() => {}}>
+    <Button type="primary" onClick={handleClick}>
       <PlusOutlined />
       {` ${formatMessage({ id: 'dashboard.ssl.new' })}`}
     </Button>
