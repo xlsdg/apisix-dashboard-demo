@@ -99,7 +99,7 @@ const PublicKey = React.memo(props => {
       <Input.TextArea
         className={styles.input}
         placeholder={formatMessage({ id: 'dashboard.ssl.form.public.key.placeholder' })}
-        autoSize
+        rows={6}
       />
     </Form.Item>
   );
@@ -152,7 +152,7 @@ const PrivateKey = React.memo(props => {
       <Input.TextArea
         className={styles.input}
         placeholder={formatMessage({ id: 'dashboard.ssl.form.private.key.placeholder' })}
-        autoSize
+        rows={6}
       />
     </Form.Item>
   );
