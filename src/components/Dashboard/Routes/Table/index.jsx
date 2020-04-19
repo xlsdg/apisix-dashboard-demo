@@ -129,7 +129,7 @@ const DataTable = React.memo(props => {
     // rowClassName: ,
     rowKey: 'key',
     // rowSelection: ,
-    scroll: { x: 1300 },
+    scroll: { x: 1400 },
     // showHeader: ,
     size: 'small',
     // summary: ,
