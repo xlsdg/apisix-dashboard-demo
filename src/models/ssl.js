@@ -144,11 +144,6 @@ export default {
       const { payload } = action;
       const { put, call, select } = effects;
 
-      // 新建
-      if (payload.key === '0') {
-        return;
-      }
-
       let { record } = yield select(StateFrom);
 
       try {

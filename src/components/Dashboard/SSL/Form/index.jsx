@@ -5,6 +5,8 @@ import ClassNames from 'classnames';
 import { history, useIntl } from 'umi';
 import { message, Form, Input, Button } from 'antd';
 
+import { hasString } from '@/utils/helper';
+
 import styles from './index.less';
 
 const Sni = React.memo(props => {
@@ -215,7 +217,14 @@ const EditForm = React.memo(props => {
       onSubmit({
         key: record.key,
         ...values,
-      }).then(() => message.success(formatMessage({ id: 'dashboard.ssl.form.submit.success' }))),
+      }).then(() =>
+        message.success(
+          formatMessage(
+            { id: 'dashboard.ssl.form.submit.success' },
+            { action: hasString(record.key) ? 'Edited' : 'Added' }
+          )
+        )
+      ),
     [formatMessage, onSubmit, record.key]
   );
 
@@ -252,6 +261,8 @@ const EditForm = React.memo(props => {
 
 EditForm.propTypes = {};
 
-EditForm.defaultProps = {};
+EditForm.defaultProps = {
+  record: {},
+};
 
 export default EditForm;

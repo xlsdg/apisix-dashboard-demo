@@ -18,7 +18,7 @@ export default {
   'dashboard.ssl.form.private.key.required': 'Please input your KEY!',
   'dashboard.ssl.form.private.key.min': '128 characters at least!',
   'dashboard.ssl.form.submit': 'Submit',
-  'dashboard.ssl.form.submit.success': 'Edit SSL successfully!',
+  'dashboard.ssl.form.submit.success': '{action} SSL successfully!',
   'dashboard.ssl.form.cancel': 'Cancel',
 
   'dashboard.ssl.delete': 'Delete',
