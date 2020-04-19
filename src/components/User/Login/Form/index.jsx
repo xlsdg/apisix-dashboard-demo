@@ -21,8 +21,33 @@ const Username = React.memo(props => {
     [formatMessage]
   );
 
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    // label: ,
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'username',
+    // normalize: ,
+    // required: ,
+    rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
   return (
-    <Form.Item name="username" rules={rules}>
+    <Form.Item className={styles.username} {...itemProps}>
       <Input
         className={styles.input}
         prefix={<UserOutlined className={styles.icon} />}
@@ -45,8 +70,33 @@ const Password = React.memo(props => {
     [formatMessage]
   );
 
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    // label: ,
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'password',
+    // normalize: ,
+    // required: ,
+    rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
   return (
-    <Form.Item name="password" rules={rules}>
+    <Form.Item className={styles.password} {...itemProps}>
       <Input
         className={styles.input}
         prefix={<LockOutlined className={styles.icon} />}
@@ -58,11 +108,13 @@ const Password = React.memo(props => {
 });
 
 const Submit = React.memo(props => {
+  const { loading } = props;
+
   const { formatMessage } = useIntl();
 
   return (
-    <Form.Item>
-      <Button className={styles.submit} htmlType="submit" type="primary" block>
+    <Form.Item className={styles.submit}>
+      <Button className={styles.button} htmlType="submit" type="primary" loading={loading} block>
         {formatMessage({ id: 'user.login.form.submit' })}
       </Button>
     </Form.Item>
@@ -70,7 +122,7 @@ const Submit = React.memo(props => {
 });
 
 const LoginForm = React.memo(props => {
-  const { onSubmit } = props;
+  const { loading, onSubmit } = props;
 
   const initialValues = React.useMemo(
     () => ({
@@ -80,11 +132,32 @@ const LoginForm = React.memo(props => {
     []
   );
 
+  const formProps = {
+    // component: ,
+    // colon: ,
+    // fields: ,
+    // form: ,
+    // hideRequiredMark: ,
+    initialValues,
+    // labelAlign: ,
+    // labelCol: ,
+    // layout: ,
+    // name: ,
+    // scrollToFirstError: ,
+    // size: ,
+    // validateMessages: ,
+    // wrapperCol: ,
+    onFinish: onSubmit,
+    // onFinishFailed: ,
+    // onFieldsChange: ,
+    // onValuesChange: ,
+  };
+
   return (
-    <Form className={styles.container} name="login" initialValues={initialValues} onFinish={onSubmit}>
+    <Form className={styles.container} {...formProps}>
       <Username />
       <Password />
-      <Submit />
+      <Submit loading={loading} />
     </Form>
   );
 });

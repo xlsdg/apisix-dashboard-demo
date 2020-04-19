@@ -63,7 +63,6 @@ export default {
       const { payload } = action;
       const { call } = effects;
 
-      // console.log(payload);
       const resp = yield call(UserTransforms.login, payload);
       if (resp) {
         yield call(setToken, `${_.now()}`);
@@ -78,7 +77,6 @@ export default {
       const { payload } = action;
       const { call } = effects;
 
-      // console.log(payload);
       const resp = yield call(UserTransforms.logout, payload);
       if (resp) {
         removeToken();

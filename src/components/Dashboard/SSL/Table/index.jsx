@@ -5,30 +5,30 @@ import React from 'react';
 import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
+import Delete from '@/components/Dashboard/SSL/Delete';
+
 import styles from './index.less';
 
 const Action = React.memo(props => {
-  const { recordId } = props;
+  const { record } = props;
 
   const { formatMessage } = useIntl();
 
-  const handleClick = React.useCallback(() => history.push(`/dashboard/ssl/edit/${recordId}`), [recordId]);
+  const handleClick = React.useCallback(() => history.push(`/dashboard/ssl/edit/${record.key}`), [record.key]);
 
   return (
-    <>
+    <div className={styles.action}>
       <Button type="link" size="small" onClick={handleClick}>
         {formatMessage({ id: 'dashboard.ssl.edit' })}
       </Button>
       <Divider type="vertical" />
-      <Button type="link" size="small" danger>
-        {formatMessage({ id: 'dashboard.ssl.delete' })}
-      </Button>
-    </>
+      <Delete recordId={record.id} recordKey={record.key} />
+    </div>
   );
 });
 
 function actionsRender(text, record, index) {
-  return <Action recordId={record.key} />;
+  return <Action record={record} />;
 }
 
 const DataTable = React.memo(props => {

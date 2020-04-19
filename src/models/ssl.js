@@ -7,7 +7,7 @@ import PageActions, { generatePutStateAction, generateSelectStateFn, setStateRed
 import SslActions from '@/redux/actions/ssl';
 import * as SslTransforms from '@/transforms/ssl';
 
-import { generateSubscriptionByRoutes, hasArray, hasPlainObject } from '@/utils/helper';
+import { generateSubscriptionByRoutes, hasArray, hasString } from '@/utils/helper';
 
 const InitialState = {
   records: [],
@@ -104,67 +104,60 @@ export default {
     },
     *getRecords(action, effects) {
       const { payload } = action;
-      const { put, call, select } = effects;
+      const { put, call } = effects;
 
-      let { records } = yield select(StateFrom);
+      const records = yield call(SslTransforms.getRecords, payload);
 
-      if (!hasArray(records)) {
-        records = yield call(SslTransforms.getRecords, payload);
-      }
+      yield put(StateAt({ records }));
+    },
+    *addRecord(action, effects) {
+      const { payload } = action;
+      const { call } = effects;
 
-      if (hasArray(records)) {
-        yield put(StateAt({ records }));
+      const { key } = yield call(SslTransforms.addRecord, payload);
+
+      if (hasString(key)) {
+        history.push('/dashboard/ssl');
       }
     },
-    // *addRecord(action, effects) {
-    //   const { payload } = action;
-    //   const { call } = effects;
-
-    //   const { key } = yield call(SslTransforms.addRecord(payload.key), payload);
-
-    //   // if (hasString(key)) {
-    //   //   history.push('/dashboard/ssl');
-    //   // }
-    // },
     *deleteRecord(action, effects) {
       const { payload } = action;
       const { put, call } = effects;
 
-      const { key } = yield call(SslTransforms.deleteRecord(payload.key), payload);
+      const { key } = yield call(SslTransforms.deleteRecord, payload);
 
       if (key === payload.key) {
         yield put(SslActions.getRecords());
       }
     },
-    // *editRecord(action, effects) {
-    //   const { payload } = action;
-    //   const { put, call, select } = effects;
+    *editRecord(action, effects) {
+      const { payload } = action;
+      const { call } = effects;
 
-    //   const { key } = yield call(SslTransforms.editRecord(payload.key), payload);
+      const { key } = yield call(SslTransforms.editRecord, payload);
 
-    //   history.push('/dashboard/ssl');
-    // },
+      if (hasString(key)) {
+        history.push('/dashboard/ssl');
+      }
+    },
     *getRecord(action, effects) {
       const { payload } = action;
       const { put, call, select } = effects;
 
+      // 新建
       if (payload.key === '0') {
         return;
       }
 
       let { record } = yield select(StateFrom);
 
-      if (!hasPlainObject(record)) {
-        try {
-          record = yield call(SslTransforms.getRecord, payload);
-        } catch (error) {
-          history.push('/dashboard/ssl');
-        }
+      try {
+        record = yield call(SslTransforms.getRecord, payload);
+      } catch (error) {
+        history.push('/dashboard/ssl');
       }
 
-      if (hasPlainObject(record)) {
-        yield put(StateAt({ record }));
-      }
+      yield put(StateAt({ record }));
     },
   },
   reducers: setStateReducer,

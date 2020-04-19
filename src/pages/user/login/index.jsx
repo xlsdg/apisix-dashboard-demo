@@ -7,21 +7,21 @@ import { connect, useIntl } from 'umi';
 
 import Form from '@/components/User/Login/Form';
 
-import { createUserStateSelector, dispatches as UserDispatches } from '@/redux/actions/user';
+import { createUserStateSelector, createLoadingSelector, dispatches as UserDispatches } from '@/redux/actions/user';
 
 import { getValue } from '@/utils/helper';
 
 import styles from './index.less';
 
 const Content = React.memo(props => {
-  const { login: onLogin } = props;
+  const { loading, login: onLogin } = props;
 
   const { formatMessage } = useIntl();
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>{formatMessage({ id: 'page.title' })}</h1>
-      <Form onSubmit={onLogin} />
+      <Form loading={loading} onSubmit={onLogin} />
     </div>
   );
 });
@@ -31,10 +31,11 @@ Content.propTypes = {};
 Content.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createUserStateSelector('');
+const loadingSelector = createLoadingSelector['login'];
 
 function mapStateToProps(state, ownProps) {
   return {
-    loading: state.loading,
+    loading: loadingSelector(state.loading),
     state: stateSelector(state),
   };
 }

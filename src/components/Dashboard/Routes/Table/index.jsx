@@ -8,14 +8,14 @@ import { Table, Button, Divider } from 'antd';
 import styles from './index.less';
 
 const Action = React.memo(props => {
-  const { recordId } = props;
+  const { record } = props;
 
   const { formatMessage } = useIntl();
 
-  const handleClick = React.useCallback(() => history.push(`/dashboard/routes/edit/${recordId}`), [recordId]);
+  const handleClick = React.useCallback(() => history.push(`/dashboard/routes/edit/${record.key}`), [record.key]);
 
   return (
-    <>
+    <div className={styles.action}>
       <Button type="link" size="small" onClick={handleClick}>
         {formatMessage({ id: 'dashboard.routes.edit' })}
       </Button>
@@ -23,12 +23,12 @@ const Action = React.memo(props => {
       <Button type="link" size="small" danger>
         {formatMessage({ id: 'dashboard.routes.delete' })}
       </Button>
-    </>
+    </div>
   );
 });
 
 function actionsRender(text, record, index) {
-  return <Action recordId={record.key} />;
+  return <Action record={record} />;
 }
 
 const DataTable = React.memo(props => {
@@ -52,7 +52,7 @@ const DataTable = React.memo(props => {
       // filterIcon: '',
       // filterMultiple: '',
       // filters: '',
-      // fixed: '',
+      fixed: 'left',
       // key: '',
       // render: ,
       // sorter: '',
@@ -109,6 +109,7 @@ const DataTable = React.memo(props => {
     {
       align: 'center',
       ellipsis: false,
+      fixed: 'right',
       render: actionsRender,
       title: formatMessage({ id: 'dashboard.routes.col.actions' }),
     },
@@ -128,7 +129,7 @@ const DataTable = React.memo(props => {
     // rowClassName: ,
     rowKey: 'key',
     // rowSelection: ,
-    // scroll: ,
+    scroll: { x: 1300 },
     // showHeader: ,
     size: 'small',
     // summary: ,

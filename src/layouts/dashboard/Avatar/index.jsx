@@ -7,7 +7,7 @@ import { Menu, Dropdown, Avatar } from 'antd';
 // import { formatMessage } from 'umi';
 import { LogoutOutlined } from '@ant-design/icons';
 
-import { dispatches as UserDispatches } from '@/redux/actions/user';
+import { createLoadingSelector, dispatches as UserDispatches } from '@/redux/actions/user';
 
 import ImgLogo from '@/assets/logo.png';
 
@@ -118,9 +118,11 @@ UserAvatar.propTypes = {};
 
 UserAvatar.defaultProps = {};
 
+const loadingSelector = createLoadingSelector['logout'];
+
 function mapStateToProps(state, ownProps) {
   return {
-    loading: state.loading,
+    loading: loadingSelector(state.loading),
   };
 }
 

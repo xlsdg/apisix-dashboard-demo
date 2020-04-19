@@ -10,6 +10,7 @@ import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
 import Table from '@/components/Dashboard/Consumers/Table';
 
+import { generateLoadingSelectorByFilter } from '@/redux/actions';
 import { createStateSelector, createLoadingSelector } from '@/redux/actions/consumers';
 
 import styles from './index.less';
@@ -45,7 +46,7 @@ const Content = React.memo(props => {
     <div className={styles.container}>
       <Block>
         <Header />
-        <Table loading={loading} dataSource={state.records} />
+        <Table loading={loading.getRecords || loading.deleteRecord} dataSource={state.records} />
       </Block>
     </div>
   );
@@ -56,7 +57,7 @@ Content.propTypes = {};
 Content.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createStateSelector('');
-const loadingSelector = createLoadingSelector['getRecords'];
+const loadingSelector = generateLoadingSelectorByFilter(createLoadingSelector, ['getRecords', 'deleteRecord']);
 
 function mapStateToProps(state, ownProps) {
   return {

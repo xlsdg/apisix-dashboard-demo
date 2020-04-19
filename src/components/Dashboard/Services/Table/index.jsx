@@ -8,14 +8,14 @@ import { Table, Button, Divider } from 'antd';
 import styles from './index.less';
 
 const Action = React.memo(props => {
-  const { recordId } = props;
+  const { record } = props;
 
   const { formatMessage } = useIntl();
 
-  const handleClick = React.useCallback(() => history.push(`/dashboard/services/edit/${recordId}`), [recordId]);
+  const handleClick = React.useCallback(() => history.push(`/dashboard/services/edit/${record.key}`), [record.key]);
 
   return (
-    <>
+    <div className={styles.action}>
       <Button type="link" size="small" onClick={handleClick}>
         {formatMessage({ id: 'dashboard.services.edit' })}
       </Button>
@@ -23,12 +23,12 @@ const Action = React.memo(props => {
       <Button type="link" size="small" danger>
         {formatMessage({ id: 'dashboard.services.delete' })}
       </Button>
-    </>
+    </div>
   );
 });
 
 function actionsRender(text, record, index) {
-  return <Action recordId={record.key} />;
+  return <Action record={record} />;
 }
 
 const DataTable = React.memo(props => {

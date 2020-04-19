@@ -17,7 +17,7 @@ import { getValue } from '@/utils/helper';
 import styles from './[id].less';
 
 const Header = React.memo(props => {
-  const { recordId } = props;
+  const { recordKey } = props;
   const { formatMessage } = useIntl();
 
   const left = (
@@ -27,7 +27,7 @@ const Header = React.memo(props => {
       </Breadcrumb.Item>
       <Breadcrumb.Item href="/dashboard/upstream">{formatMessage({ id: 'dashboard.upstream.menu' })}</Breadcrumb.Item>
       <Breadcrumb.Item>
-        {formatMessage({ id: `dashboard.upstream.${recordId === '0' ? 'new' : 'edit'}` })}
+        {formatMessage({ id: `dashboard.upstream.${recordKey === '0' ? 'new' : 'edit'}` })}
       </Breadcrumb.Item>
     </Breadcrumb>
   );
@@ -37,12 +37,12 @@ const Header = React.memo(props => {
 });
 
 const Content = React.memo(props => {
-  const { recordId } = props;
+  const { recordKey } = props;
 
   return (
     <div className={styles.container}>
       <Block>
-        <Header recordId={recordId} />
+        <Header recordKey={recordKey} />
       </Block>
     </div>
   );
@@ -77,7 +77,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const { match } = ownProps;
 
   return {
-    recordId: getValue(match, 'params.id'),
+    recordKey: getValue(match, 'params.id'),
     ...stateProps,
     ...dispatchProps,
   };

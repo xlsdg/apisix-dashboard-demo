@@ -11,5 +11,5 @@ export function logout(data, dataOptions) {
   const request = payload => ({});
   const response = payload => ({});
 
-  return Services.login(request(data), dataOptions).then(response);
+  return Services.logout(request(data), dataOptions).then(response);
 }

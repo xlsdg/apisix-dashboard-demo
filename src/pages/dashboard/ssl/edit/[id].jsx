@@ -3,21 +3,22 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
 import { connect, useIntl } from 'umi';
-import { Breadcrumb } from 'antd';
+import { Breadcrumb, Skeleton } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 
 import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
+import Form from '@/components/Dashboard/SSL/Form';
 
 import { generateLoadingSelectorByFilter } from '@/redux/actions';
-import { createStateSelector, createLoadingSelector } from '@/redux/actions/ssl';
+import { createStateSelector, createLoadingSelector, dispatches as SslDispatches } from '@/redux/actions/ssl';
 
-import { getValue } from '@/utils/helper';
+import { hasPlainObject, getValue } from '@/utils/helper';
 
 import styles from './[id].less';
 
 const Header = React.memo(props => {
-  const { recordId } = props;
+  const { recordKey } = props;
   const { formatMessage } = useIntl();
 
   const left = (
@@ -26,7 +27,7 @@ const Header = React.memo(props => {
         <HomeOutlined />
       </Breadcrumb.Item>
       <Breadcrumb.Item href="/dashboard/ssl">{formatMessage({ id: 'dashboard.ssl.menu' })}</Breadcrumb.Item>
-      <Breadcrumb.Item>{formatMessage({ id: `dashboard.ssl.${recordId === '0' ? 'new' : 'edit'}` })}</Breadcrumb.Item>
+      <Breadcrumb.Item>{formatMessage({ id: `dashboard.ssl.${recordKey === '0' ? 'new' : 'edit'}` })}</Breadcrumb.Item>
     </Breadcrumb>
   );
 
@@ -35,12 +36,22 @@ const Header = React.memo(props => {
 });
 
 const Content = React.memo(props => {
-  const { recordId } = props;
+  const { loading, recordKey, state, addRecord, editRecord } = props;
 
   return (
     <div className={styles.container}>
       <Block>
-        <Header recordId={recordId} />
+        <Header recordKey={recordKey} />
+        {loading.getRecord ? (
+          <Skeleton className={styles.form} active />
+        ) : (
+          <Form
+            className={styles.form}
+            loading={loading.editRecord || loading.addRecord}
+            record={state.record}
+            onSubmit={hasPlainObject(state.record) ? editRecord : addRecord}
+          />
+        )}
       </Block>
     </div>
   );
@@ -68,6 +79,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     // dispatch, // 默认不打开，在这个函数里处理 dispatch
     setState: setStateSelector(dispatch),
+    ...SslDispatches(dispatch, ['addRecord', 'editRecord']),
   };
 }
 
@@ -75,7 +87,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const { match } = ownProps;
 
   return {
-    recordId: getValue(match, 'params.id'),
+    recordKey: getValue(match, 'params.id'),
     ...stateProps,
     ...dispatchProps,
   };
