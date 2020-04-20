@@ -5,6 +5,8 @@ import React from 'react';
 import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
+import Delete from '@/components/Dashboard/Consumers/Delete';
+
 import styles from './index.less';
 
 const Action = React.memo(props => {
@@ -20,9 +22,7 @@ const Action = React.memo(props => {
         {formatMessage({ id: 'dashboard.consumers.edit' })}
       </Button>
       <Divider type="vertical" />
-      <Button type="link" size="small" danger>
-        {formatMessage({ id: 'dashboard.consumers.delete' })}
-      </Button>
+      <Delete recordId={record.id} recordKey={record.key} />
     </div>
   );
 });

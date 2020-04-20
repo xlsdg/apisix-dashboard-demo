@@ -28,7 +28,7 @@ const Header = React.memo(props => {
     </Breadcrumb>
   );
 
-  const handleClick = React.useCallback(() => history.push('/dashboard/services/edit/0'), []);
+  const handleClick = React.useCallback(() => history.push('/dashboard/services/add'), []);
   const right = (
     <Button type="primary" onClick={handleClick}>
       <PlusOutlined />

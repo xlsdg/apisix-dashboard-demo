@@ -7,7 +7,7 @@ import PageActions, { generatePutStateAction, generateSelectStateFn, setStateRed
 import SslActions from '@/redux/actions/ssl';
 import * as SslTransforms from '@/transforms/ssl';
 
-import { generateSubscriptionByRoutes, hasArray, hasString } from '@/utils/helper';
+import { generateSubscriptionByRoutes, hasArray, hasString, hasPlainObject } from '@/utils/helper';
 
 const InitialState = {
   records: [],
@@ -97,10 +97,23 @@ export default {
       }
     },
     *leavePage(action, effects) {
-      // const { payload } = action;
+      const { payload } = action;
       const { put } = effects;
 
-      yield put(StateAt(_.cloneDeep(InitialState)));
+      const { match } = payload;
+      if (!hasArray(match)) {
+        return;
+      }
+
+      if (match[0] === '/dashboard/ssl') {
+        // yield put(StateAt({ records: [] }));
+        return;
+      }
+
+      if (_.startsWith(match[0], '/dashboard/ssl/edit/') && match.length === 2) {
+        yield put(StateAt({ record: {} }));
+        return;
+      }
     },
     *getRecords(action, effects) {
       const { payload } = action;
@@ -144,7 +157,19 @@ export default {
       const { payload } = action;
       const { put, call, select } = effects;
 
-      let { record } = yield select(StateFrom);
+      let { records, record } = yield select(StateFrom);
+
+      if (hasPlainObject(record) && record.key === payload.key) {
+        return;
+      }
+
+      if (hasArray(records)) {
+        record = _.find(records, r => r.key === payload.key);
+        if (hasPlainObject(record)) {
+          yield put(StateAt({ record }));
+          return;
+        }
+      }
 
       try {
         record = yield call(SslTransforms.getRecord, payload);

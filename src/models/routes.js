@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { history } from 'umi';
 
 import NAMESPACES from '@/redux/namespaces';
 import PageActions, { generatePutStateAction, generateSelectStateFn, setStateReducer } from '@/redux/actions';
@@ -6,7 +7,7 @@ import PageActions, { generatePutStateAction, generateSelectStateFn, setStateRed
 import RoutesActions from '@/redux/actions/routes';
 import * as RoutesTransforms from '@/transforms/routes';
 
-import { generateSubscriptionByRoutes, hasArray } from '@/utils/helper';
+import { generateSubscriptionByRoutes, hasArray, hasString, hasPlainObject } from '@/utils/helper';
 
 const InitialState = {
   records: [],
@@ -58,36 +59,125 @@ export default {
   },
   effects: {
     *enterPage(action, effects) {
-      // const { payload } = action;
+      const { payload } = action;
       const { put } = effects;
 
-      yield put(RoutesActions.getRecords());
+      const { match } = payload;
+      if (!hasArray(match)) {
+        return;
+      }
+
+      if (match[0] === '/dashboard/routes') {
+        yield put(RoutesActions.getRecords());
+        return;
+      }
+
+      if (_.startsWith(match[0], '/dashboard/routes/edit/') && match.length === 2) {
+        yield put(RoutesActions.getRecord({ key: match[1] }));
+        return;
+      }
     },
     *changePage(action, effects) {
-      // const { payload } = action;
+      const { payload } = action;
       const { put } = effects;
 
-      yield put(RoutesActions.getRecords());
+      const { match } = payload;
+      if (!hasArray(match)) {
+        return;
+      }
+
+      if (match[0] === '/dashboard/routes') {
+        yield put(RoutesActions.getRecords());
+        return;
+      }
+
+      if (_.startsWith(match[0], '/dashboard/routes/edit/') && match.length === 2) {
+        yield put(RoutesActions.getRecord({ key: match[1] }));
+        return;
+      }
     },
     *leavePage(action, effects) {
-      // const { payload } = action;
+      const { payload } = action;
       const { put } = effects;
 
-      yield put(StateAt(_.cloneDeep(InitialState)));
+      const { match } = payload;
+      if (!hasArray(match)) {
+        return;
+      }
+
+      if (match[0] === '/dashboard/routes') {
+        // yield put(StateAt({ records: [] }));
+        return;
+      }
+
+      if (_.startsWith(match[0], '/dashboard/routes/edit/') && match.length === 2) {
+        yield put(StateAt({ record: {} }));
+        return;
+      }
     },
     *getRecords(action, effects) {
       const { payload } = action;
+      const { put, call } = effects;
+
+      const records = yield call(RoutesTransforms.getRecords, payload);
+
+      yield put(StateAt({ records }));
+    },
+    *addRecord(action, effects) {
+      const { payload } = action;
+      const { call } = effects;
+
+      const { key } = yield call(RoutesTransforms.addRecord, payload);
+
+      if (hasString(key)) {
+        history.push('/dashboard/routes');
+      }
+    },
+    *deleteRecord(action, effects) {
+      const { payload } = action;
+      const { put, call } = effects;
+
+      const { key } = yield call(RoutesTransforms.deleteRecord, payload);
+
+      if (key === payload.key) {
+        yield put(RoutesActions.getRecords());
+      }
+    },
+    *editRecord(action, effects) {
+      const { payload } = action;
+      const { call } = effects;
+
+      const { key } = yield call(RoutesTransforms.editRecord, payload);
+
+      if (hasString(key)) {
+        history.push('/dashboard/routes');
+      }
+    },
+    *getRecord(action, effects) {
+      const { payload } = action;
       const { put, call, select } = effects;
 
-      let { records } = yield select(StateFrom);
+      let { records, record } = yield select(StateFrom);
 
-      if (!hasArray(records)) {
-        records = yield call(RoutesTransforms.getRecords, payload);
+      if (hasPlainObject(record) && record.key === payload.key) {
+        return;
       }
 
       if (hasArray(records)) {
-        yield put(StateAt({ records }));
+        record = _.find(records, r => r.key === payload.key);
+        if (hasPlainObject(record)) {
+          yield put(StateAt({ record }));
+          return;
+        }
       }
+
+      try {
+        record = yield call(RoutesTransforms.getRecord, payload);
+      } catch (error) {
+        history.push('/dashboard/routes');
+      }
+
+      yield put(StateAt({ record }));
     },
   },
   reducers: setStateReducer,

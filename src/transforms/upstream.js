@@ -61,3 +61,41 @@ export function getRecords(data = {}, dataOptions) {
 
   return Services.getRecords(request(data), dataOptions).then(response);
 }
+
+export function addRecord(data = {}, dataOptions) {
+  const request = payload => ({});
+
+  const response = payload => ({
+    key: getRecordKey(getValue(payload, 'node.key')),
+  });
+
+  return Services.addRecord(request(data), dataOptions).then(response);
+}
+
+export function deleteRecord(data = {}, dataOptions) {
+  const request = payload => ({});
+
+  const response = payload => ({
+    key: getRecordKey(getValue(payload, 'node.key')),
+  });
+
+  return Services.deleteRecord(data.key)(request(data), dataOptions).then(response);
+}
+
+export function editRecord(data = {}, dataOptions) {
+  const request = payload => ({});
+
+  const response = payload => ({
+    key: getRecordKey(getValue(payload, 'node.key')),
+  });
+
+  return Services.editRecord(data.key)(request(data), dataOptions).then(response);
+}
+
+export function getRecord(data = {}, dataOptions) {
+  const request = payload => ({});
+
+  const response = payload => ({});
+
+  return Services.getRecord(data.key)(request(data), dataOptions).then(response);
+}
