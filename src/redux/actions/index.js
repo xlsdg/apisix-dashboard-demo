@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import React from 'react';
 import { useSelector, useDispatch } from 'umi';
 // import createCachedSelector from 're-reselect';
 
@@ -112,8 +113,9 @@ export function generateUseStateSelector(...args) {
   return () => {
     const state = useSelector(stateSelector, isEqual);
     const dispatch = useDispatch();
+    const setState = React.useMemo(() => setStateSelector(dispatch), [dispatch]);
 
-    return [state, setStateSelector(dispatch)];
+    return [state, setState];
   };
 }
 
@@ -161,12 +163,14 @@ export function generateDispatchSelector(filter = [], types, actions, namespace)
 
 export function generateUseDispatchSelector(...args) {
   const [dispatchSelector, loadingSelector] = generateDispatchSelector(...args);
-  const selector = state => loadingSelector(state.loading);
+  const newLoadingSelector = state => loadingSelector(state.loading);
 
   return () => {
-    const loading = useSelector(selector, isEqual);
+    const loading = useSelector(newLoadingSelector, isEqual);
     const dispatch = useDispatch();
-    return [dispatchSelector(dispatch), loading];
+    const newDispatch = React.useMemo(() => dispatchSelector(dispatch), [dispatch]);
+
+    return [newDispatch, loading];
   };
 }
 
