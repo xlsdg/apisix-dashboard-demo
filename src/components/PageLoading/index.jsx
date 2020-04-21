@@ -13,7 +13,7 @@ function PageLoading(props) {
   return <Loading className={styles.container} />;
 }
 
-PageLoading.propTypes = {};
+// PageLoading.propTypes = {};
 
 PageLoading.defaultProps = {};
 

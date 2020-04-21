@@ -1,5 +1,5 @@
 import React from 'react';
-// import { formatMessage } from 'umi';
+// import {  } from 'umi';
 import { Result, Button } from 'antd';
 
 import styles from './index.less';
@@ -18,7 +18,7 @@ function Body(props) {
   );
 }
 
-Body.propTypes = {};
+// Body.propTypes = {};
 
 Body.defaultProps = {};
 

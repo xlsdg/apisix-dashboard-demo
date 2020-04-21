@@ -123,7 +123,7 @@ const DataTable = React.memo(props => {
   );
 });
 
-DataTable.propTypes = {};
+// DataTable.propTypes = {};
 
 DataTable.defaultProps = {
   dataSource: [],

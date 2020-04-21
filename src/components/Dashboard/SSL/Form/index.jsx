@@ -259,7 +259,7 @@ const EditForm = React.memo(props => {
   );
 });
 
-EditForm.propTypes = {};
+// EditForm.propTypes = {};
 
 EditForm.defaultProps = {
   record: {},

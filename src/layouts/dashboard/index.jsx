@@ -4,7 +4,6 @@ import React from 'react';
 // import ClassNames from 'classnames';
 // import { Link, history, useIntl } from 'umi';
 import { Layout } from 'antd';
-// import { formatMessage } from 'umi';
 
 import PrivatePage from '@/components/PrivatePage';
 import Sider from './Sider';
@@ -32,7 +31,7 @@ function DashboardLayout(props) {
   );
 }
 
-DashboardLayout.propTypes = {};
+// DashboardLayout.propTypes = {};
 
 DashboardLayout.defaultProps = {};
 

@@ -48,7 +48,7 @@ function BasicLayout(props) {
   return <ConfigProvider {...config}>{layout}</ConfigProvider>;
 }
 
-BasicLayout.propTypes = {};
+// BasicLayout.propTypes = {};
 
 BasicLayout.defaultProps = {};
 

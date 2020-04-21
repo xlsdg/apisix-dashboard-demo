@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { history } from 'umi';
 
 import NAMESPACES from '@/redux/namespaces';
-import PageActions, { generatePutStateAction, generateSelectStateFn, setStateReducer } from '@/redux/actions';
+import PageActions, { generatePutStateAction, generateEffectStateSelector, setStateReducer } from '@/redux/actions';
 
 import ConsumersActions from '@/redux/actions/consumers';
 import * as ConsumersTransforms from '@/transforms/consumers';
@@ -15,7 +15,7 @@ const InitialState = {
 };
 
 const StateAt = generatePutStateAction(InitialState, 0);
-const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.CONSUMERS);
+const StateFrom = generateEffectStateSelector(InitialState, 0, NAMESPACES.CONSUMERS);
 
 const Routes = {
   '/dashboard/consumers': {

@@ -4,7 +4,6 @@ import React from 'react';
 // import ClassNames from 'classnames';
 import { Link, history, useIntl, useLocation } from 'umi';
 import { Layout, Menu } from 'antd';
-// import { formatMessage } from 'umi';
 import {
   ClusterOutlined,
   ShoppingCartOutlined,
@@ -127,7 +126,7 @@ const Sider = React.memo(props => {
   );
 });
 
-Sider.propTypes = {};
+// Sider.propTypes = {};
 
 Sider.defaultProps = {};
 

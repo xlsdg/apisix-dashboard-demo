@@ -10,8 +10,7 @@ import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
 import Form from '@/components/Dashboard/SSL/Form';
 
-import { generateLoadingSelectorByFilter } from '@/redux/actions';
-import { createStateSelector, createLoadingSelector, dispatches as SslDispatches } from '@/redux/actions/ssl';
+import { createStateSelector, createDispatchSelector } from '@/redux/actions/ssl';
 
 import styles from './[id].less';
 
@@ -41,27 +40,27 @@ function Body(props) {
     <div className={styles.container}>
       <Block>
         <Header />
-        {loading.getRecord ? (
+        {loading['getRecord'] ? (
           <Skeleton className={styles.form} active />
         ) : (
-          <Form className={styles.form} loading={loading.editRecord} record={state.record} onSubmit={editRecord} />
+          <Form className={styles.form} loading={loading['editRecord']} record={state.record} onSubmit={editRecord} />
         )}
       </Block>
     </div>
   );
 }
 
-Body.propTypes = {};
+// Body.propTypes = {};
 
 Body.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createStateSelector('');
-const loadingSelector = generateLoadingSelectorByFilter(createLoadingSelector, ['editRecord', 'getRecord']);
+const [dispatchSelector, loadingSelector] = createDispatchSelector(['editRecord', 'getRecord']);
 
 function mapStateToProps(state, ownProps) {
   return {
-    loading: loadingSelector(state.loading),
     state: stateSelector(state),
+    loading: loadingSelector(state.loading),
   };
 }
 
@@ -69,7 +68,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     // dispatch, // 默认不打开，在这个函数里处理 dispatch
     setState: setStateSelector(dispatch),
-    ...SslDispatches(dispatch, ['editRecord']),
+    ...dispatchSelector(dispatch),
   };
 }
 

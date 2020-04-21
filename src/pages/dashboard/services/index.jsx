@@ -10,8 +10,7 @@ import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
 import Table from '@/components/Dashboard/Services/Table';
 
-import { generateLoadingSelectorByFilter } from '@/redux/actions';
-import { createStateSelector, createLoadingSelector } from '@/redux/actions/services';
+import { createStateSelector, createDispatchSelector } from '@/redux/actions/services';
 
 import styles from './index.less';
 
@@ -46,23 +45,23 @@ function Body(props) {
     <div className={styles.container}>
       <Block>
         <Header />
-        <Table loading={loading.getRecords || loading.deleteRecord} dataSource={state.records} />
+        <Table loading={loading['getRecords'] || loading['deleteRecord']} dataSource={state.records} />
       </Block>
     </div>
   );
 }
 
-Body.propTypes = {};
+// Body.propTypes = {};
 
 Body.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createStateSelector('');
-const loadingSelector = generateLoadingSelectorByFilter(createLoadingSelector, ['getRecords', 'deleteRecord']);
+const [dispatchSelector, loadingSelector] = createDispatchSelector(['getRecords', 'deleteRecord']);
 
 function mapStateToProps(state, ownProps) {
   return {
-    loading: loadingSelector(state.loading),
     state: stateSelector(state),
+    loading: loadingSelector(state.loading),
   };
 }
 
@@ -70,6 +69,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     // dispatch, // 默认不打开，在这个函数里处理 dispatch
     setState: setStateSelector(dispatch),
+    ...dispatchSelector(dispatch),
   };
 }
 
@@ -78,7 +78,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
   return {
     ...stateProps,
-    ...dispatchProps,
+    // ...dispatchProps,
   };
 }
 

@@ -19,7 +19,7 @@ function Loading(props) {
   );
 }
 
-Loading.propTypes = {};
+// Loading.propTypes = {};
 
 Loading.defaultProps = {};
 

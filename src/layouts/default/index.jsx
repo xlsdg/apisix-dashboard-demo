@@ -4,7 +4,6 @@ import React from 'react';
 // import ClassNames from 'classnames';
 // import { Link, history, Redirect } from 'umi';
 // import { Layout } from 'antd';
-// import { formatMessage } from 'umi';
 
 // import styles from './index.less';
 
@@ -14,7 +13,7 @@ const DefaultLayout = React.memo(props => {
   return children;
 });
 
-DefaultLayout.propTypes = {};
+// DefaultLayout.propTypes = {};
 
 DefaultLayout.defaultProps = {};
 

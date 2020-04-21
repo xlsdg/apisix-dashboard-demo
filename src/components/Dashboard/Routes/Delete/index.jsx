@@ -3,15 +3,19 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
 import { message, Modal, Button } from 'antd';
-import { connect, useIntl } from 'umi';
+import { useIntl } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
-import { dispatches as RoutesDispatches } from '@/redux/actions/routes';
+import { createUseDispatchSelector } from '@/redux/actions/routes';
 
 // import styles from './index.less';
 
+const useDispatchSelector = createUseDispatchSelector(['deleteRecord']);
+
 function Delete(props) {
-  const { recordId, recordKey, deleteRecord } = props;
+  const { recordId, recordKey } = props;
+
+  const [{ deleteRecord }] = useDispatchSelector();
 
   const { formatMessage } = useIntl();
 
@@ -41,33 +45,8 @@ function Delete(props) {
   );
 }
 
-Delete.propTypes = {};
+// Delete.propTypes = {};
 
 Delete.defaultProps = {};
 
-// const loadingSelector = createLoadingSelector['deleteRecord'];
-
-function mapStateToProps(state, ownProps) {
-  return {
-    // loading: loadingSelector(state.loading),
-  };
-}
-
-function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    // dispatch, // 默认不打开，在这个函数里处理 dispatch
-    ...RoutesDispatches(dispatch, ['deleteRecord']),
-  };
-}
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  const { recordId, recordKey } = ownProps;
-  return {
-    recordId,
-    recordKey,
-    ...stateProps,
-    ...dispatchProps,
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(Delete));
+export default React.memo(Delete);

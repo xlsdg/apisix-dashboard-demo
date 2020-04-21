@@ -2,34 +2,27 @@ import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { connect, useIntl } from 'umi';
+import { useIntl } from 'umi';
 import { Menu, Dropdown, Avatar } from 'antd';
-// import { formatMessage } from 'umi';
 import { LogoutOutlined } from '@ant-design/icons';
 
-import { createLoadingSelector, dispatches as UserDispatches } from '@/redux/actions/user';
+import { createUseDispatchSelector } from '@/redux/actions/user';
 
 import ImgLogo from '@/assets/logo.png';
 
 import styles from './index.less';
 
+const useDispatchSelector = createUseDispatchSelector(['logout']);
+
 function UserAvatar(props) {
-  const { logout: onLogout } = props;
+  // const {  } = props;
+
+  const [{ logout }] = useDispatchSelector();
 
   const { formatMessage } = useIntl();
 
   const menus = React.useMemo(() => {
     const items = [
-      // {
-      //   key: 'center',
-      //   icon: <UserOutlined />,
-      //   text: formatMessage({ id: 'user.menu.center' }),
-      // },
-      // {
-      //   key: 'settings',
-      //   icon: <SettingOutlined />,
-      //   text: formatMessage({ id: 'user.menu.settings' }),
-      // },
       {
         key: 'logout',
         icon: <LogoutOutlined />,
@@ -49,12 +42,12 @@ function UserAvatar(props) {
     props => {
       switch (props.key) {
         case 'logout':
-          return onLogout();
+          return logout();
         default:
           break;
       }
     },
-    [onLogout]
+    [logout]
   );
 
   const menuProps = {
@@ -114,31 +107,8 @@ function UserAvatar(props) {
   );
 }
 
-UserAvatar.propTypes = {};
+// UserAvatar.propTypes = {};
 
 UserAvatar.defaultProps = {};
 
-const loadingSelector = createLoadingSelector['logout'];
-
-function mapStateToProps(state, ownProps) {
-  return {
-    loading: loadingSelector(state.loading),
-  };
-}
-
-function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    // dispatch, // 默认不打开，在这个函数里处理 dispatch
-    ...UserDispatches(dispatch, ['logout']),
-  };
-}
-
-function mergeProps(stateProps, dispatchProps, ownProps) {
-  // const { location } = ownProps;
-  return {
-    ...stateProps,
-    ...dispatchProps,
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(UserAvatar));
+export default React.memo(UserAvatar);

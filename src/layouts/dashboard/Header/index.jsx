@@ -31,7 +31,7 @@ const Header = React.memo(props => {
   );
 });
 
-Header.propTypes = {};
+// Header.propTypes = {};
 
 Header.defaultProps = {};
 

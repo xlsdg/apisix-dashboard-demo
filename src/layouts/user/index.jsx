@@ -4,7 +4,6 @@ import React from 'react';
 // import ClassNames from 'classnames';
 // import { Link, history, Redirect } from 'umi';
 import { Layout } from 'antd';
-// import { formatMessage } from 'umi';
 
 import AuthPage from '@/components/AuthPage';
 
@@ -24,7 +23,7 @@ function UserLayout(props) {
   );
 }
 
-UserLayout.propTypes = {};
+// UserLayout.propTypes = {};
 
 UserLayout.defaultProps = {};
 

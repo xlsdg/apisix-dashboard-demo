@@ -10,8 +10,7 @@ import Block from '@/components/Dashboard/Block';
 import Average from '@/components/Dashboard/Average';
 import Form from '@/components/Dashboard/Upstream/Form';
 
-// import { generateLoadingSelectorByFilter } from '@/redux/actions';
-import { createLoadingSelector, dispatches as UpstreamDispatches } from '@/redux/actions/upstream';
+import { createDispatchSelector } from '@/redux/actions/upstream';
 
 import styles from './index.less';
 
@@ -41,23 +40,23 @@ function Body(props) {
     <div className={styles.container}>
       <Block>
         <Header />
-        <Form className={styles.form} loading={loading} onSubmit={addRecord} />
+        <Form className={styles.form} loading={loading['addRecord']} onSubmit={addRecord} />
       </Block>
     </div>
   );
 }
 
-Body.propTypes = {};
+// Body.propTypes = {};
 
 Body.defaultProps = {};
 
 // const [stateSelector, setStateSelector] = createStateSelector('');
-const loadingSelector = createLoadingSelector['addRecord'];
+const [dispatchSelector, loadingSelector] = createDispatchSelector(['addRecord']);
 
 function mapStateToProps(state, ownProps) {
   return {
-    loading: loadingSelector(state.loading),
     // state: stateSelector(state),
+    loading: loadingSelector(state.loading),
   };
 }
 
@@ -65,7 +64,7 @@ function mapDispatchToProps(dispatch, ownProps) {
   return {
     // dispatch, // 默认不打开，在这个函数里处理 dispatch
     // setState: setStateSelector(dispatch),
-    ...UpstreamDispatches(dispatch, ['addRecord']),
+    ...dispatchSelector(dispatch),
   };
 }
 

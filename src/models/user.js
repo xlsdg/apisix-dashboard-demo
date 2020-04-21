@@ -12,7 +12,7 @@ import { setToken, removeToken } from '@/utils/store';
 const InitialState = {};
 
 const StateAt = generatePutStateAction(InitialState, 0);
-// const StateFrom = generateSelectStateFn(InitialState, 0, NAMESPACES.USER);
+// const StateFrom = generateEffectStateSelector(InitialState, 0, NAMESPACES.USER);
 
 const Routes = {
   '/user/login': {
