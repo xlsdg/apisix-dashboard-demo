@@ -39,7 +39,7 @@ const Header = React.memo(props => {
   return <Average left={left} right={right} />;
 });
 
-const Content = React.memo(props => {
+function Body(props) {
   const { loading, state } = props;
 
   return (
@@ -50,11 +50,11 @@ const Content = React.memo(props => {
       </Block>
     </div>
   );
-});
+}
 
-Content.propTypes = {};
+Body.propTypes = {};
 
-Content.defaultProps = {};
+Body.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createStateSelector('');
 const loadingSelector = generateLoadingSelectorByFilter(createLoadingSelector, ['getRecords', 'deleteRecord']);
@@ -82,7 +82,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
+const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(Body));
 
 Page.title = 'dashboard.consumers.title';
 

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
-import { Link, history, useIntl } from 'umi';
+import { Link, history, useIntl, useLocation } from 'umi';
 import { Layout, Menu } from 'antd';
 // import { formatMessage } from 'umi';
 import {
@@ -34,7 +34,7 @@ const Logo = React.memo(props => {
 });
 
 const Sider = React.memo(props => {
-  const { location } = props;
+  // const {  } = props;
 
   const [collapsed, setCollapsed] = React.useState(false);
 
@@ -55,7 +55,9 @@ const Sider = React.memo(props => {
 
   const handleMenuClick = React.useCallback(props => history.push(`/dashboard/${props.key}`), []);
 
+  const location = useLocation();
   const selectedKeys = React.useMemo(() => [_.split(location.pathname, '/')[2]], [location.pathname]);
+
   const menuProps = {
     // defaultOpenKeys: ,
     // defaultSelectedKeys: ,

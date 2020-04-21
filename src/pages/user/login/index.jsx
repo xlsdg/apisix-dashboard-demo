@@ -13,7 +13,7 @@ import { getValue } from '@/utils/helper';
 
 import styles from './index.less';
 
-const Content = React.memo(props => {
+function Body(props) {
   const { loading, login: onLogin } = props;
 
   const { formatMessage } = useIntl();
@@ -24,11 +24,11 @@ const Content = React.memo(props => {
       <Form loading={loading} onSubmit={onLogin} />
     </div>
   );
-});
+}
 
-Content.propTypes = {};
+Body.propTypes = {};
 
-Content.defaultProps = {};
+Body.defaultProps = {};
 
 const [stateSelector, setStateSelector] = createUserStateSelector('');
 const loadingSelector = createLoadingSelector['login'];
@@ -64,7 +64,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Content);
+const Page = connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(Body));
 
 Page.title = 'user.login.title';
 

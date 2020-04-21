@@ -12,7 +12,7 @@ import { isLoggedIn } from '@/utils/store';
 
 import styles from './index.less';
 
-const UserLayout = React.memo(props => {
+function UserLayout(props) {
   const { children } = props;
 
   return (
@@ -22,10 +22,10 @@ const UserLayout = React.memo(props => {
       </Layout>
     </AuthPage>
   );
-});
+}
 
 UserLayout.propTypes = {};
 
 UserLayout.defaultProps = {};
 
-export default UserLayout;
+export default React.memo(UserLayout);

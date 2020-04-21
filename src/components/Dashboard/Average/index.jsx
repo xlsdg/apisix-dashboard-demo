@@ -10,7 +10,7 @@ import ClassNames from 'classnames';
 
 import styles from './index.less';
 
-const Average = React.memo(props => {
+function Average(props) {
   const { className, left, right } = props;
 
   return (
@@ -19,10 +19,10 @@ const Average = React.memo(props => {
       <div className={styles.right}>{right}</div>
     </div>
   );
-});
+}
 
 Average.propTypes = {};
 
 Average.defaultProps = {};
 
-export default Average;
+export default React.memo(Average);

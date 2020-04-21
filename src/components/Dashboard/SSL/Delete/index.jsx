@@ -10,7 +10,7 @@ import { dispatches as SslDispatches } from '@/redux/actions/ssl';
 
 // import styles from './index.less';
 
-const Delete = React.memo(props => {
+function Delete(props) {
   const { recordId, recordKey, deleteRecord } = props;
 
   const { formatMessage } = useIntl();
@@ -39,7 +39,7 @@ const Delete = React.memo(props => {
       {formatMessage({ id: 'dashboard.ssl.delete' })}
     </Button>
   );
-});
+}
 
 Delete.propTypes = {};
 
@@ -70,4 +70,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Delete);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(Delete));

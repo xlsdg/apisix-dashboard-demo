@@ -7,7 +7,7 @@ import { Redirect } from 'umi';
 
 import PageLoading from '@/components/PageLoading';
 
-const AuthPage = React.memo(props => {
+function AuthPage(props) {
   const { children, authority, errTo, authTo } = props;
 
   const [auth, setAuth] = React.useState(undefined);
@@ -45,7 +45,7 @@ const AuthPage = React.memo(props => {
   ) : (
     children
   );
-});
+}
 
 AuthPage.propTypes = {
   authority: PropTypes.func.isRequired,
@@ -55,4 +55,4 @@ AuthPage.propTypes = {
 
 AuthPage.defaultProps = {};
 
-export default AuthPage;
+export default React.memo(AuthPage);

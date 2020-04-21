@@ -14,14 +14,14 @@ import { isLoggedIn } from '@/utils/store';
 
 import styles from './index.less';
 
-const DashboardLayout = React.memo(props => {
-  const { children, location } = props;
+function DashboardLayout(props) {
+  const { children } = props;
 
   const loginUri = `/user/login?redirect=${window.encodeURIComponent(window.location.href)}`;
   return (
     <PrivatePage authority={isLoggedIn} errTo="/403" authTo={loginUri}>
       <Layout className={styles.container}>
-        <Sider location={location} />
+        <Sider />
         <Layout className={styles.body}>
           <Header />
           <Layout.Content className={styles.content}>{children}</Layout.Content>
@@ -30,10 +30,10 @@ const DashboardLayout = React.memo(props => {
       </Layout>
     </PrivatePage>
   );
-});
+}
 
 DashboardLayout.propTypes = {};
 
 DashboardLayout.defaultProps = {};
 
-export default DashboardLayout;
+export default React.memo(DashboardLayout);

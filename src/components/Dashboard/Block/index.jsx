@@ -10,13 +10,13 @@ import ClassNames from 'classnames';
 
 import styles from './index.less';
 
-const Block = React.memo(props => {
+function Block(props) {
   const { className, children } = props;
   return <div className={ClassNames(styles.container, className)}>{children}</div>;
-});
+}
 
 Block.propTypes = {};
 
 Block.defaultProps = {};
 
-export default Block;
+export default React.memo(Block);

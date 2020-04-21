@@ -8,13 +8,13 @@ import Loading from '@/components/Loading';
 
 import styles from './index.less';
 
-const PageLoading = React.memo(props => {
+function PageLoading(props) {
   // const {  } = props;
   return <Loading className={styles.container} />;
-});
+}
 
 PageLoading.propTypes = {};
 
 PageLoading.defaultProps = {};
 
-export default PageLoading;
+export default React.memo(PageLoading);

@@ -13,7 +13,7 @@ import ImgLogo from '@/assets/logo.png';
 
 import styles from './index.less';
 
-const UserAvatar = React.memo(props => {
+function UserAvatar(props) {
   const { logout: onLogout } = props;
 
   const { formatMessage } = useIntl();
@@ -112,7 +112,7 @@ const UserAvatar = React.memo(props => {
       </div>
     </Dropdown>
   );
-});
+}
 
 UserAvatar.propTypes = {};
 
@@ -141,4 +141,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(UserAvatar);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(UserAvatar));

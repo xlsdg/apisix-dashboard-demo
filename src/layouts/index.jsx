@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
-import { withRouter } from 'umi';
+import { useLocation } from 'umi';
 import { ConfigProvider } from 'antd';
 
 import DefaultLayout from './default';
@@ -10,9 +10,10 @@ import DashboardLayout from './dashboard';
 
 import { useDeepCompareEffect } from '@/utils/hook';
 
-const BasicLayout = React.memo(props => {
-  const { children, location } = props;
+function BasicLayout(props) {
+  const { children } = props;
 
+  const location = useLocation();
   const locationRef = React.useRef(location);
   useDeepCompareEffect(() => {
     if (!_.isEqual(locationRef.current, location)) {
@@ -21,14 +22,14 @@ const BasicLayout = React.memo(props => {
     }
   }, [location]);
 
-  let layout = <DefaultLayout location={location}>{children}</DefaultLayout>;
+  let layout = <DefaultLayout>{children}</DefaultLayout>;
 
   const { pathname } = location;
   const pathString = pathname !== '/' ? _.trimEnd(pathname, '/') : pathname;
   if (_.startsWith(pathString, '/user/')) {
-    layout = <UserLayout location={location}>{children}</UserLayout>;
+    layout = <UserLayout>{children}</UserLayout>;
   } else if (_.startsWith(pathString, '/dashboard/')) {
-    layout = <DashboardLayout location={location}>{children}</DashboardLayout>;
+    layout = <DashboardLayout>{children}</DashboardLayout>;
   }
 
   const config = {
@@ -45,6 +46,10 @@ const BasicLayout = React.memo(props => {
   };
 
   return <ConfigProvider {...config}>{layout}</ConfigProvider>;
-});
+}
 
-export default withRouter(BasicLayout);
+BasicLayout.propTypes = {};
+
+BasicLayout.defaultProps = {};
+
+export default React.memo(BasicLayout);

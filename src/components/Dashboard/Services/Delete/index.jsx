@@ -10,7 +10,7 @@ import { dispatches as ServicesDispatches } from '@/redux/actions/services';
 
 // import styles from './index.less';
 
-const Delete = React.memo(props => {
+function Delete(props) {
   const { recordId, recordKey, deleteRecord } = props;
 
   const { formatMessage } = useIntl();
@@ -39,7 +39,7 @@ const Delete = React.memo(props => {
       {formatMessage({ id: 'dashboard.services.delete' })}
     </Button>
   );
-});
+}
 
 Delete.propTypes = {};
 
@@ -70,4 +70,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Delete);
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(React.memo(Delete));
