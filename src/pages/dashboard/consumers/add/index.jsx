@@ -50,7 +50,7 @@ function Body(props) {
 
 Body.defaultProps = {};
 
-// const [stateSelector, setStateSelector] = createStateSelector('');
+// const [stateSelector, setStateSelector] = createStateSelector();
 const [dispatchSelector, loadingSelector] = createDispatchSelector(['addRecord']);
 
 function mapStateToProps(state, ownProps) {

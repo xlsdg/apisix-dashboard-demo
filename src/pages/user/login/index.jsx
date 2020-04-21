@@ -32,7 +32,7 @@ function Body(props) {
 
 Body.defaultProps = {};
 
-// const [stateSelector, setStateSelector] = createUserStateSelector('');
+// const [stateSelector, setStateSelector] = createUserStateSelector();
 const [dispatchSelector, loadingSelector] = createDispatchSelector(['login']);
 
 function mapStateToProps(state, ownProps) {
