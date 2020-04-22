@@ -16,6 +16,7 @@ export function getRecords(data = {}, dataOptions) {
           id: item.createdIndex,
           description: getValue(item, 'value.desc'),
           type: getValue(item, 'value.type'),
+          websocket: getValue(item, 'value.enable_websocket'),
           node: {
             host: undefined,
             port: undefined,
@@ -23,6 +24,19 @@ export function getRecords(data = {}, dataOptions) {
           },
           rowSpan: undefined,
         };
+
+        if (defaultRecord.type === 'chash') {
+          defaultRecord['chash'] = {
+            key: getValue(item, 'value.key'),
+            hashOn: getValue(item, 'value.hash_on'),
+          };
+        }
+
+        if (defaultRecord.type === 'roundrobin') {
+          defaultRecord['roundrobin'] = {
+            hashOn: getValue(item, 'value.hash_on'),
+          };
+        }
 
         const nodes = _.toPairs(getValue(item, 'value.nodes', {}));
         const result = _.map(nodes, (n, index) => {
@@ -63,7 +77,32 @@ export function getRecords(data = {}, dataOptions) {
 }
 
 export function addRecord(data = {}, dataOptions) {
-  const request = payload => ({});
+  const request = payload => {
+    const record = {
+      desc: payload.description,
+      type: payload.type,
+      enable_websocket: payload.websocket,
+      nodes: _.reduce(
+        payload.nodes,
+        (result, item) => {
+          result[`${item.host}:${item.port}`] = item.weights;
+          return result;
+        },
+        {}
+      ),
+    };
+
+    if (payload.type === 'chash') {
+      record['key'] = payload['chash'].key;
+      record['hash_on'] = payload['chash'].hashOn;
+    }
+
+    if (payload.type === 'roundrobin') {
+      record['hash_on'] = payload['roundrobin'].hashOn;
+    }
+
+    return record;
+  };
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -83,7 +122,32 @@ export function deleteRecord(data = {}, dataOptions) {
 }
 
 export function editRecord(data = {}, dataOptions) {
-  const request = payload => ({});
+  const request = payload => {
+    const record = {
+      desc: payload.description,
+      type: payload.type,
+      enable_websocket: payload.websocket,
+      nodes: _.reduce(
+        payload.nodes,
+        (result, item) => {
+          result[`${item.host}:${item.port}`] = item.weights;
+          return result;
+        },
+        {}
+      ),
+    };
+
+    if (payload.type === 'chash') {
+      record['key'] = payload['chash'].key;
+      record['hash_on'] = payload['chash'].hashOn;
+    }
+
+    if (payload.type === 'roundrobin') {
+      record['hash_on'] = payload['roundrobin'].hashOn;
+    }
+
+    return record;
+  };
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -95,7 +159,48 @@ export function editRecord(data = {}, dataOptions) {
 export function getRecord(data = {}, dataOptions) {
   const request = payload => ({});
 
-  const response = payload => ({});
+  const response = payload => {
+    const record = {
+      key: getRecordKey(getValue(payload, 'node.key')),
+      id: getValue(payload, 'node.createdIndex'),
+      description: getValue(payload, 'node.value.desc'),
+      type: getValue(payload, 'node.value.type'),
+      websocket: getValue(payload, 'node.value.enable_websocket'),
+      nodes: _.map(_.toPairs(getValue(payload, 'node.value.nodes', {})), n => {
+        const [node, weights] = n;
+
+        const host = _.split(node, ':');
+        if (hasArray(host) && host.length > 1) {
+          return {
+            host: host[0],
+            port: host[1],
+            weights,
+          };
+        }
+
+        return {
+          host,
+          port: undefined,
+          weights,
+        };
+      }),
+    };
+
+    if (record.type === 'chash') {
+      record['chash'] = {
+        key: getValue(payload, 'node.value.key'),
+        hashOn: getValue(payload, 'node.value.hash_on'),
+      };
+    }
+
+    if (record.type === 'roundrobin') {
+      record['roundrobin'] = {
+        hashOn: getValue(payload, 'node.value.hash_on'),
+      };
+    }
+
+    return record;
+  };
 
   return Services.getRecord(data.key)(request(data), dataOptions).then(response);
 }

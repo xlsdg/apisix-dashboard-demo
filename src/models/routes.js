@@ -164,10 +164,15 @@ export default {
       }
 
       if (hasArray(records)) {
-        record = _.find(records, r => r.key === payload.key);
-        if (hasPlainObject(record)) {
-          yield put(StateAt({ record }));
-          return;
+        const targets = _.filter(records, r => r.key === payload.key);
+        if (hasArray(targets)) {
+          if (targets.length === 1) {
+            yield put(StateAt({ record: targets[0] }));
+            return;
+          }
+
+          // TODO: 表格多行合并的时候会遇到
+          // if (targets.length > 1) {}
         }
       }
 

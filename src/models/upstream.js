@@ -164,9 +164,29 @@ export default {
       }
 
       if (hasArray(records)) {
-        record = _.find(records, r => r.key === payload.key);
-        if (hasPlainObject(record)) {
-          yield put(StateAt({ record }));
+        const targets = _.filter(records, r => r.key === payload.key);
+        if (hasArray(targets)) {
+          if (targets.length === 1) {
+            yield put(StateAt({ record: targets[0] }));
+            return;
+          }
+
+          // 表格多行合并的情况
+          const target = _.reduce(
+            targets,
+            (result, item) => {
+              if (hasArray(result.nodes)) {
+                result.nodes = _.concat(result.nodes, item.node);
+              } else {
+                delete result.node;
+                result.nodes = [_.cloneDeep(item.node)];
+              }
+
+              return result;
+            },
+            _.cloneDeep(targets[0])
+          );
+          yield put(StateAt({ record: target }));
           return;
         }
       }
