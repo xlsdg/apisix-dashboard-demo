@@ -5,7 +5,7 @@ import React from 'react';
 import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
-import Delete from '@/components/Dashboard/Consumers/Delete';
+import Delete from '@/components/Dashboard/Routes/Delete';
 
 import styles from './index.less';
 
