@@ -18,7 +18,8 @@ export default {
   'dashboard.ssl.form.private.key.required': 'Please input your KEY!',
   'dashboard.ssl.form.private.key.min': '128 characters at least!',
   'dashboard.ssl.form.submit': 'Submit',
-  'dashboard.ssl.form.submit.success': '{action} SSL successfully!',
+  'dashboard.ssl.form.add.success': 'Create an SSL successfully!',
+  'dashboard.ssl.form.edit.success': 'Update the SSL successfully!',
   'dashboard.ssl.form.cancel': 'Cancel',
 
   'dashboard.ssl.delete': 'Delete',
@@ -26,7 +27,7 @@ export default {
   'dashboard.ssl.delete.content': 'ID: {id}',
   'dashboard.ssl.delete.ok': 'Yes',
   'dashboard.ssl.delete.cancel': 'No',
-  'dashboard.ssl.delete.success': 'ID: {id} deleted successfully!',
+  'dashboard.ssl.delete.success': 'ID: {id} was deleted successfully!',
 
   'dashboard.ssl.col.id': 'ID',
   'dashboard.ssl.col.sni': 'SNI',

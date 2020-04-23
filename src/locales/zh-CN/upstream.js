@@ -18,7 +18,8 @@ export default {
   'dashboard.upstream.form.private.key.required': 'Please input your KEY!',
   'dashboard.upstream.form.private.key.min': '128 characters at least!',
   'dashboard.upstream.form.submit': 'Submit',
-  'dashboard.upstream.form.submit.success': '{action} SSL successfully!',
+  'dashboard.upstream.form.add.success': 'Create an SSL successfully!',
+  'dashboard.upstream.form.edit.success': 'Update the SSL successfully!',
   'dashboard.upstream.form.cancel': 'Cancel',
 
   'dashboard.upstream.delete': 'Delete',
@@ -26,7 +27,7 @@ export default {
   'dashboard.upstream.delete.content': 'ID: {id}',
   'dashboard.upstream.delete.ok': 'Yes',
   'dashboard.upstream.delete.cancel': 'No',
-  'dashboard.upstream.delete.success': 'ID: {id} deleted successfully!',
+  'dashboard.upstream.delete.success': 'ID: {id} was deleted successfully!',
 
   'dashboard.upstream.col.id': 'ID',
   'dashboard.upstream.col.description': 'Description',

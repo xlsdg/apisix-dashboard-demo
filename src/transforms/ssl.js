@@ -21,11 +21,7 @@ export function getRecords(data = {}, dataOptions) {
 }
 
 export function addRecord(data = {}, dataOptions) {
-  const request = payload => ({
-    sni: payload.sni,
-    cert: payload.publicKey,
-    key: payload.privateKey,
-  });
+  const request = handleAddAndEditRequest('add');
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -45,11 +41,7 @@ export function deleteRecord(data = {}, dataOptions) {
 }
 
 export function editRecord(data = {}, dataOptions) {
-  const request = payload => ({
-    sni: payload.sni,
-    cert: payload.publicKey,
-    key: payload.privateKey,
-  });
+  const request = handleAddAndEditRequest('edit');
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -70,4 +62,12 @@ export function getRecord(data = {}, dataOptions) {
   });
 
   return Services.getRecord(data.key)(request(data), dataOptions).then(response);
+}
+
+function handleAddAndEditRequest(type) {
+  return payload => ({
+    sni: payload.sni,
+    cert: payload.publicKey,
+    key: payload.privateKey,
+  });
 }

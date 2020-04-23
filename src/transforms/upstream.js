@@ -77,32 +77,7 @@ export function getRecords(data = {}, dataOptions) {
 }
 
 export function addRecord(data = {}, dataOptions) {
-  const request = payload => {
-    const record = {
-      desc: payload.description,
-      type: payload.type,
-      enable_websocket: payload.websocket,
-      nodes: _.reduce(
-        payload.nodes,
-        (result, item) => {
-          result[`${item.host}:${item.port}`] = item.weights;
-          return result;
-        },
-        {}
-      ),
-    };
-
-    if (payload.type === 'chash') {
-      record['key'] = payload['chash'].key;
-      record['hash_on'] = payload['chash'].hashOn;
-    }
-
-    if (payload.type === 'roundrobin') {
-      record['hash_on'] = payload['roundrobin'].hashOn;
-    }
-
-    return record;
-  };
+  const request = handleAddAndEditRequest('add');
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -122,32 +97,7 @@ export function deleteRecord(data = {}, dataOptions) {
 }
 
 export function editRecord(data = {}, dataOptions) {
-  const request = payload => {
-    const record = {
-      desc: payload.description,
-      type: payload.type,
-      enable_websocket: payload.websocket,
-      nodes: _.reduce(
-        payload.nodes,
-        (result, item) => {
-          result[`${item.host}:${item.port}`] = item.weights;
-          return result;
-        },
-        {}
-      ),
-    };
-
-    if (payload.type === 'chash') {
-      record['key'] = payload['chash'].key;
-      record['hash_on'] = payload['chash'].hashOn;
-    }
-
-    if (payload.type === 'roundrobin') {
-      record['hash_on'] = payload['roundrobin'].hashOn;
-    }
-
-    return record;
-  };
+  const request = handleAddAndEditRequest('edit');
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -203,4 +153,33 @@ export function getRecord(data = {}, dataOptions) {
   };
 
   return Services.getRecord(data.key)(request(data), dataOptions).then(response);
+}
+
+function handleAddAndEditRequest(type) {
+  return payload => {
+    const record = {
+      desc: payload.description,
+      type: payload.type,
+      enable_websocket: payload.websocket,
+      nodes: _.reduce(
+        payload.nodes,
+        (result, item) => {
+          result[`${item.host}:${item.port}`] = item.weights;
+          return result;
+        },
+        {}
+      ),
+    };
+
+    if (payload.type === 'chash') {
+      record['key'] = payload['chash'].key;
+      record['hash_on'] = payload['chash'].hashOn;
+    }
+
+    if (payload.type === 'roundrobin') {
+      record['hash_on'] = payload['roundrobin'].hashOn;
+    }
+
+    return record;
+  };
 }

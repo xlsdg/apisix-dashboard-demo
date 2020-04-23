@@ -68,10 +68,7 @@ const EditForm = React.memo(props => {
         ...values,
       }).then(() =>
         message.success(
-          formatMessage(
-            { id: 'dashboard.consumers.form.submit.success' },
-            { action: hasString(record.key) ? 'Edited' : 'Added' }
-          )
+          formatMessage({ id: `dashboard.consumers.form.${hasString(record.key) ? 'edit' : 'add'}.success` })
         )
       ),
     [formatMessage, onSubmit, record.key]

@@ -218,12 +218,7 @@ const EditForm = React.memo(props => {
         key: record.key,
         ...values,
       }).then(() =>
-        message.success(
-          formatMessage(
-            { id: 'dashboard.ssl.form.submit.success' },
-            { action: hasString(record.key) ? 'Edited' : 'Added' }
-          )
-        )
+        message.success(formatMessage({ id: `dashboard.ssl.form.${hasString(record.key) ? 'edit' : 'add'}.success` }))
       ),
     [formatMessage, onSubmit, record.key]
   );

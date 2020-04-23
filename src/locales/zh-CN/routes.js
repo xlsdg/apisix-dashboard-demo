@@ -18,7 +18,8 @@ export default {
   'dashboard.routes.form.private.key.required': 'Please input your KEY!',
   'dashboard.routes.form.private.key.min': '128 characters at least!',
   'dashboard.routes.form.submit': 'Submit',
-  'dashboard.routes.form.submit.success': '{action} SSL successfully!',
+  'dashboard.routes.form.add.success': 'Create an SSL successfully!',
+  'dashboard.routes.form.edit.success': 'Update the SSL successfully!',
   'dashboard.routes.form.cancel': 'Cancel',
 
   'dashboard.routes.delete': 'Delete',
@@ -26,7 +27,7 @@ export default {
   'dashboard.routes.delete.content': 'ID: {id}',
   'dashboard.routes.delete.ok': 'Yes',
   'dashboard.routes.delete.cancel': 'No',
-  'dashboard.routes.delete.success': 'ID: {id} deleted successfully!',
+  'dashboard.routes.delete.success': 'ID: {id} was deleted successfully!',
 
   'dashboard.routes.col.id': 'ID',
   'dashboard.routes.col.description': 'Description',

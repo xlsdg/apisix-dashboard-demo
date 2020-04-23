@@ -18,7 +18,8 @@ export default {
   'dashboard.consumers.form.private.key.required': 'Please input your KEY!',
   'dashboard.consumers.form.private.key.min': '128 characters at least!',
   'dashboard.consumers.form.submit': 'Submit',
-  'dashboard.consumers.form.submit.success': '{action} SSL successfully!',
+  'dashboard.consumers.form.add.success': 'Create an SSL successfully!',
+  'dashboard.consumers.form.edit.success': 'Update the SSL successfully!',
   'dashboard.consumers.form.cancel': 'Cancel',
 
   'dashboard.consumers.delete': 'Delete',
@@ -26,7 +27,7 @@ export default {
   'dashboard.consumers.delete.content': 'ID: {id}',
   'dashboard.consumers.delete.ok': 'Yes',
   'dashboard.consumers.delete.cancel': 'No',
-  'dashboard.consumers.delete.success': 'ID: {id} deleted successfully!',
+  'dashboard.consumers.delete.success': 'ID: {id} was deleted successfully!',
 
   'dashboard.consumers.col.id': 'ID',
   'dashboard.consumers.col.username': 'Username',
