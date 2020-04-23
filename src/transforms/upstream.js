@@ -5,8 +5,88 @@ import Services from '@/services/upstream';
 import { hasArray, getValue } from '@/utils/helper';
 import { compareFn, getRecordKey } from '@/utils/format';
 
+const HASH_ON_KEYS = [
+  {
+    name: 'vars',
+    value: 'vars',
+  },
+  {
+    name: 'header',
+    value: 'header',
+  },
+  {
+    name: 'cookie',
+    value: 'cookie',
+  },
+  {
+    name: 'consumer',
+    value: 'consumer',
+  },
+];
+
+export const TYPES = {
+  roundrobin: {
+    hashOn: {
+      map: 'hash_on',
+      items: HASH_ON_KEYS,
+    },
+  },
+  chash: {
+    hashOn: {
+      map: 'hash_on',
+      items: HASH_ON_KEYS,
+    },
+    hashKey: {
+      map: 'key',
+      items: [
+        {
+          name: 'remote_addr',
+          value: 'remote_addr',
+        },
+        {
+          name: 'host',
+          value: 'host',
+        },
+        {
+          name: 'uri',
+          value: 'uri',
+        },
+        {
+          name: 'server_name',
+          value: 'server_name',
+        },
+        {
+          name: 'server_addr',
+          value: 'server_addr',
+        },
+        {
+          name: 'request_uri',
+          value: 'request_uri',
+        },
+        {
+          name: 'query_string',
+          value: 'query_string',
+        },
+        {
+          name: 'remote_port',
+          value: 'remote_port',
+        },
+        {
+          name: 'hostname',
+          value: 'hostname',
+        },
+        {
+          name: 'arg_id',
+          value: 'arg_id',
+        },
+      ],
+    },
+  },
+};
+
 export function getRecords(data = {}, dataOptions) {
   const request = payload => ({});
+
   const response = payload =>
     _.reduce(
       getValue(payload, 'node.nodes', []),
@@ -25,18 +105,14 @@ export function getRecords(data = {}, dataOptions) {
           rowSpan: undefined,
         };
 
-        if (defaultRecord.type === 'chash') {
-          defaultRecord['chash'] = {
-            key: getValue(item, 'value.key'),
-            hashOn: getValue(item, 'value.hash_on'),
-          };
-        }
-
-        if (defaultRecord.type === 'roundrobin') {
-          defaultRecord['roundrobin'] = {
-            hashOn: getValue(item, 'value.hash_on'),
-          };
-        }
+        defaultRecord[defaultRecord.type] = _.reduce(
+          TYPES[defaultRecord.type],
+          (result, prop, name) => {
+            result[name] = getValue(item, `value.${prop.map}`);
+            return result;
+          },
+          {}
+        );
 
         const nodes = _.toPairs(getValue(item, 'value.nodes', {}));
         const result = _.map(nodes, (n, index) => {
@@ -136,18 +212,14 @@ export function getRecord(data = {}, dataOptions) {
       }),
     };
 
-    if (record.type === 'chash') {
-      record['chash'] = {
-        key: getValue(payload, 'node.value.key'),
-        hashOn: getValue(payload, 'node.value.hash_on'),
-      };
-    }
-
-    if (record.type === 'roundrobin') {
-      record['roundrobin'] = {
-        hashOn: getValue(payload, 'node.value.hash_on'),
-      };
-    }
+    record[record.type] = _.reduce(
+      TYPES[record.type],
+      (result, prop, name) => {
+        result[name] = getValue(payload, `node.value.${prop.map}`);
+        return result;
+      },
+      {}
+    );
 
     return record;
   };
@@ -171,14 +243,9 @@ function handleAddAndEditRequest(type) {
       ),
     };
 
-    if (payload.type === 'chash') {
-      record['key'] = payload['chash'].key;
-      record['hash_on'] = payload['chash'].hashOn;
-    }
-
-    if (payload.type === 'roundrobin') {
-      record['hash_on'] = payload['roundrobin'].hashOn;
-    }
+    _.each(TYPES[payload.type], (prop, name) => {
+      record[prop.map] = payload[payload.type][name];
+    });
 
     return record;
   };

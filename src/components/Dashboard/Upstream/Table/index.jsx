@@ -11,9 +11,9 @@ import { hasValue } from '@/utils/helper';
 
 import styles from './index.less';
 
-function rowSpanRender(text, record, index) {
+function rowSpanRender(children, record, index) {
   const obj = {
-    children: text,
+    children,
     props: {},
   };
 
