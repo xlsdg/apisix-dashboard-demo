@@ -2,6 +2,42 @@
   width: 600px;
 }
 
-.button + .button {
-  margin-left: 8px;
+.node {
+  margin-bottom: 0;
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .host {
+    flex-grow: 1;
+  }
+  .port,
+  .weights {
+    margin-left: 8px;
+  }
+  .remove {
+    display: block;
+    margin: 0 0 24px 8px;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    // transition: all 0.3s;
+    &:hover {
+      color: #777;
+    }
+    &[disabled] {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
+
+.submit {
+  .button + .button {
+    margin-left: 8px;
+  }
 }

@@ -26,60 +26,69 @@ const HASH_ON_KEYS = [
 
 export const TYPES = {
   roundrobin: {
-    hashOn: {
-      map: 'hash_on',
-      items: HASH_ON_KEYS,
+    name: 'roundrobin',
+    props: {
+      hashOn: {
+        name: 'Hash On',
+        map: 'hash_on',
+        items: HASH_ON_KEYS,
+      },
     },
   },
   chash: {
-    hashOn: {
-      map: 'hash_on',
-      items: HASH_ON_KEYS,
-    },
-    hashKey: {
-      map: 'key',
-      items: [
-        {
-          name: 'remote_addr',
-          value: 'remote_addr',
-        },
-        {
-          name: 'host',
-          value: 'host',
-        },
-        {
-          name: 'uri',
-          value: 'uri',
-        },
-        {
-          name: 'server_name',
-          value: 'server_name',
-        },
-        {
-          name: 'server_addr',
-          value: 'server_addr',
-        },
-        {
-          name: 'request_uri',
-          value: 'request_uri',
-        },
-        {
-          name: 'query_string',
-          value: 'query_string',
-        },
-        {
-          name: 'remote_port',
-          value: 'remote_port',
-        },
-        {
-          name: 'hostname',
-          value: 'hostname',
-        },
-        {
-          name: 'arg_id',
-          value: 'arg_id',
-        },
-      ],
+    name: 'chash',
+    props: {
+      hashOn: {
+        name: 'Hash On',
+        map: 'hash_on',
+        items: HASH_ON_KEYS,
+      },
+      hashKey: {
+        name: 'Hash Key',
+        map: 'key',
+        items: [
+          {
+            name: 'remote_addr',
+            value: 'remote_addr',
+          },
+          {
+            name: 'host',
+            value: 'host',
+          },
+          {
+            name: 'uri',
+            value: 'uri',
+          },
+          {
+            name: 'server_name',
+            value: 'server_name',
+          },
+          {
+            name: 'server_addr',
+            value: 'server_addr',
+          },
+          {
+            name: 'request_uri',
+            value: 'request_uri',
+          },
+          {
+            name: 'query_string',
+            value: 'query_string',
+          },
+          {
+            name: 'remote_port',
+            value: 'remote_port',
+          },
+          {
+            name: 'hostname',
+            value: 'hostname',
+          },
+          {
+            name: 'arg_id',
+            value: 'arg_id',
+          },
+        ],
+      },
     },
   },
 };
@@ -106,7 +115,7 @@ export function getRecords(data = {}, dataOptions) {
         };
 
         defaultRecord[defaultRecord.type] = _.reduce(
-          TYPES[defaultRecord.type],
+          TYPES[defaultRecord.type].props,
           (result, prop, name) => {
             result[name] = getValue(item, `value.${prop.map}`);
             return result;
@@ -213,7 +222,7 @@ export function getRecord(data = {}, dataOptions) {
     };
 
     record[record.type] = _.reduce(
-      TYPES[record.type],
+      TYPES[record.type].props,
       (result, prop, name) => {
         result[name] = getValue(payload, `node.value.${prop.map}`);
         return result;
@@ -243,7 +252,7 @@ function handleAddAndEditRequest(type) {
       ),
     };
 
-    _.each(TYPES[payload.type], (prop, name) => {
+    _.each(TYPES[payload.type].props, (prop, name) => {
       record[prop.map] = payload[payload.type][name];
     });
 

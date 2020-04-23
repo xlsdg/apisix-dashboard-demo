@@ -167,7 +167,10 @@ export default {
         const targets = _.filter(records, r => r.key === payload.key);
         if (hasArray(targets)) {
           if (targets.length === 1) {
-            yield put(StateAt({ record: targets[0] }));
+            const target = _.cloneDeep(targets[0]);
+            delete target.node;
+            target.nodes = [_.cloneDeep(targets[0].node)];
+            yield put(StateAt({ record: target }));
             return;
           }
 
