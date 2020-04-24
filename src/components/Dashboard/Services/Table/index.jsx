@@ -6,6 +6,7 @@ import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
 import Delete from '@/components/Dashboard/Services/Delete';
+import { pluginsRender } from '@/components/Dashboard/Consumers/Table';
 
 import styles from './index.less';
 
@@ -74,6 +75,7 @@ const DataTable = React.memo(props => {
     {
       ellipsis: true,
       dataIndex: 'plugins',
+      render: pluginsRender,
       title: formatMessage({ id: 'dashboard.services.col.plugins' }),
     },
     {

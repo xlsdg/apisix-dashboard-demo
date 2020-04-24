@@ -6,6 +6,9 @@ import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
 import Delete from '@/components/Dashboard/Routes/Delete';
+import { pluginsRender } from '@/components/Dashboard/Consumers/Table';
+
+import { hasArray } from '@/utils/helper';
 
 import styles from './index.less';
 
@@ -32,11 +35,11 @@ function actionsRender(text, record, index) {
 }
 
 function arrayRender(text, record, index) {
-  return _.join(text, ', ');
+  return hasArray(text) ? _.join(text, ', ') : '';
 }
 
 function keyRender(text, record, index) {
-  const result = _.toInteger(text);
+  const result = parseInt(text, 10);
   return result > 0 ? result : '';
 }
 
@@ -118,6 +121,7 @@ const DataTable = React.memo(props => {
     {
       ellipsis: true,
       dataIndex: 'plugins',
+      render: pluginsRender,
       title: formatMessage({ id: 'dashboard.routes.col.plugins' }),
     },
     {

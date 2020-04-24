@@ -105,7 +105,7 @@ export function getRecords(data = {}, dataOptions) {
           id: item.createdIndex,
           description: getValue(item, 'value.desc'),
           type: getValue(item, 'value.type'),
-          websocket: getValue(item, 'value.enable_websocket'),
+          websocket: getValue(item, 'value.enable_websocket', false),
           node: {
             host: undefined,
             port: undefined,
@@ -200,7 +200,7 @@ export function getRecord(data = {}, dataOptions) {
       id: getValue(payload, 'node.createdIndex'),
       description: getValue(payload, 'node.value.desc'),
       type: getValue(payload, 'node.value.type'),
-      websocket: getValue(payload, 'node.value.enable_websocket'),
+      websocket: getValue(payload, 'node.value.enable_websocket', false),
       nodes: _.map(_.toPairs(getValue(payload, 'node.value.nodes', {})), n => {
         const [node, weights] = n;
 

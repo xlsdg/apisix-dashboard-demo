@@ -13,7 +13,7 @@ export function getRecords(data = {}, dataOptions) {
       id: item.createdIndex,
       description: getValue(item, 'value.desc'),
       upstream: getValue(item, 'value.upstream_id'),
-      plugins: [],
+      plugins: _.toPairs(getValue(item, 'value.plugins', {})),
     })).sort((x, y) => -compareFn(x.id, y.id));
 
   return Services.getRecords(request(data), dataOptions).then(response);

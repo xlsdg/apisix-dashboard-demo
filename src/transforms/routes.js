@@ -12,13 +12,13 @@ export function getRecords(data = {}, dataOptions) {
       key: getRecordKey(item.key),
       id: item.createdIndex,
       description: getValue(item, 'value.desc'),
-      uris: getValue(item, 'value.uris'),
-      hosts: getValue(item, 'value.hosts'),
+      uris: getValue(item, 'value.uris', []),
+      hosts: getValue(item, 'value.hosts', []),
       remoteAddress: getValue(item, 'value.remote_addr'),
-      methods: getValue(item, 'value.methods'),
+      methods: getValue(item, 'value.methods', []),
       upstream: getValue(item, 'value.upstream_id'),
       service: getValue(item, 'value.service_id'),
-      plugins: [],
+      plugins: _.toPairs(getValue(item, 'value.plugins', {})),
     })).sort((x, y) => -compareFn(x.id, y.id));
 
   return Services.getRecords(request(data), dataOptions).then(response);

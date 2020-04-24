@@ -1,4 +1,4 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
@@ -6,6 +6,8 @@ import { history, useIntl } from 'umi';
 import { Table, Button, Divider } from 'antd';
 
 import Delete from '@/components/Dashboard/Consumers/Delete';
+
+import { hasArray } from '@/utils/helper';
 
 import styles from './index.less';
 
@@ -29,6 +31,15 @@ const Action = React.memo(props => {
 
 function actionsRender(text, record, index) {
   return <Action record={record} />;
+}
+
+export function pluginsRender(text, record, index) {
+  return hasArray(text)
+    ? _.join(
+        _.map(text, item => item[0]),
+        ', '
+      )
+    : '';
 }
 
 const DataTable = React.memo(props => {
@@ -79,6 +90,7 @@ const DataTable = React.memo(props => {
     {
       ellipsis: true,
       dataIndex: 'plugins',
+      render: pluginsRender,
       title: formatMessage({ id: 'dashboard.consumers.col.plugins' }),
     },
     {
