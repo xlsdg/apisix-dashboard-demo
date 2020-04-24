@@ -25,7 +25,9 @@ export const addAuthHandlerToError = error => {
   }
 };
 export const addMsgHandlerToError = error =>
-  !(error instanceof ResponseError) && hasStringThen(getValue(error, 'data.message'), message.error);
+  !(error instanceof ResponseError) &&
+  (hasStringThen(getValue(error, 'data.message'), message.error) ||
+    hasStringThen(getValue(error, 'data.error_msg'), message.error));
 // export const addActionHandlerToError = handler => error => handler(error);
 // export const addResponseHandlerToError = error =>
 //   !(error instanceof ResponseError) && hasStringThen(getValue(error, 'response.statusText'), message.error);
