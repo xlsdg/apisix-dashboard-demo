@@ -39,8 +39,7 @@ function arrayRender(text, record, index) {
 }
 
 function keyRender(text, record, index) {
-  const result = parseInt(text, 10);
-  return result > 0 ? result : '';
+  return _.trimStart(text, '0');
 }
 
 const DataTable = React.memo(props => {

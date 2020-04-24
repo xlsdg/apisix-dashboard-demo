@@ -1,11 +1,16 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import { history, useIntl } from 'umi';
-import { message, Form, Input, Button } from 'antd';
+import { message, Form, Input, Select, Button } from 'antd';
 
 import { hasString } from '@/utils/helper';
+import { useAutoFetch } from '@/utils/hook';
+
+import { getRecords as getUpstreamRecords } from '@/transforms/upstream';
+import { getRecords as getServiceRecords } from '@/transforms/services';
+import { METHODS } from '@/transforms/routes';
 
 import styles from './index.less';
 
@@ -43,6 +48,364 @@ const Description = React.memo(props => {
         className={styles.input}
         placeholder={formatMessage({ id: 'dashboard.routes.form.description.placeholder' })}
       />
+    </Form.Item>
+  );
+});
+
+const RemoteAddress = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.remote.address' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'remoteAddress',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  return (
+    <Form.Item className={styles.remoteAddress} {...itemProps}>
+      <Input
+        className={styles.input}
+        placeholder={formatMessage({ id: 'dashboard.routes.form.remote.address.placeholder' })}
+      />
+    </Form.Item>
+  );
+});
+
+const Methods = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  // const rules = React.useMemo(
+  //   () => [
+  //     {
+  //       required: true,
+  //       message: formatMessage({ id: 'dashboard.routes.form.methods.required' }),
+  //     },
+  //   ],
+  //   [formatMessage]
+  // );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.methods' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'methods',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  const options = React.useMemo(
+    () =>
+      _.map(METHODS, method => (
+        <Select.Option key={method} value={method} title={method}>
+          {method}
+        </Select.Option>
+      )),
+    []
+  );
+
+  const selectProps = {
+    allowClear: true,
+    // autoClearSearchValue: ,
+    // autoFocus: false,
+    // defaultActiveFirstOption: false,
+    // defaultValue: 'all',
+    // disabled: false,
+    // dropdownClassName: ,
+    // dropdownMatchSelectWidth: true,
+    // dropdownRender: ,
+    // dropdownStyle: ,
+    // filterOption,
+    // firstActiveValue: ,
+    // getPopupContainer: ,
+    // labelInValue: false,
+    // maxTagCount: ,
+    // maxTagTextLength: ,
+    // maxTagPlaceholder: ,
+    mode: 'multiple',
+    // notFoundContent: ,
+    // optionFilterProp: ,
+    // optionLabelProp: ,
+    placeholder: formatMessage({ id: 'dashboard.routes.form.methods.placeholder' }),
+    // showArrow: true,
+    // showSearch: true,
+    // size: 'default',
+    // suffixIcon: ,
+    // removeIcon: ,
+    // menuItemSelectedIcon: ,
+    // tokenSeparators: ,
+    // value,
+    // onBlur: ,
+    // onChange: ,
+    // onDeselect: ,
+    // onFocus: ,
+    // onInputKeyDown: ,
+    // onMouseEnter: ,
+    // onMouseLeave: ,
+    // onPopupScroll: ,
+    // onSearch: ,
+    // onSelect: ,
+    // defaultOpen: ,
+    // open: ,
+    // onDropdownVisibleChange: ,
+    // loading,
+  };
+
+  return (
+    <Form.Item className={styles.methods} {...itemProps}>
+      <Select className={styles.select} {...selectProps}>
+        {options}
+      </Select>
+    </Form.Item>
+  );
+});
+
+const Upstream = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  // const rules = React.useMemo(
+  //   () => [
+  //     {
+  //       required: true,
+  //       message: formatMessage({ id: 'dashboard.routes.form.upstream.required' }),
+  //     },
+  //   ],
+  //   [formatMessage]
+  // );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.upstream' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'upstream',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  const { response: upstreamRecords, loading } = useAutoFetch({ api: getUpstreamRecords });
+  const options = React.useMemo(
+    () =>
+      _.map(
+        _.uniqBy(upstreamRecords || [], r => r.id),
+        record => (
+          <Select.Option key={record.id} value={record.key} title={record.description || record.key}>
+            {record.description || record.key}
+          </Select.Option>
+        )
+      ),
+    [upstreamRecords]
+  );
+
+  const selectProps = {
+    allowClear: true,
+    // autoClearSearchValue: ,
+    // autoFocus: false,
+    // defaultActiveFirstOption: false,
+    // defaultValue: 'all',
+    // disabled: false,
+    // dropdownClassName: ,
+    // dropdownMatchSelectWidth: true,
+    // dropdownRender: ,
+    // dropdownStyle: ,
+    // filterOption,
+    // firstActiveValue: ,
+    // getPopupContainer: ,
+    // labelInValue: false,
+    // maxTagCount: ,
+    // maxTagTextLength: ,
+    // maxTagPlaceholder: ,
+    // mode: ,
+    // notFoundContent: ,
+    // optionFilterProp: ,
+    // optionLabelProp: ,
+    placeholder: formatMessage({ id: 'dashboard.routes.form.upstream.placeholder' }),
+    // showArrow: true,
+    // showSearch: true,
+    // size: 'default',
+    // suffixIcon: ,
+    // removeIcon: ,
+    // menuItemSelectedIcon: ,
+    // tokenSeparators: ,
+    // value,
+    // onBlur: ,
+    // onChange: ,
+    // onDeselect: ,
+    // onFocus: ,
+    // onInputKeyDown: ,
+    // onMouseEnter: ,
+    // onMouseLeave: ,
+    // onPopupScroll: ,
+    // onSearch: ,
+    // onSelect: ,
+    // defaultOpen: ,
+    // open: ,
+    // onDropdownVisibleChange: ,
+    loading,
+  };
+
+  return (
+    <Form.Item className={styles.upstream} {...itemProps}>
+      <Select className={styles.select} {...selectProps}>
+        {options}
+      </Select>
+    </Form.Item>
+  );
+});
+
+const Service = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  // const rules = React.useMemo(
+  //   () => [
+  //     {
+  //       required: true,
+  //       message: formatMessage({ id: 'dashboard.routes.form.service.required' }),
+  //     },
+  //   ],
+  //   [formatMessage]
+  // );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.service' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'service',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  const { response: ServiceRecords, loading } = useAutoFetch({ api: getServiceRecords });
+  const options = React.useMemo(
+    () =>
+      _.map(
+        _.uniqBy(ServiceRecords || [], r => r.id),
+        record => (
+          <Select.Option key={record.id} value={record.key} title={record.description || record.key}>
+            {record.description || record.key}
+          </Select.Option>
+        )
+      ),
+    [ServiceRecords]
+  );
+
+  const selectProps = {
+    allowClear: true,
+    // autoClearSearchValue: ,
+    // autoFocus: false,
+    // defaultActiveFirstOption: false,
+    // defaultValue: 'all',
+    // disabled: false,
+    // dropdownClassName: ,
+    // dropdownMatchSelectWidth: true,
+    // dropdownRender: ,
+    // dropdownStyle: ,
+    // filterOption,
+    // firstActiveValue: ,
+    // getPopupContainer: ,
+    // labelInValue: false,
+    // maxTagCount: ,
+    // maxTagTextLength: ,
+    // maxTagPlaceholder: ,
+    // mode: ,
+    // notFoundContent: ,
+    // optionFilterProp: ,
+    // optionLabelProp: ,
+    placeholder: formatMessage({ id: 'dashboard.routes.form.service.placeholder' }),
+    // showArrow: true,
+    // showSearch: true,
+    // size: 'default',
+    // suffixIcon: ,
+    // removeIcon: ,
+    // menuItemSelectedIcon: ,
+    // tokenSeparators: ,
+    // value,
+    // onBlur: ,
+    // onChange: ,
+    // onDeselect: ,
+    // onFocus: ,
+    // onInputKeyDown: ,
+    // onMouseEnter: ,
+    // onMouseLeave: ,
+    // onPopupScroll: ,
+    // onSearch: ,
+    // onSelect: ,
+    // defaultOpen: ,
+    // open: ,
+    // onDropdownVisibleChange: ,
+    loading,
+  };
+
+  return (
+    <Form.Item className={styles.service} {...itemProps}>
+      <Select className={styles.select} {...selectProps}>
+        {options}
+      </Select>
     </Form.Item>
   );
 });
@@ -136,6 +499,10 @@ const EditForm = React.memo(props => {
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Description />
+      <RemoteAddress />
+      <Methods />
+      <Upstream />
+      <Service />
       <Submit loading={loading} />
     </Form>
   );

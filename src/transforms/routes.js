@@ -5,6 +5,8 @@ import Services from '@/services/routes';
 import { getValue } from '@/utils/helper';
 import { compareFn, getRecordKey } from '@/utils/format';
 
+export const METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
+
 export function getRecords(data = {}, dataOptions) {
   const request = payload => ({});
   const response = payload =>
@@ -15,7 +17,7 @@ export function getRecords(data = {}, dataOptions) {
       uris: getValue(item, 'value.uris', []),
       hosts: getValue(item, 'value.hosts', []),
       remoteAddress: getValue(item, 'value.remote_addr'),
-      methods: getValue(item, 'value.methods', []),
+      methods: _.map(getValue(item, 'value.methods', []), _.toUpper),
       upstream: getValue(item, 'value.upstream_id'),
       service: getValue(item, 'value.service_id'),
       plugins: _.toPairs(getValue(item, 'value.plugins', {})),
@@ -64,7 +66,7 @@ export function getRecord(data = {}, dataOptions) {
     uris: getValue(payload, 'node.value.uris', []),
     hosts: getValue(payload, 'node.value.hosts', []),
     remoteAddress: getValue(payload, 'node.value.remote_addr'),
-    methods: getValue(payload, 'node.value.methods', []),
+    methods: _.map(getValue(payload, 'node.value.methods', []), _.toUpper),
     upstream: getValue(payload, 'node.value.upstream_id'),
     service: getValue(payload, 'node.value.service_id'),
     plugins: _.toPairs(getValue(payload, 'node.value.plugins', {})),

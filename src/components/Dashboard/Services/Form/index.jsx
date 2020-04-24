@@ -53,15 +53,15 @@ const Description = React.memo(props => {
 const Upstream = React.memo(props => {
   const { formatMessage } = useIntl();
 
-  const rules = React.useMemo(
-    () => [
-      {
-        required: true,
-        message: formatMessage({ id: 'dashboard.services.form.upstream.required' }),
-      },
-    ],
-    [formatMessage]
-  );
+  // const rules = React.useMemo(
+  //   () => [
+  //     {
+  //       required: true,
+  //       message: formatMessage({ id: 'dashboard.services.form.upstream.required' }),
+  //     },
+  //   ],
+  //   [formatMessage]
+  // );
 
   const itemProps = {
     // colon: ,
@@ -78,7 +78,7 @@ const Upstream = React.memo(props => {
     name: 'upstream',
     // normalize: ,
     // required: ,
-    rules,
+    // rules,
     // shouldUpdate: ,
     // trigger: ,
     // validateFirst: ,
@@ -94,8 +94,8 @@ const Upstream = React.memo(props => {
       _.map(
         _.uniqBy(upstreamRecords || [], r => r.id),
         record => (
-          <Select.Option key={record.id} value={record.key} title={record.description}>
-            {record.description}
+          <Select.Option key={record.id} value={record.key} title={record.description || record.key}>
+            {record.description || record.key}
           </Select.Option>
         )
       ),
@@ -103,7 +103,7 @@ const Upstream = React.memo(props => {
   );
 
   const selectProps = {
-    // allowClear: true,
+    allowClear: true,
     // autoClearSearchValue: ,
     // autoFocus: false,
     // defaultActiveFirstOption: false,
@@ -150,7 +150,7 @@ const Upstream = React.memo(props => {
   };
 
   return (
-    <Form.Item className={styles.type} {...itemProps}>
+    <Form.Item className={styles.upstream} {...itemProps}>
       <Select className={styles.select} {...selectProps}>
         {options}
       </Select>
