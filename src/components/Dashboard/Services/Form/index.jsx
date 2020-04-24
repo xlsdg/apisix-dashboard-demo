@@ -1,11 +1,14 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import { history, useIntl } from 'umi';
-import { message, Form, Input, Button } from 'antd';
+import { message, Form, Input, Select, Button } from 'antd';
 
 import { hasString } from '@/utils/helper';
+import { useAutoFetch } from '@/utils/hook';
+
+import { getRecords as getUpstreamRecords } from '@/transforms/upstream';
 
 import styles from './index.less';
 
@@ -43,6 +46,114 @@ const Description = React.memo(props => {
         className={styles.input}
         placeholder={formatMessage({ id: 'dashboard.services.form.description.placeholder' })}
       />
+    </Form.Item>
+  );
+});
+
+const Upstream = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  const rules = React.useMemo(
+    () => [
+      {
+        required: true,
+        message: formatMessage({ id: 'dashboard.services.form.upstream.required' }),
+      },
+    ],
+    [formatMessage]
+  );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.services.form.upstream' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'upstream',
+    // normalize: ,
+    // required: ,
+    rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  const { response: upstreamRecords, loading } = useAutoFetch({ api: getUpstreamRecords });
+  const options = React.useMemo(
+    () =>
+      _.map(
+        _.uniqBy(upstreamRecords || [], r => r.id),
+        record => (
+          <Select.Option key={record.id} value={record.key} title={record.description}>
+            {record.description}
+          </Select.Option>
+        )
+      ),
+    [upstreamRecords]
+  );
+
+  const selectProps = {
+    // allowClear: true,
+    // autoClearSearchValue: ,
+    // autoFocus: false,
+    // defaultActiveFirstOption: false,
+    // defaultValue: 'all',
+    // disabled: false,
+    // dropdownClassName: ,
+    // dropdownMatchSelectWidth: true,
+    // dropdownRender: ,
+    // dropdownStyle: ,
+    // filterOption,
+    // firstActiveValue: ,
+    // getPopupContainer: ,
+    // labelInValue: false,
+    // maxTagCount: ,
+    // maxTagTextLength: ,
+    // maxTagPlaceholder: ,
+    // mode: ,
+    // notFoundContent: ,
+    // optionFilterProp: ,
+    // optionLabelProp: ,
+    placeholder: formatMessage({ id: 'dashboard.services.form.upstream.placeholder' }),
+    // showArrow: true,
+    // showSearch: true,
+    // size: 'default',
+    // suffixIcon: ,
+    // removeIcon: ,
+    // menuItemSelectedIcon: ,
+    // tokenSeparators: ,
+    // value,
+    // onBlur: ,
+    // onChange: ,
+    // onDeselect: ,
+    // onFocus: ,
+    // onInputKeyDown: ,
+    // onMouseEnter: ,
+    // onMouseLeave: ,
+    // onPopupScroll: ,
+    // onSearch: ,
+    // onSelect: ,
+    // defaultOpen: ,
+    // open: ,
+    // onDropdownVisibleChange: ,
+    loading,
+  };
+
+  return (
+    <Form.Item className={styles.type} {...itemProps}>
+      <Select className={styles.select} {...selectProps}>
+        {options}
+      </Select>
     </Form.Item>
   );
 });
@@ -136,6 +247,7 @@ const EditForm = React.memo(props => {
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Description />
+      <Upstream />
       <Submit loading={loading} />
     </Form>
   );

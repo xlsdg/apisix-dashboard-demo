@@ -94,7 +94,7 @@ const Type = React.memo(props => {
         UPSTREAM_TYPES,
         (result, prop, value) => {
           result.push(
-            <Select.Option key={value} value={value}>
+            <Select.Option key={value} value={value} title={prop.name}>
               {prop.name}
             </Select.Option>
           );
@@ -163,7 +163,7 @@ const HashOn = React.memo(props => {
         getValue(UPSTREAM_TYPES, `${type}.props.hashOn.items`, []),
         (result, item) => {
           result.push(
-            <Select.Option key={item.value} value={item.value}>
+            <Select.Option key={item.value} value={item.value} title={item.name}>
               {item.name}
             </Select.Option>
           );
@@ -246,7 +246,7 @@ const HashKey = React.memo(props => {
         getValue(UPSTREAM_TYPES, `${type}.props.hashKey.items`, []),
         (result, item) => {
           result.push(
-            <Select.Option key={item.value} value={item.value}>
+            <Select.Option key={item.value} value={item.value} title={item.name}>
               {item.name}
             </Select.Option>
           );

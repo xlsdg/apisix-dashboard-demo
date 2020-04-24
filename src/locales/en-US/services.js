@@ -8,6 +8,9 @@ export default {
 
   'dashboard.services.form.description': 'Description',
   'dashboard.services.form.description.placeholder': 'Description',
+  'dashboard.services.form.upstream': 'Upstream',
+  'dashboard.services.form.upstream.placeholder': 'Upstream',
+  'dashboard.services.form.upstream.required': 'Please select your upstream!',
   'dashboard.services.form.submit': 'Submit',
   'dashboard.services.form.add.success': 'Create a service successfully!',
   'dashboard.services.form.edit.success': 'Update the service successfully!',
