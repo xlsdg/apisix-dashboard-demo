@@ -501,7 +501,7 @@ const Submit = React.memo(props => {
 
 const EditForm = React.memo(props => {
   const { className, loading, record, onSubmit } = props;
-  console.log(record);
+
   const { formatMessage } = useIntl();
 
   const handleFinish = React.useCallback(

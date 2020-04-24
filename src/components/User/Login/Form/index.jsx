@@ -15,7 +15,7 @@ const Username = React.memo(props => {
     () => [
       {
         required: true,
-        message: formatMessage({ id: 'user.login.form.username.required' }),
+        message: formatMessage({ id: 'user.login.form.user.name.required' }),
       },
     ],
     [formatMessage]
@@ -33,7 +33,7 @@ const Username = React.memo(props => {
     // label: ,
     // labelAlign: ,
     // labelCol: ,
-    name: 'username',
+    name: 'userName',
     // normalize: ,
     // required: ,
     rules,
@@ -47,11 +47,11 @@ const Username = React.memo(props => {
   };
 
   return (
-    <Form.Item className={styles.username} {...itemProps}>
+    <Form.Item className={styles.userName} {...itemProps}>
       <Input
         className={styles.input}
         prefix={<UserOutlined className={styles.icon} />}
-        placeholder={formatMessage({ id: 'user.login.form.username' })}
+        placeholder={formatMessage({ id: 'user.login.form.user.name' })}
       />
     </Form.Item>
   );
@@ -126,7 +126,7 @@ const LoginForm = React.memo(props => {
 
   const initialValues = React.useMemo(
     () => ({
-      username: 'admin',
+      userName: 'admin',
       password: '123456',
     }),
     []

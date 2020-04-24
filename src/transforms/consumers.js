@@ -11,7 +11,7 @@ export function getRecords(data = {}, dataOptions) {
     _.map(getValue(payload, 'node.nodes', []), item => ({
       key: getRecordKey(item.key),
       id: item.createdIndex,
-      username: getValue(item, 'value.username'),
+      userName: getValue(item, 'value.username'),
       description: getValue(item, 'value.desc'),
       plugins: _.toPairs(getValue(item, 'value.plugins', {})),
     })).sort((x, y) => -compareFn(x.id, y.id));
@@ -56,7 +56,7 @@ export function getRecord(data = {}, dataOptions) {
     key: getRecordKey(getValue(payload, 'node.key')),
     id: getValue(payload, 'node.createdIndex'),
     description: getValue(payload, 'node.value.desc'),
-    username: getValue(payload, 'node.value.username'),
+    userName: getValue(payload, 'node.value.username'),
     plugins: _.toPairs(getValue(payload, 'node.value.plugins', {})),
   });
 

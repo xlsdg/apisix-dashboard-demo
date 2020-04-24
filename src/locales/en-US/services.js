@@ -9,8 +9,8 @@ export default {
   'dashboard.services.form.description': 'Description',
   'dashboard.services.form.description.placeholder': 'Description',
   'dashboard.services.form.submit': 'Submit',
-  'dashboard.services.form.add.success': 'Create an SSL successfully!',
-  'dashboard.services.form.edit.success': 'Update the SSL successfully!',
+  'dashboard.services.form.add.success': 'Create a service successfully!',
+  'dashboard.services.form.edit.success': 'Update the service successfully!',
   'dashboard.services.form.cancel': 'Cancel',
 
   'dashboard.services.delete': 'Delete',

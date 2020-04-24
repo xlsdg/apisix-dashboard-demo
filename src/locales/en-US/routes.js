@@ -9,8 +9,8 @@ export default {
   'dashboard.routes.form.description': 'Description',
   'dashboard.routes.form.description.placeholder': 'Description',
   'dashboard.routes.form.submit': 'Submit',
-  'dashboard.routes.form.add.success': 'Create an SSL successfully!',
-  'dashboard.routes.form.edit.success': 'Update the SSL successfully!',
+  'dashboard.routes.form.add.success': 'Create a router successfully!',
+  'dashboard.routes.form.edit.success': 'Update the router successfully!',
   'dashboard.routes.form.cancel': 'Cancel',
 
   'dashboard.routes.delete': 'Delete',

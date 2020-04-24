@@ -47,6 +47,54 @@ const Description = React.memo(props => {
   );
 });
 
+const UserName = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  const rules = React.useMemo(
+    () => [
+      {
+        required: true,
+        message: formatMessage({ id: 'dashboard.consumers.form.user.name.required' }),
+      },
+    ],
+    [formatMessage]
+  );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.consumers.form.user.name' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'userName',
+    // normalize: ,
+    // required: ,
+    rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  return (
+    <Form.Item className={styles.userName} {...itemProps}>
+      <Input
+        className={styles.input}
+        placeholder={formatMessage({ id: 'dashboard.consumers.form.user.name.placeholder' })}
+      />
+    </Form.Item>
+  );
+});
+
 const Submit = React.memo(props => {
   const { loading } = props;
 
@@ -136,6 +184,7 @@ const EditForm = React.memo(props => {
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Description />
+      <UserName />
       <Submit loading={loading} />
     </Form>
   );

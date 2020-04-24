@@ -79,8 +79,8 @@ const DataTable = React.memo(props => {
     },
     {
       ellipsis: true,
-      dataIndex: 'username',
-      title: formatMessage({ id: 'dashboard.consumers.col.username' }),
+      dataIndex: 'userName',
+      title: formatMessage({ id: 'dashboard.consumers.col.user.name' }),
     },
     {
       ellipsis: true,
