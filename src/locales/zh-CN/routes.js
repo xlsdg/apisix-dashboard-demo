@@ -8,6 +8,12 @@ export default {
 
   'dashboard.routes.form.description': 'Description',
   'dashboard.routes.form.description.placeholder': 'Description',
+  'dashboard.routes.form.uris': 'URIs',
+  'dashboard.routes.form.uris.placeholder': 'URIs',
+  // 'dashboard.routes.form.uris.required': 'Please select your URIs!',
+  'dashboard.routes.form.hosts': 'Hosts',
+  'dashboard.routes.form.hosts.placeholder': 'Hosts',
+  // 'dashboard.routes.form.hosts.required': 'Please select your Hosts!',
   'dashboard.routes.form.remote.address': 'Remote Address',
   'dashboard.routes.form.remote.address.placeholder': 'Remote Address',
   'dashboard.routes.form.methods': 'Methods',

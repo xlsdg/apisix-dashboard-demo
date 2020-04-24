@@ -52,6 +52,190 @@ const Description = React.memo(props => {
   );
 });
 
+const Uris = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  // const rules = React.useMemo(
+  //   () => [
+  //     {
+  //       required: true,
+  //       message: formatMessage({ id: 'dashboard.routes.form.uris.required' }),
+  //     },
+  //   ],
+  //   [formatMessage]
+  // );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.uris' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'uris',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  const selectProps = {
+    allowClear: true,
+    // autoClearSearchValue: ,
+    // autoFocus: false,
+    // defaultActiveFirstOption: false,
+    // defaultValue: 'all',
+    // disabled: false,
+    // dropdownClassName: ,
+    // dropdownMatchSelectWidth: true,
+    // dropdownRender: ,
+    // dropdownStyle: ,
+    // filterOption,
+    // firstActiveValue: ,
+    // getPopupContainer: ,
+    // labelInValue: false,
+    // maxTagCount: ,
+    // maxTagTextLength: ,
+    // maxTagPlaceholder: ,
+    mode: 'tags',
+    // notFoundContent: ,
+    // optionFilterProp: ,
+    // optionLabelProp: ,
+    placeholder: formatMessage({ id: 'dashboard.routes.form.uris.placeholder' }),
+    // showArrow: true,
+    // showSearch: true,
+    // size: 'default',
+    // suffixIcon: ,
+    // removeIcon: ,
+    // menuItemSelectedIcon: ,
+    // tokenSeparators: ,
+    // value,
+    // onBlur: ,
+    // onChange,
+    // onDeselect: ,
+    // onFocus: ,
+    // onInputKeyDown: ,
+    // onMouseEnter: ,
+    // onMouseLeave: ,
+    // onPopupScroll: ,
+    // onSearch: ,
+    // onSelect: ,
+    // defaultOpen: ,
+    // open: ,
+    // onDropdownVisibleChange: ,
+    // loading,
+  };
+
+  return (
+    <Form.Item className={styles.uris} {...itemProps}>
+      <Select className={styles.select} {...selectProps} />
+    </Form.Item>
+  );
+});
+
+const Hosts = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  // const rules = React.useMemo(
+  //   () => [
+  //     {
+  //       required: true,
+  //       message: formatMessage({ id: 'dashboard.routes.form.hosts.required' }),
+  //     },
+  //   ],
+  //   [formatMessage]
+  // );
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.hosts' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'hosts',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  const selectProps = {
+    allowClear: true,
+    // autoClearSearchValue: ,
+    // autoFocus: false,
+    // defaultActiveFirstOption: false,
+    // defaultValue: 'all',
+    // disabled: false,
+    // dropdownClassName: ,
+    // dropdownMatchSelectWidth: true,
+    // dropdownRender: ,
+    // dropdownStyle: ,
+    // filterOption,
+    // firstActiveValue: ,
+    // getPopupContainer: ,
+    // labelInValue: false,
+    // maxTagCount: ,
+    // maxTagTextLength: ,
+    // maxTagPlaceholder: ,
+    mode: 'tags',
+    // notFoundContent: ,
+    // optionFilterProp: ,
+    // optionLabelProp: ,
+    placeholder: formatMessage({ id: 'dashboard.routes.form.hosts.placeholder' }),
+    // showArrow: true,
+    // showSearch: true,
+    // size: 'default',
+    // suffixIcon: ,
+    // removeIcon: ,
+    // menuItemSelectedIcon: ,
+    // tokenSeparators: ,
+    // value,
+    // onBlur: ,
+    // onChange,
+    // onDeselect: ,
+    // onFocus: ,
+    // onInputKeyDown: ,
+    // onMouseEnter: ,
+    // onMouseLeave: ,
+    // onPopupScroll: ,
+    // onSearch: ,
+    // onSelect: ,
+    // defaultOpen: ,
+    // open: ,
+    // onDropdownVisibleChange: ,
+    // loading,
+  };
+
+  return (
+    <Form.Item className={styles.hosts} {...itemProps}>
+      <Select className={styles.select} {...selectProps} />
+    </Form.Item>
+  );
+});
+
 const RemoteAddress = React.memo(props => {
   const { formatMessage } = useIntl();
 
@@ -499,6 +683,8 @@ const EditForm = React.memo(props => {
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Description />
+      <Uris />
+      <Hosts />
       <RemoteAddress />
       <Methods />
       <Upstream />

@@ -141,7 +141,8 @@ export function useAutoFetch(props = {}) {
       })
       .catch(err => {
         if (!hasValue(cancelToken)) {
-          return Promise.reject(new Error('Fetch canceled!'));
+          // return Promise.reject(new Error('Fetch canceled!'));
+          return err;
         }
         cancelToken = null;
 
