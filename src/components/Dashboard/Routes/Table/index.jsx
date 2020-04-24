@@ -1,4 +1,4 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 // import PropTypes from 'prop-types';
 // import ClassNames from 'classnames';
@@ -29,6 +29,15 @@ const Action = React.memo(props => {
 
 function actionsRender(text, record, index) {
   return <Action record={record} />;
+}
+
+function arrayRender(text, record, index) {
+  return _.join(text, ', ');
+}
+
+function keyRender(text, record, index) {
+  const result = _.toInteger(text);
+  return result > 0 ? result : '';
 }
 
 const DataTable = React.memo(props => {
@@ -73,32 +82,37 @@ const DataTable = React.memo(props => {
     },
     {
       ellipsis: true,
-      dataIndex: 'uri',
-      title: formatMessage({ id: 'dashboard.routes.col.uri' }),
+      dataIndex: 'uris',
+      render: arrayRender,
+      title: formatMessage({ id: 'dashboard.routes.col.uris' }),
     },
     {
       ellipsis: true,
-      dataIndex: 'host',
-      title: formatMessage({ id: 'dashboard.routes.col.host' }),
+      dataIndex: 'hosts',
+      render: arrayRender,
+      title: formatMessage({ id: 'dashboard.routes.col.hosts' }),
     },
     {
       ellipsis: true,
-      dataIndex: 'remote',
+      dataIndex: 'remoteAddress',
       title: formatMessage({ id: 'dashboard.routes.col.remote.address' }),
     },
     {
       ellipsis: true,
       dataIndex: 'upstream',
+      render: keyRender,
       title: formatMessage({ id: 'dashboard.routes.col.upstream' }),
     },
     {
       ellipsis: true,
       dataIndex: 'service',
+      render: keyRender,
       title: formatMessage({ id: 'dashboard.routes.col.service' }),
     },
     {
       ellipsis: true,
       dataIndex: 'methods',
+      render: arrayRender,
       title: formatMessage({ id: 'dashboard.routes.col.methods' }),
     },
     {

@@ -167,6 +167,7 @@ export default {
         const targets = _.filter(records, r => r.key === payload.key);
         if (hasArray(targets)) {
           if (targets.length === 1) {
+            // 单行数据兼容多行的情况
             const target = _.cloneDeep(targets[0]);
             delete target.node;
             target.nodes = [_.cloneDeep(targets[0].node)];
@@ -174,7 +175,7 @@ export default {
             return;
           }
 
-          // 表格多行合并的情况
+          // 表格多行数据合并的情况
           const target = _.reduce(
             targets,
             (result, item) => {

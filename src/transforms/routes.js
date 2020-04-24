@@ -12,13 +12,20 @@ export function getRecords(data = {}, dataOptions) {
       key: getRecordKey(item.key),
       id: item.createdIndex,
       description: getValue(item, 'value.desc'),
+      uris: getValue(item, 'value.uris'),
+      hosts: getValue(item, 'value.hosts'),
+      remoteAddress: getValue(item, 'value.remote_addr'),
+      methods: getValue(item, 'value.methods'),
+      upstream: getValue(item, 'value.upstream_id'),
+      service: getValue(item, 'value.service_id'),
+      plugins: [],
     })).sort((x, y) => -compareFn(x.id, y.id));
 
   return Services.getRecords(request(data), dataOptions).then(response);
 }
 
 export function addRecord(data = {}, dataOptions) {
-  const request = payload => ({});
+  const request = handleAddAndEditRequest('add');
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -38,7 +45,7 @@ export function deleteRecord(data = {}, dataOptions) {
 }
 
 export function editRecord(data = {}, dataOptions) {
-  const request = payload => ({});
+  const request = handleAddAndEditRequest('edit');
 
   const response = payload => ({
     key: getRecordKey(getValue(payload, 'node.key')),
@@ -53,4 +60,11 @@ export function getRecord(data = {}, dataOptions) {
   const response = payload => ({});
 
   return Services.getRecord(data.key)(request(data), dataOptions).then(response);
+}
+
+function handleAddAndEditRequest(type) {
+  return payload => {
+    const record = {};
+    return record;
+  };
 }
