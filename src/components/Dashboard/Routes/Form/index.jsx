@@ -3,11 +3,49 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import { history, useIntl } from 'umi';
-import { message, Form, Button } from 'antd';
+import { message, Form, Input, Button } from 'antd';
 
 import { hasString } from '@/utils/helper';
 
 import styles from './index.less';
+
+const Description = React.memo(props => {
+  const { formatMessage } = useIntl();
+
+  const itemProps = {
+    // colon: ,
+    // dependencies: ,
+    // extra: ,
+    // getValueFromEvent: ,
+    // hasFeedback: ,
+    // help: ,
+    // htmlFor: ,
+    // noStyle: ,
+    label: formatMessage({ id: 'dashboard.routes.form.description' }),
+    // labelAlign: ,
+    // labelCol: ,
+    name: 'description',
+    // normalize: ,
+    // required: ,
+    // rules,
+    // shouldUpdate: ,
+    // trigger: ,
+    // validateFirst: ,
+    // validateStatus: ,
+    // validateTrigger: ,
+    // valuePropName: ,
+    // wrapperCol: ,
+  };
+
+  return (
+    <Form.Item className={styles.description} {...itemProps}>
+      <Input
+        className={styles.input}
+        placeholder={formatMessage({ id: 'dashboard.routes.form.description.placeholder' })}
+      />
+    </Form.Item>
+  );
+});
 
 const Submit = React.memo(props => {
   const { loading } = props;
@@ -97,6 +135,7 @@ const EditForm = React.memo(props => {
 
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
+      <Description />
       <Submit loading={loading} />
     </Form>
   );

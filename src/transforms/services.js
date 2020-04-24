@@ -52,7 +52,13 @@ export function editRecord(data = {}, dataOptions) {
 export function getRecord(data = {}, dataOptions) {
   const request = payload => ({});
 
-  const response = payload => ({});
+  const response = payload => ({
+    key: getRecordKey(getValue(payload, 'node.key')),
+    id: getValue(payload, 'node.createdIndex'),
+    description: getValue(payload, 'node.value.desc'),
+    upstream: getValue(payload, 'node.value.upstream_id'),
+    plugins: _.toPairs(getValue(payload, 'node.value.plugins', {})),
+  });
 
   return Services.getRecord(data.key)(request(data), dataOptions).then(response);
 }

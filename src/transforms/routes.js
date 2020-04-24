@@ -57,7 +57,18 @@ export function editRecord(data = {}, dataOptions) {
 export function getRecord(data = {}, dataOptions) {
   const request = payload => ({});
 
-  const response = payload => ({});
+  const response = payload => ({
+    key: getRecordKey(getValue(payload, 'node.key')),
+    id: getValue(payload, 'node.createdIndex'),
+    description: getValue(payload, 'node.value.desc'),
+    uris: getValue(payload, 'node.value.uris', []),
+    hosts: getValue(payload, 'node.value.hosts', []),
+    remoteAddress: getValue(payload, 'node.value.remote_addr'),
+    methods: getValue(payload, 'node.value.methods', []),
+    upstream: getValue(payload, 'node.value.upstream_id'),
+    service: getValue(payload, 'node.value.service_id'),
+    plugins: _.toPairs(getValue(payload, 'node.value.plugins', {})),
+  });
 
   return Services.getRecord(data.key)(request(data), dataOptions).then(response);
 }
