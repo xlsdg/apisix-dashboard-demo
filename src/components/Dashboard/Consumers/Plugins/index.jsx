@@ -25,11 +25,12 @@ const PluginModal = React.memo(props => {
       form
         .validateFields()
         .then(values => {
-          form.resetFields();
-          data.callback(values);
+          const { plugin, ...others } = values;
+          onCancel();
+          data.callback([plugin, others]);
         })
         .catch(() => {}),
-    [data, form]
+    [data, form, onCancel]
   );
 
   const { formatMessage } = useIntl();
@@ -71,18 +72,6 @@ const PluginModal = React.memo(props => {
     }),
     [data.config, data.plugins]
   );
-
-  React.useEffect(() => {
-    if (hasArray(data.plugins)) {
-      form.setFieldsValue({
-        plugin: data.plugins[0],
-      });
-    }
-  }, [data.plugins, form]);
-
-  if (!visible) {
-    return null;
-  }
 
   return (
     <Modal wrapClassName={styles.modal} {...modalProps}>
@@ -134,7 +123,7 @@ const Remove = React.memo(props => {
 });
 
 function Plugins(props) {
-  const { response: allPlugins } = useAutoFetch({ api: getPlugins });
+  const { response: allPlugins = [] } = useAutoFetch({ api: getPlugins });
 
   const [modal, setModal] = React.useState({});
 
@@ -187,7 +176,7 @@ function Plugins(props) {
 
               const handleAdd = () => {
                 const existPlugins = _.map(form.getFieldValue('plugins'), plugin => plugin[0]);
-                const newPlugins = _.filter(allPlugins, plugin => !_.includes(existPlugins, plugin));
+                const newPlugins = _.filter(allPlugins || [], plugin => !_.includes(existPlugins, plugin));
                 setModal({
                   plugins: newPlugins,
                   config: {},
@@ -197,7 +186,14 @@ function Plugins(props) {
 
               return (
                 <>
-                  <Button className={styles.button} type="dashed" onClick={handleAdd}>
+                  <Button
+                    className={styles.button}
+                    type="dashed"
+                    disabled={
+                      !hasArray(allPlugins) || (form.getFieldValue('plugins') || []).length >= allPlugins.length
+                    }
+                    onClick={handleAdd}
+                  >
                     <PlusOutlined />
                     {formatMessage({ id: 'dashboard.consumers.form.plugins.add' })}
                   </Button>

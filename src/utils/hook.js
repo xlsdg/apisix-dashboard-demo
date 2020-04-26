@@ -1,7 +1,26 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { hasValue, getValue, mergeObject, isEqual, isPrimitive } from '@/utils/helper';
+import { hasValue, getValue, mergeObject, isEqual, isPrimitive, hasFunctionCall } from '@/utils/helper';
+
+export function useSetState(initialState) {
+  const [state, set] = React.useState(initialState);
+
+  const setState = React.useCallback(
+    patch =>
+      set(prevState => {
+        const nextState = hasFunctionCall(patch, prevState);
+        if (_.isPlainObject(prevState) && _.isPlainObject(nextState)) {
+          return mergeObject({}, prevState, nextState);
+        } else {
+          return nextState;
+        }
+      }),
+    []
+  );
+
+  return [state, setState];
+}
 
 export function useDeepCompareEffect(effect, deps, depsEqual = isEqual) {
   if (process.env.NODE_ENV !== 'production') {
@@ -33,8 +52,8 @@ function initialState(config) {
   return {
     config,
     loading: false,
-    response: null,
-    error: null,
+    response: undefined,
+    error: undefined,
   };
 }
 
@@ -43,8 +62,8 @@ function reducer(state, action) {
     case 'FETCH_INIT':
       return mergeObject({}, state, {
         loading: true,
-        response: getValue(state, 'config.resetResponseBeforeFetch', true) ? null : state.response,
-        error: null,
+        response: getValue(state, 'config.resetResponseBeforeFetch', true) ? undefined : state.response,
+        error: undefined,
       });
     case 'FETCH_SUCCESS':
       return mergeObject({}, state, {
@@ -64,7 +83,7 @@ function reducer(state, action) {
 export function useFetch(props = {}) {
   const { config } = props;
 
-  const cancelRef = React.useRef(null);
+  const cancelRef = React.useRef(undefined);
 
   const [state, dispatch] = React.useReducer(reducer, config, initialState);
 
@@ -82,7 +101,7 @@ export function useFetch(props = {}) {
         if (!hasValue(cancelRef.current)) {
           return Promise.reject(new Error('Fetch canceled!'));
         }
-        cancelRef.current = null;
+        cancelRef.current = undefined;
 
         dispatch({ type: 'FETCH_SUCCESS', payload: resp });
         return resp;
@@ -91,7 +110,7 @@ export function useFetch(props = {}) {
         if (!hasValue(cancelRef.current)) {
           return Promise.reject(new Error('Fetch canceled!'));
         }
-        cancelRef.current = null;
+        cancelRef.current = undefined;
 
         dispatch({ type: 'FETCH_FAILURE', payload: err });
         return Promise.reject(err);
@@ -103,7 +122,7 @@ export function useFetch(props = {}) {
       if (_.isFunction(cancelRef.current)) {
         cancelRef.current();
       }
-      cancelRef.current = null;
+      cancelRef.current = undefined;
     };
   }, []);
 
@@ -120,7 +139,7 @@ export function useAutoFetch(props = {}) {
 
   useDeepCompareEffect(() => {
     // console.log('componentDidMount!');
-    let cancelToken = null;
+    let cancelToken;
     const dataOptions = mergeObject({}, options, {
       cancelToken: c => {
         cancelToken = c;
@@ -134,7 +153,7 @@ export function useAutoFetch(props = {}) {
         if (!hasValue(cancelToken)) {
           return Promise.reject(new Error('Fetch canceled!'));
         }
-        cancelToken = null;
+        cancelToken = undefined;
 
         dispatch({ type: 'FETCH_SUCCESS', payload: resp });
         return resp;
@@ -144,7 +163,7 @@ export function useAutoFetch(props = {}) {
           // return Promise.reject(new Error('Fetch canceled!'));
           return err;
         }
-        cancelToken = null;
+        cancelToken = undefined;
 
         dispatch({ type: 'FETCH_FAILURE', payload: err });
         // return Promise.reject(err);
@@ -156,7 +175,7 @@ export function useAutoFetch(props = {}) {
       if (_.isFunction(cancelToken)) {
         cancelToken();
       }
-      cancelToken = null;
+      cancelToken = undefined;
     };
   }, [api, data, options]);
 
