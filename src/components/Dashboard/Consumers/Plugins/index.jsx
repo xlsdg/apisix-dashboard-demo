@@ -6,8 +6,10 @@ import { useIntl } from 'umi';
 import { Form, Button, Modal } from 'antd';
 import { PlusOutlined, MinusCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
+import PluginForm from '@/components/Dashboard/Consumers/Plugin';
+
 import { useAutoFetch } from '@/utils/hook';
-import { hasPlainObject } from '@/utils/helper';
+import { hasPlainObject, hasArray } from '@/utils/helper';
 
 import { getPlugins } from '@/transforms/consumers';
 
@@ -15,16 +17,28 @@ import styles from './index.less';
 
 const PluginModal = React.memo(props => {
   const { data, visible, onCancel } = props;
-  console.log(data);
-  const { formatMessage } = useIntl();
 
-  const onOk = React.useCallback(() => {}, []);
+  const [form] = Form.useForm();
+
+  const handleOk = React.useCallback(
+    () =>
+      form
+        .validateFields()
+        .then(values => {
+          form.resetFields();
+          data.callback(values);
+        })
+        .catch(() => {}),
+    [data, form]
+  );
+
+  const { formatMessage } = useIntl();
 
   const modalProps = {
     // afterClose,
     // bodyStyle: ,
     cancelText: formatMessage({ id: 'dashboard.consumers.form.plugins.modal.cancel' }),
-    centered: true,
+    // centered: true,
     closable: true,
     // closeIcon: ,
     // confirmLoading: ,
@@ -43,16 +57,36 @@ const PluginModal = React.memo(props => {
     // style: ,
     title: formatMessage({ id: 'dashboard.consumers.form.plugins.modal.title' }),
     visible,
-    width: 500,
+    // width: 500,
     // wrapClassName: ,
     // zIndex: ,
     onCancel,
-    onOk,
+    onOk: handleOk,
   };
+
+  const formData = React.useMemo(
+    () => ({
+      plugins: data.plugins,
+      config: data.config,
+    }),
+    [data.config, data.plugins]
+  );
+
+  React.useEffect(() => {
+    if (hasArray(data.plugins)) {
+      form.setFieldsValue({
+        plugin: data.plugins[0],
+      });
+    }
+  }, [data.plugins, form]);
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <Modal wrapClassName={styles.modal} {...modalProps}>
-      <div>123</div>
+      <PluginForm className={styles.form} form={form} data={formData} />
     </Modal>
   );
 });
