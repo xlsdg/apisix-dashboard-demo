@@ -3,8 +3,8 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
 import { history, useIntl } from 'umi';
-import { message, Form, Input, Select, Switch, InputNumber, Button } from 'antd';
-import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { message, Form, Input, Select, Switch, InputNumber, Modal, Button } from 'antd';
+import { PlusOutlined, MinusCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { TYPES as UPSTREAM_TYPES } from '@/transforms/upstream';
 
@@ -315,6 +315,28 @@ const Websocket = React.memo(props => {
   );
 });
 
+const Remove = React.memo(props => {
+  const { onClick } = props;
+
+  const { formatMessage } = useIntl();
+
+  const handleClick = React.useCallback(
+    () =>
+      Modal.confirm({
+        title: formatMessage({ id: 'dashboard.upstream.form.nodes.delete.title' }),
+        icon: <ExclamationCircleOutlined />,
+        content: formatMessage({ id: 'dashboard.upstream.form.nodes.delete.content' }),
+        okText: formatMessage({ id: 'dashboard.upstream.form.nodes.delete.ok' }),
+        okType: 'danger',
+        cancelText: formatMessage({ id: 'dashboard.upstream.form.nodes.delete.cancel' }),
+        onOk: onClick,
+      }),
+    [formatMessage, onClick]
+  );
+
+  return <MinusCircleOutlined className={styles.remove} onClick={handleClick} />;
+});
+
 const Nodes = React.memo(props => {
   const { formatMessage } = useIntl();
 
@@ -396,7 +418,7 @@ const Nodes = React.memo(props => {
           rules: weightsRules,
         };
 
-        const remove = <MinusCircleOutlined className={styles.remove} onClick={() => operation.remove(field.name)} />;
+        const remove = <Remove onClick={() => operation.remove(field.name)} />;
 
         return (
           <Form.Item
@@ -429,8 +451,8 @@ const Nodes = React.memo(props => {
 
       const itemProps = {
         wrapperCol: {
-          offset: 4,
-          span: 20,
+          offset: 6,
+          span: 18,
         },
       };
 
@@ -482,8 +504,8 @@ const Submit = React.memo(props => {
     // validateTrigger: ,
     // valuePropName: ,
     wrapperCol: {
-      offset: 4,
-      span: 20,
+      offset: 6,
+      span: 18,
     },
   };
 
@@ -532,13 +554,13 @@ const EditForm = React.memo(props => {
     // hideRequiredMark: ,
     initialValues: record,
     // labelAlign: ,
-    labelCol: { span: 4 },
+    labelCol: { span: 6 },
     // layout: ,
     // name: ,
     // scrollToFirstError: ,
     // size: ,
     // validateMessages: ,
-    wrapperCol: { span: 20 },
+    wrapperCol: { span: 18 },
     onFinish: handleFinish,
     // onFinishFailed: ,
     // onFieldsChange: ,

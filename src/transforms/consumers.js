@@ -69,3 +69,19 @@ function handleAddAndEditRequest(type) {
     return record;
   };
 }
+
+export function getPlugins(data = {}, dataOptions) {
+  const request = payload => ({});
+
+  const response = payload => payload;
+
+  return Services.getPlugins(request(data), dataOptions).then(response);
+}
+
+export function getPlugin(data = {}, dataOptions) {
+  const request = payload => ({});
+
+  const response = payload => payload;
+
+  return Services.getPlugin(data.plugin)(request(data), dataOptions).then(response);
+}

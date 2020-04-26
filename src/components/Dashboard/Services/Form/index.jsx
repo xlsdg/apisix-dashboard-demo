@@ -5,6 +5,8 @@ import ClassNames from 'classnames';
 import { history, useIntl } from 'umi';
 import { message, Form, Input, Select, Button } from 'antd';
 
+import Plugins from '@/components/Dashboard/Consumers/Plugins';
+
 import { hasString } from '@/utils/helper';
 import { useAutoFetch } from '@/utils/hook';
 
@@ -188,8 +190,8 @@ const Submit = React.memo(props => {
     // validateTrigger: ,
     // valuePropName: ,
     wrapperCol: {
-      offset: 4,
-      span: 20,
+      offset: 6,
+      span: 18,
     },
   };
 
@@ -231,13 +233,13 @@ const EditForm = React.memo(props => {
     // hideRequiredMark: ,
     initialValues: record,
     // labelAlign: ,
-    labelCol: { span: 4 },
+    labelCol: { span: 6 },
     // layout: ,
     // name: ,
     // scrollToFirstError: ,
     // size: ,
     // validateMessages: ,
-    wrapperCol: { span: 20 },
+    wrapperCol: { span: 18 },
     onFinish: handleFinish,
     // onFinishFailed: ,
     // onFieldsChange: ,
@@ -248,6 +250,7 @@ const EditForm = React.memo(props => {
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Description />
       <Upstream />
+      <Plugins />
       <Submit loading={loading} />
     </Form>
   );
