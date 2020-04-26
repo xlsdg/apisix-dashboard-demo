@@ -17,7 +17,7 @@ export default {
   'dashboard.consumers.form.plugins.delete.content': 'Do you want to delete this plugin?',
   'dashboard.consumers.form.plugins.delete.ok': 'Yes',
   'dashboard.consumers.form.plugins.delete.cancel': 'No',
-  'dashboard.consumers.form.plugins.modal.title': 'Plugin Config',
+  'dashboard.consumers.form.plugins.modal.title': 'Configure',
   'dashboard.consumers.form.plugins.modal.ok': 'Confirm',
   'dashboard.consumers.form.plugins.modal.cancel': 'Cancel',
   'dashboard.consumers.form.plugin.select': 'Plugin',
