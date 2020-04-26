@@ -6,14 +6,19 @@ import { useIntl } from 'umi';
 import { Form, Button, Modal } from 'antd';
 import { PlusOutlined, MinusCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
-// import { hasValue } from '@/utils/helper';
+import { useAutoFetch } from '@/utils/hook';
+import { hasPlainObject } from '@/utils/helper';
+
+import { getPlugins } from '@/transforms/consumers';
 
 import styles from './index.less';
 
 const PluginModal = React.memo(props => {
-  const { initialValues = {}, visible, onOk, onCancel } = props;
-  console.log(initialValues);
+  const { data, visible, onCancel } = props;
+  console.log(data);
   const { formatMessage } = useIntl();
+
+  const onOk = React.useCallback(() => {}, []);
 
   const modalProps = {
     // afterClose,
@@ -53,20 +58,23 @@ const PluginModal = React.memo(props => {
 });
 
 const Plugin = React.memo(props => {
-  const { value, onChange } = props;
+  const { value, onChange, onClick } = props;
   // const { formatMessage } = useIntl();
 
-  const [visible, setVisible] = React.useState(false);
+  const plugin = value[0];
+  const config = value[1];
 
-  const handleClick = React.useCallback(() => setVisible(true), []);
-  const handleCancel = React.useCallback(() => setVisible(false), []);
-
-  return (
-    <>
-      <Button onClick={handleClick}>{value[0]}</Button>
-      <PluginModal visible={visible} initialValues={value} onOk={onChange} onCancel={handleCancel} />
-    </>
+  const handleClick = React.useCallback(
+    () =>
+      onClick({
+        plugins: [plugin],
+        config,
+        callback: onChange,
+      }),
+    [config, onChange, onClick, plugin]
   );
+
+  return <Button onClick={handleClick}>{plugin}</Button>;
 });
 
 const Remove = React.memo(props => {
@@ -92,16 +100,14 @@ const Remove = React.memo(props => {
 });
 
 function Plugins(props) {
-  const [visible, setVisible] = React.useState(false);
-  const showPluginModal = React.useCallback(() => setVisible(true), []);
-  const hidePluginModal = React.useCallback(() => setVisible(false), []);
+  const { response: allPlugins } = useAutoFetch({ api: getPlugins });
+
+  const [modal, setModal] = React.useState({});
 
   const { formatMessage } = useIntl();
 
   const render = React.useCallback(
     (fields, operation) => {
-      const editPlugin = values => {};
-
       const plugins = _.map(fields, (field, index) => {
         const remove = <Remove onClick={() => operation.remove(field.name)} />;
 
@@ -117,8 +123,8 @@ function Plugins(props) {
             label={`${formatMessage({ id: 'dashboard.consumers.form.plugins' })} ${index + 1}`}
           >
             <div className={styles.row}>
-              <Form.Item className={styles.host} {...pluginProps}>
-                <Plugin onClick={editPlugin} />
+              <Form.Item className={styles.item} {...pluginProps}>
+                <Plugin onClick={setModal} />
               </Form.Item>
               {remove}
             </div>
@@ -143,19 +149,25 @@ function Plugins(props) {
           {plugins}
           <Form.Item className={styles.add} {...itemProps}>
             {form => {
-              const existPlugins = _.map(form.getFieldValue('plugins'), plugin => plugin[0]);
+              const hidePluginModal = () => setModal({});
+
+              const handleAdd = () => {
+                const existPlugins = _.map(form.getFieldValue('plugins'), plugin => plugin[0]);
+                const newPlugins = _.filter(allPlugins, plugin => !_.includes(existPlugins, plugin));
+                setModal({
+                  plugins: newPlugins,
+                  config: {},
+                  callback: operation.add,
+                });
+              };
+
               return (
                 <>
-                  <Button className={styles.button} type="dashed" onClick={showPluginModal}>
+                  <Button className={styles.button} type="dashed" onClick={handleAdd}>
                     <PlusOutlined />
                     {formatMessage({ id: 'dashboard.consumers.form.plugins.add' })}
                   </Button>
-                  <PluginModal
-                    existPlugins={existPlugins}
-                    visible={visible}
-                    onOk={operation.add}
-                    onCancel={hidePluginModal}
-                  />
+                  <PluginModal data={modal} visible={hasPlainObject(modal)} onCancel={hidePluginModal} />
                 </>
               );
             }}
@@ -163,7 +175,7 @@ function Plugins(props) {
         </>
       );
     },
-    [formatMessage, hidePluginModal, showPluginModal, visible]
+    [allPlugins, formatMessage, modal]
   );
 
   return <Form.List name="plugins">{render}</Form.List>;
