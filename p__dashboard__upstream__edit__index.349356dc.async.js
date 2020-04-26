@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[27],{s0oP:function(a,e,t){"use strict";t.r(e);var n=t("q1tI"),o=t.n(n),s=t("Ty5D");e["default"]=()=>o.a.createElement(s["c"],{to:"/dashboard/upstream"})}}]);
