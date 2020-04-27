@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
-    "antd": "^4.1.4",
+    "antd": "^4.1.5",
     "classnames": "^2.2.6",
     "dva": "^2.6.0-beta.20",
     "fast-deep-equal": "^3.1.1",
@@ -14,15 +14,15 @@
     "react-dom": "^16.13.1",
     "reselect": "^4.0.0",
     "store": "^2.0.12",
-    "umi": "^3.1.1",
+    "umi": "^3.1.2",
     "umi-request": "^1.2.19"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
-    "@umijs/plugin-antd": "^0.5.0",
+    "@umijs/plugin-antd": "^0.5.1",
     "@umijs/plugin-dva": "^0.6.5",
-    "@umijs/plugin-locale": "^0.4.4",
+    "@umijs/plugin-locale": "^0.4.5",
     "babel-eslint": "^10.1.0",
     "babel-plugin-lodash": "^3.3.4",
     "cross-env": "^7.0.2",
