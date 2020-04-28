@@ -1,18 +1,28 @@
 import React from 'react';
-// import {  } from 'umi';
+import { history, useIntl } from 'umi';
 import { Result, Button } from 'antd';
 
 import styles from './index.less';
 
 function Body(props) {
   // const {  } = props;
+
+  const { formatMessage } = useIntl();
+
+  const handleClick = React.useCallback(() => history.push('/user/login'), []);
+  const extra = (
+    <Button type="primary" onClick={handleClick}>
+      {formatMessage({ id: 'page.403.back' })}
+    </Button>
+  );
+
   return (
     <div className={styles.container}>
       <Result
         status="403"
-        title="403"
-        subTitle="Sorry, you are not authorized to access this page."
-        extra={<Button type="primary">Go Login</Button>}
+        title={formatMessage({ id: 'page.403.title' })}
+        subTitle={formatMessage({ id: 'page.403.sub.title' })}
+        extra={extra}
       />
     </div>
   );

@@ -1,18 +1,28 @@
 import React from 'react';
-// import {  } from 'umi';
+import { history, useIntl } from 'umi';
 import { Result, Button } from 'antd';
 
 import styles from './index.less';
 
 function Body(props) {
   // const {  } = props;
+
+  const { formatMessage } = useIntl();
+
+  const handleClick = React.useCallback(() => history.push('/'), []);
+  const extra = (
+    <Button type="primary" onClick={handleClick}>
+      {formatMessage({ id: 'page.404.back' })}
+    </Button>
+  );
+
   return (
     <div className={styles.container}>
       <Result
         status="404"
-        title="404"
-        subTitle="Sorry, the page you visited does not exist."
-        extra={<Button type="primary">Back Home</Button>}
+        title={formatMessage({ id: 'page.404.title' })}
+        subTitle={formatMessage({ id: 'page.404.sub.title' })}
+        extra={extra}
       />
     </div>
   );

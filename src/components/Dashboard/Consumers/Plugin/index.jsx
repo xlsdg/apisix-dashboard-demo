@@ -145,6 +145,7 @@ function createFormItemObject(parent = [], settings = {}) {
         // default: defaultValue,
         // description,
         items: obj,
+        oneOf: getValue(settings, 'oneOf', []),
       };
     });
   }
@@ -223,7 +224,7 @@ function createFormItemObject(parent = [], settings = {}) {
       min: getValue(settings, 'minLength'),
       max: getValue(settings, 'maxLength'),
       pattern: getValue(settings, 'pattern'),
-      // anyOf: ,
+      anyOf: getValue(settings, 'anyOf', []),
     };
   }
 
