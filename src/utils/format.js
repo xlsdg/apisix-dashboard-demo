@@ -17,3 +17,12 @@ export function getRecordKey(oldKey) {
 
   return newKey[3];
 }
+
+export function getDecimalPrecision(value) {
+  const num = _.split(`${value}`, '.');
+  if (num.length < 2) {
+    return 0;
+  }
+
+  return num.length < 2 ? 0 : num[1].length;
+}

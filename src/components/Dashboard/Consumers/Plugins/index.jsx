@@ -68,9 +68,9 @@ const PluginModal = React.memo(props => {
   const formData = React.useMemo(
     () => ({
       plugins: data.plugins,
-      config: data.config,
+      settings: data.settings,
     }),
-    [data.config, data.plugins]
+    [data.settings, data.plugins]
   );
 
   return (
@@ -85,16 +85,16 @@ const Plugin = React.memo(props => {
   // const { formatMessage } = useIntl();
 
   const plugin = value[0];
-  const config = value[1];
+  const settings = value[1];
 
   const handleClick = React.useCallback(
     () =>
       onClick({
         plugins: [plugin],
-        config,
+        settings,
         callback: onChange,
       }),
-    [config, onChange, onClick, plugin]
+    [settings, onChange, onClick, plugin]
   );
 
   return <Button onClick={handleClick}>{plugin}</Button>;
@@ -179,7 +179,7 @@ function Plugins(props) {
                 const newPlugins = _.filter(allPlugins || [], plugin => !_.includes(existPlugins, plugin));
                 setModal({
                   plugins: newPlugins,
-                  config: {},
+                  settings: {},
                   callback: operation.add,
                 });
               };

@@ -81,7 +81,7 @@ export function getPlugins(data = {}, dataOptions) {
 export function getPlugin(data = {}, dataOptions) {
   const request = payload => ({});
 
-  const response = payload => _.omit(payload, ['id', 'type']);
+  const response = payload => _.omit(payload, ['id']);
 
   return Services.getPlugin(data.plugin)(request(data), dataOptions).then(response);
 }

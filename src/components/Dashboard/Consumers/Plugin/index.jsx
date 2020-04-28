@@ -7,7 +7,8 @@ import { Form, Select, Skeleton } from 'antd';
 // import {  } from '@ant-design/icons';
 
 import { useFetch } from '@/utils/hook';
-import { hasArray, hasString } from '@/utils/helper';
+import { hasArray, hasString, hasPlainObject, getValue } from '@/utils/helper';
+import { getDecimalPrecision } from '@/utils/format';
 
 import { getPlugin } from '@/transforms/consumers';
 
@@ -119,26 +120,148 @@ const Plugins = React.memo(props => {
   );
 });
 
-const Settings = React.memo(props => {
-  const { loading } = props;
+function createFormItemObject(parent = [], settings = {}) {
+  const type = getValue(settings, 'type');
 
-  if (loading) {
-    return <Skeleton active />;
+  if (type === 'object') {
+    const properties = getValue(settings, 'properties', {});
+    const required = getValue(settings, 'required', []);
+
+    return _.map(properties, (setting, name) => {
+      const obj = createFormItemObject([...parent, name], {
+        required: _.includes(required, name),
+        ...setting,
+      });
+
+      if (!hasArray(obj)) {
+        return obj;
+      }
+
+      return {
+        name: [...parent, name],
+        // required,
+        tag: 'list',
+        type: 'array',
+        // default: defaultValue,
+        // description,
+        items: obj,
+      };
+    });
   }
 
-  return <div>Demo</div>;
+  const required = getValue(settings, 'required');
+  const defaultValue = getValue(settings, 'default');
+  const description = getValue(settings, 'description');
+
+  if (type === 'array') {
+    return {
+      name: parent,
+      required,
+      tag: 'list',
+      type: 'array',
+      default: defaultValue,
+      description,
+      min: getValue(settings, 'minItems'),
+      max: getValue(settings, 'maxItems'),
+      items: [createFormItemObject([...parent, 'items'], getValue(settings, 'items'))],
+    };
+  }
+
+  if (type === 'number') {
+    const min = getValue(settings, 'minimum');
+    const max = getValue(settings, 'maximum');
+
+    return {
+      name: parent,
+      required,
+      tag: 'input',
+      type: 'number',
+      default: defaultValue,
+      description,
+      min,
+      max,
+      precision: getDecimalPrecision(min) || getDecimalPrecision(max) || 8, // 位数
+    };
+  }
+
+  if (type === 'integer') {
+    return {
+      name: parent,
+      required,
+      tag: 'input',
+      type: 'number',
+      default: defaultValue,
+      description,
+      min: getValue(settings, 'minimum'),
+      max: getValue(settings, 'maximum'),
+      precision: 0,
+    };
+  }
+
+  if (type === 'string') {
+    const options = getValue(settings, 'enum', []);
+
+    if (hasArray(options)) {
+      return {
+        name: parent,
+        required,
+        tag: 'select',
+        type: 'string',
+        default: defaultValue,
+        description,
+        options,
+      };
+    }
+
+    return {
+      name: parent,
+      required,
+      tag: 'input',
+      type: 'text',
+      default: defaultValue,
+      description,
+      min: getValue(settings, 'minLength'),
+      max: getValue(settings, 'maxLength'),
+      pattern: getValue(settings, 'pattern'),
+      // anyOf: ,
+    };
+  }
+
+  if (type === 'boolean') {
+    return {
+      name: parent,
+      required,
+      tag: 'input',
+      type: 'checkbox',
+      default: defaultValue,
+      description,
+    };
+  }
+
+  return {};
+}
+
+const Settings = React.memo(props => {
+  const { loading, initialValues, values } = props;
+  const formItems = [];
+
+  if (loading || !hasPlainObject(values)) {
+    return <Skeleton active />;
+  }
+  console.log(initialValues, createFormItemObject([], values));
+  return hasArray(formItems) ? formItems : null;
 });
 
 function Plugin(props) {
   const { className, form, data } = props;
 
   const { fetch, loading } = useFetch();
-  const [pluginSettings, setPluginSettings] = React.useState({});
+  const [settings, setSettings] = React.useState({});
 
   const getPluginSettings = React.useCallback(
     name => {
       return fetch(getPlugin, { plugin: name })
-        .then(setPluginSettings)
+        .then(setSettings)
         .catch(() => {});
     },
     [fetch]
@@ -188,7 +311,7 @@ function Plugin(props) {
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Plugins loading={loading} initialValues={data.plugins} />
-      <Settings loading={loading} plugin={pluginSettings} initialValues={data.config} />
+      <Settings loading={loading} initialValues={data.settings} values={settings} />
     </Form>
   );
 }
