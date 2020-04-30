@@ -7,7 +7,7 @@ import { Form, Select, Skeleton } from 'antd';
 // import {  } from '@ant-design/icons';
 
 import { useFetch } from '@/utils/hook';
-import { hasArray, hasString } from '@/utils/helper';
+import { hasArray, hasString, hasPlainObject } from '@/utils/helper';
 
 import { getPlugin } from '@/transforms/consumers';
 
@@ -134,12 +134,24 @@ function Plugin(props) {
   const { className, form, data } = props;
 
   const { fetch, loading } = useFetch();
+
+  const pluginSettings = React.useRef({});
   const [settings, setSettings] = React.useState({});
 
   const getPluginSettings = React.useCallback(
     name => {
+      const exist = pluginSettings.current[name];
+      if (hasPlainObject(exist)) {
+        setSettings(exist);
+        return Promise.resolve(exist);
+      }
+
       return fetch(getPlugin, { plugin: name })
-        .then(setSettings)
+        .then(resp => {
+          setSettings(resp);
+          pluginSettings.current[name] = resp;
+          return resp;
+        })
         .catch(() => {});
     },
     [fetch]
