@@ -7,8 +7,7 @@ import { Form, Select, Skeleton } from 'antd';
 // import {  } from '@ant-design/icons';
 
 import { useFetch } from '@/utils/hook';
-import { hasArray, hasString, hasPlainObject, getValue } from '@/utils/helper';
-import { getDecimalPrecision } from '@/utils/format';
+import { hasArray, hasString } from '@/utils/helper';
 
 import { getPlugin } from '@/transforms/consumers';
 
@@ -120,136 +119,14 @@ const Plugins = React.memo(props => {
   );
 });
 
-function createFormItemObject(parent = [], settings = {}) {
-  const type = getValue(settings, 'type');
-
-  if (type === 'object') {
-    const properties = getValue(settings, 'properties', {});
-    const required = getValue(settings, 'required', []);
-
-    return _.map(properties, (setting, name) => {
-      const obj = createFormItemObject([...parent, name], {
-        required: _.includes(required, name),
-        ...setting,
-      });
-
-      if (!hasArray(obj)) {
-        return obj;
-      }
-
-      return {
-        name: [...parent, name],
-        // required,
-        tag: 'list',
-        type: 'array',
-        // default: defaultValue,
-        // description,
-        items: obj,
-        oneOf: getValue(settings, 'oneOf', []),
-      };
-    });
-  }
-
-  const required = getValue(settings, 'required');
-  const defaultValue = getValue(settings, 'default');
-  const description = getValue(settings, 'description');
-
-  if (type === 'array') {
-    return {
-      name: parent,
-      required,
-      tag: 'list',
-      type: 'array',
-      default: defaultValue,
-      description,
-      min: getValue(settings, 'minItems'),
-      max: getValue(settings, 'maxItems'),
-      items: [createFormItemObject([...parent, 'items'], getValue(settings, 'items'))],
-    };
-  }
-
-  if (type === 'number') {
-    const min = getValue(settings, 'minimum');
-    const max = getValue(settings, 'maximum');
-
-    return {
-      name: parent,
-      required,
-      tag: 'input',
-      type: 'number',
-      default: defaultValue,
-      description,
-      min,
-      max,
-      precision: getDecimalPrecision(min) || getDecimalPrecision(max) || 8, // 位数
-    };
-  }
-
-  if (type === 'integer') {
-    return {
-      name: parent,
-      required,
-      tag: 'input',
-      type: 'number',
-      default: defaultValue,
-      description,
-      min: getValue(settings, 'minimum'),
-      max: getValue(settings, 'maximum'),
-      precision: 0,
-    };
-  }
-
-  if (type === 'string') {
-    const options = getValue(settings, 'enum', []);
-
-    if (hasArray(options)) {
-      return {
-        name: parent,
-        required,
-        tag: 'select',
-        type: 'string',
-        default: defaultValue,
-        description,
-        options,
-      };
-    }
-
-    return {
-      name: parent,
-      required,
-      tag: 'input',
-      type: 'text',
-      default: defaultValue,
-      description,
-      min: getValue(settings, 'minLength'),
-      max: getValue(settings, 'maxLength'),
-      pattern: getValue(settings, 'pattern'),
-      anyOf: getValue(settings, 'anyOf', []),
-    };
-  }
-
-  if (type === 'boolean') {
-    return {
-      name: parent,
-      required,
-      tag: 'input',
-      type: 'checkbox',
-      default: defaultValue,
-      description,
-    };
-  }
-
-  return {};
-}
-
 const Settings = React.memo(props => {
   const { loading, initialValues, values } = props;
   const formItems = [];
 
-  if (loading || !hasPlainObject(values)) {
+  if (loading) {
     return <Skeleton active />;
   }
-  console.log(initialValues, createFormItemObject([], values));
+  console.log(initialValues, values);
   return hasArray(formItems) ? formItems : null;
 });
 
