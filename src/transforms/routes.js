@@ -76,8 +76,23 @@ export function getRecord(data = {}, dataOptions) {
 }
 
 function handleAddAndEditRequest(type) {
-  return payload => {
-    const record = {};
-    return record;
-  };
+  return payload => ({
+    desc: payload.description,
+    uris: payload.uris,
+    hosts: payload.hosts,
+    remote_addr: payload.remoteAddress,
+    methods: payload.methods,
+    upstream_id: payload.upstream,
+    service_id: payload.service,
+    plugins: _.reduce(
+      payload.plugins,
+      (result, plugin) => {
+        const name = plugin[0];
+        const props = plugin[1];
+        result[name] = props;
+        return result;
+      },
+      {}
+    ),
+  });
 }

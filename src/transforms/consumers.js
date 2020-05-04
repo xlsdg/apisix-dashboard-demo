@@ -64,10 +64,20 @@ export function getRecord(data = {}, dataOptions) {
 }
 
 function handleAddAndEditRequest(type) {
-  return payload => {
-    const record = {};
-    return record;
-  };
+  return payload => ({
+    desc: payload.description,
+    username: payload.userName,
+    plugins: _.reduce(
+      payload.plugins,
+      (result, plugin) => {
+        const name = plugin[0];
+        const props = plugin[1];
+        result[name] = props;
+        return result;
+      },
+      {}
+    ),
+  });
 }
 
 export function getPlugins(data = {}, dataOptions) {
@@ -165,7 +175,7 @@ function createPluginFormItem(parent = [], settings = {}) {
     if (hasArray(options)) {
       return {
         tag: 'select',
-        type: 'string',
+        type: 'text',
         default: defaultValue,
         description,
         options,
@@ -189,7 +199,7 @@ function createPluginFormItem(parent = [], settings = {}) {
   if (type === 'boolean') {
     return {
       tag: 'input',
-      type: 'checkbox',
+      type: 'switch',
       default: defaultValue,
       description,
     };

@@ -340,136 +340,133 @@ const Remove = React.memo(props => {
 const Nodes = React.memo(props => {
   const { formatMessage } = useIntl();
 
-  const render = React.useCallback(
-    (fields, operation) => {
-      const nodes = _.map(fields, (field, index) => {
-        const hostRules = [
-          {
-            required: true,
-            message: formatMessage({ id: 'dashboard.upstream.form.nodes.host.required' }),
-          },
-          {
-            validator: async (rule, value) => {
-              if (
-                /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(
-                  value
-                )
-              ) {
-                return;
-              } else if (
-                /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
-                  value
-                )
-              ) {
-                return;
-              } else {
-                throw new Error(formatMessage({ id: 'dashboard.upstream.form.nodes.host.required' }));
-              }
-            },
-          },
-        ];
-        const hostProps = {
-          // colon: ,
-          // dependencies: ,
-          // extra: ,
-          fieldKey: [field.fieldKey, 'host'],
-          // getValueFromEvent: ,
-          // hasFeedback: ,
-          // help: ,
-          // htmlFor: ,
-          // noStyle: ,
-          // label: ,
-          // labelAlign: ,
-          // labelCol: ,
-          name: [field.name, 'host'],
-          // normalize: ,
-          // required: ,
-          rules: hostRules,
-          // shouldUpdate: ,
-          // trigger: ,
-          validateFirst: true,
-          // validateStatus: ,
-          // validateTrigger: ,
-          // valuePropName: ,
-          // wrapperCol: ,
-        };
-
-        const portRules = [
-          {
-            required: true,
-            message: formatMessage({ id: 'dashboard.upstream.form.nodes.port.required' }),
-          },
-        ];
-        const portProps = {
-          fieldKey: [field.fieldKey, 'port'],
-          name: [field.name, 'port'],
-          rules: portRules,
-        };
-
-        const weightsRules = [
-          {
-            required: true,
-            message: formatMessage({ id: 'dashboard.upstream.form.nodes.weights.required' }),
-          },
-        ];
-        const weightsProps = {
-          fieldKey: [field.fieldKey, 'weights'],
-          name: [field.name, 'weights'],
-          rules: weightsRules,
-        };
-
-        const remove = <Remove onClick={() => operation.remove(field.name)} />;
-
-        return (
-          <Form.Item
-            key={field.key}
-            className={styles.node}
-            label={`${formatMessage({ id: 'dashboard.upstream.form.nodes.node' })} ${index + 1}`}
-          >
-            <div className={styles.row}>
-              <Form.Item className={styles.host} {...hostProps}>
-                <Input placeholder={formatMessage({ id: 'dashboard.upstream.form.nodes.host.placeholder' })} />
-              </Form.Item>
-              <Form.Item className={styles.port} {...portProps}>
-                <InputNumber
-                  min={0}
-                  max={65535}
-                  placeholder={formatMessage({ id: 'dashboard.upstream.form.nodes.port.placeholder' })}
-                />
-              </Form.Item>
-              <Form.Item className={styles.weights} {...weightsProps}>
-                <InputNumber
-                  min={0}
-                  placeholder={formatMessage({ id: 'dashboard.upstream.form.nodes.weights.placeholder' })}
-                />
-              </Form.Item>
-              {fields.length > 1 ? remove : null}
-            </div>
-          </Form.Item>
-        );
-      });
-
-      const itemProps = {
-        wrapperCol: {
-          offset: 6,
-          span: 18,
+  const render = (fields, operation) => {
+    const nodes = _.map(fields, (field, index) => {
+      const hostRules = [
+        {
+          required: true,
+          message: formatMessage({ id: 'dashboard.upstream.form.nodes.host.required' }),
         },
+        {
+          validator: async (rule, value) => {
+            if (
+              /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(
+                value
+              )
+            ) {
+              return;
+            } else if (
+              /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/.test(
+                value
+              )
+            ) {
+              return;
+            } else {
+              throw new Error(formatMessage({ id: 'dashboard.upstream.form.nodes.host.required' }));
+            }
+          },
+        },
+      ];
+      const hostProps = {
+        // colon: ,
+        // dependencies: ,
+        // extra: ,
+        fieldKey: [field.fieldKey, 'host'],
+        // getValueFromEvent: ,
+        // hasFeedback: ,
+        // help: ,
+        // htmlFor: ,
+        // noStyle: ,
+        // label: ,
+        // labelAlign: ,
+        // labelCol: ,
+        name: [field.name, 'host'],
+        // normalize: ,
+        // required: ,
+        rules: hostRules,
+        // shouldUpdate: ,
+        // trigger: ,
+        validateFirst: true,
+        // validateStatus: ,
+        // validateTrigger: ,
+        // valuePropName: ,
+        // wrapperCol: ,
       };
 
+      const portRules = [
+        {
+          required: true,
+          message: formatMessage({ id: 'dashboard.upstream.form.nodes.port.required' }),
+        },
+      ];
+      const portProps = {
+        fieldKey: [field.fieldKey, 'port'],
+        name: [field.name, 'port'],
+        rules: portRules,
+      };
+
+      const weightsRules = [
+        {
+          required: true,
+          message: formatMessage({ id: 'dashboard.upstream.form.nodes.weights.required' }),
+        },
+      ];
+      const weightsProps = {
+        fieldKey: [field.fieldKey, 'weights'],
+        name: [field.name, 'weights'],
+        rules: weightsRules,
+      };
+
+      const remove = <Remove onClick={() => operation.remove(field.name)} />;
+
       return (
-        <>
-          {nodes}
-          <Form.Item className={styles.add} {...itemProps}>
-            <Button className={styles.button} type="dashed" onClick={operation.add}>
-              <PlusOutlined />
-              {formatMessage({ id: 'dashboard.upstream.form.nodes.add' })}
-            </Button>
-          </Form.Item>
-        </>
+        <Form.Item
+          key={field.key}
+          className={styles.node}
+          label={`${formatMessage({ id: 'dashboard.upstream.form.nodes.node' })} ${index + 1}`}
+        >
+          <div className={styles.row}>
+            <Form.Item className={styles.host} {...hostProps}>
+              <Input placeholder={formatMessage({ id: 'dashboard.upstream.form.nodes.host.placeholder' })} />
+            </Form.Item>
+            <Form.Item className={styles.port} {...portProps}>
+              <InputNumber
+                min={0}
+                max={65535}
+                placeholder={formatMessage({ id: 'dashboard.upstream.form.nodes.port.placeholder' })}
+              />
+            </Form.Item>
+            <Form.Item className={styles.weights} {...weightsProps}>
+              <InputNumber
+                min={0}
+                placeholder={formatMessage({ id: 'dashboard.upstream.form.nodes.weights.placeholder' })}
+              />
+            </Form.Item>
+            {fields.length > 1 ? remove : null}
+          </div>
+        </Form.Item>
       );
-    },
-    [formatMessage]
-  );
+    });
+
+    const itemProps = {
+      wrapperCol: {
+        offset: 6,
+        span: 18,
+      },
+    };
+
+    return (
+      <>
+        {nodes}
+        <Form.Item className={styles.add} {...itemProps}>
+          <Button className={styles.button} type="dashed" onClick={() => operation.add()}>
+            <PlusOutlined />
+            {formatMessage({ id: 'dashboard.upstream.form.nodes.add' })}
+          </Button>
+        </Form.Item>
+      </>
+    );
+  };
 
   return <Form.List name="nodes">{render}</Form.List>;
 });

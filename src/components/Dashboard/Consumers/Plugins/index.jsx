@@ -28,6 +28,7 @@ const PluginModal = React.memo(props => {
           const { plugin, ...others } = values;
           onCancel();
           data.callback([plugin, others]);
+          return values;
         })
         .catch(() => {}),
     [data, form, onCancel]
@@ -129,84 +130,79 @@ function Plugins(props) {
 
   const { formatMessage } = useIntl();
 
-  const render = React.useCallback(
-    (fields, operation) => {
-      const plugins = _.map(fields, (field, index) => {
-        const remove = <Remove onClick={() => operation.remove(field.name)} />;
+  const render = (fields, operation) => {
+    const plugins = _.map(fields, (field, index) => {
+      const remove = <Remove onClick={() => operation.remove(field.name)} />;
 
-        const pluginProps = {
-          fieldKey: [field.fieldKey],
-          name: [field.name],
-        };
-
-        return (
-          <Form.Item
-            key={field.key}
-            className={styles.plugin}
-            label={`${formatMessage({ id: 'dashboard.consumers.form.plugins' })} ${index + 1}`}
-          >
-            <div className={styles.row}>
-              <Form.Item className={styles.item} {...pluginProps}>
-                <Plugin onClick={setModal} />
-              </Form.Item>
-              {remove}
-            </div>
-          </Form.Item>
-        );
-      });
-
-      const itemProps = {
-        shouldUpdate: (prevValues, currValues) => {
-          const prevPlugins = _.map(prevValues.plugins, plugin => plugin[0]);
-          const currPlugins = _.map(currValues.plugins, plugin => plugin[0]);
-          return !_.isEqual(prevPlugins, currPlugins);
-        },
-        wrapperCol: {
-          offset: 6,
-          span: 18,
-        },
+      const pluginProps = {
+        fieldKey: [field.fieldKey],
+        name: [field.name],
       };
 
       return (
-        <>
-          {plugins}
-          <Form.Item className={styles.add} {...itemProps}>
-            {form => {
-              const hidePluginModal = () => setModal({});
-
-              const handleAdd = () => {
-                const existPlugins = _.map(form.getFieldValue('plugins'), plugin => plugin[0]);
-                const newPlugins = _.filter(allPlugins || [], plugin => !_.includes(existPlugins, plugin));
-                setModal({
-                  plugins: newPlugins,
-                  settings: {},
-                  callback: operation.add,
-                });
-              };
-
-              return (
-                <>
-                  <Button
-                    className={styles.button}
-                    type="dashed"
-                    disabled={
-                      !hasArray(allPlugins) || (form.getFieldValue('plugins') || []).length >= allPlugins.length
-                    }
-                    onClick={handleAdd}
-                  >
-                    <PlusOutlined />
-                    {formatMessage({ id: 'dashboard.consumers.form.plugins.add' })}
-                  </Button>
-                  <PluginModal data={modal} visible={hasPlainObject(modal)} onCancel={hidePluginModal} />
-                </>
-              );
-            }}
-          </Form.Item>
-        </>
+        <Form.Item
+          key={field.key}
+          className={styles.plugin}
+          label={`${formatMessage({ id: 'dashboard.consumers.form.plugins' })} ${index + 1}`}
+        >
+          <div className={styles.row}>
+            <Form.Item className={styles.item} {...pluginProps}>
+              <Plugin onClick={setModal} />
+            </Form.Item>
+            {remove}
+          </div>
+        </Form.Item>
       );
-    },
-    [allPlugins, formatMessage, modal]
-  );
+    });
+
+    const itemProps = {
+      shouldUpdate: (prevValues, currValues) => {
+        const prevPlugins = _.map(prevValues.plugins, plugin => plugin[0]);
+        const currPlugins = _.map(currValues.plugins, plugin => plugin[0]);
+        return !_.isEqual(prevPlugins, currPlugins);
+      },
+      wrapperCol: {
+        offset: 6,
+        span: 18,
+      },
+    };
+
+    return (
+      <>
+        {plugins}
+        <Form.Item className={styles.add} {...itemProps}>
+          {form => {
+            const hidePluginModal = () => setModal({});
+
+            const handleAdd = () => {
+              const existPlugins = _.map(form.getFieldValue('plugins'), plugin => plugin[0]);
+              const newPlugins = _.filter(allPlugins || [], plugin => !_.includes(existPlugins, plugin));
+              setModal({
+                plugins: newPlugins,
+                settings: {},
+                callback: operation.add,
+              });
+            };
+
+            return (
+              <>
+                <Button
+                  className={styles.button}
+                  type="dashed"
+                  disabled={!hasArray(allPlugins) || (form.getFieldValue('plugins') || []).length >= allPlugins.length}
+                  onClick={handleAdd}
+                >
+                  <PlusOutlined />
+                  {formatMessage({ id: 'dashboard.consumers.form.plugins.add' })}
+                </Button>
+                <PluginModal data={modal} visible={hasPlainObject(modal)} onCancel={hidePluginModal} />
+              </>
+            );
+          }}
+        </Form.Item>
+      </>
+    );
+  };
 
   return <Form.List name="plugins">{render}</Form.List>;
 }

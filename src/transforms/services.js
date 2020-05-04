@@ -64,8 +64,18 @@ export function getRecord(data = {}, dataOptions) {
 }
 
 function handleAddAndEditRequest(type) {
-  return payload => {
-    const record = {};
-    return record;
-  };
+  return payload => ({
+    desc: payload.description,
+    upstream_id: payload.upstream,
+    plugins: _.reduce(
+      payload.plugins,
+      (result, plugin) => {
+        const name = plugin[0];
+        const props = plugin[1];
+        result[name] = props;
+        return result;
+      },
+      {}
+    ),
+  });
 }
