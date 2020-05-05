@@ -161,10 +161,10 @@ function Plugins(props) {
         const currPlugins = _.map(currValues.plugins, plugin => plugin[0]);
         return !_.isEqual(prevPlugins, currPlugins);
       },
-      wrapperCol: {
-        offset: 6,
-        span: 18,
-      },
+      // wrapperCol: {
+      //   offset: 6,
+      //   span: 18,
+      // },
     };
 
     return (

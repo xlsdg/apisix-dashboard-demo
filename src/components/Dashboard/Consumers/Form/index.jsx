@@ -126,10 +126,10 @@ const Submit = React.memo(props => {
     // validateStatus: ,
     // validateTrigger: ,
     // valuePropName: ,
-    wrapperCol: {
-      offset: 6,
-      span: 18,
-    },
+    // wrapperCol: {
+    //   offset: 6,
+    //   span: 18,
+    // },
   };
 
   return (
@@ -170,13 +170,13 @@ const EditForm = React.memo(props => {
     // hideRequiredMark: ,
     initialValues: record,
     // labelAlign: ,
-    labelCol: { span: 6 },
-    // layout: ,
+    // labelCol: { span: 6 },
+    layout: 'vertical',
     // name: ,
     // scrollToFirstError: ,
     // size: ,
     // validateMessages: ,
-    wrapperCol: { span: 18 },
+    // wrapperCol: { span: 18 },
     onFinish: handleFinish,
     // onFinishFailed: ,
     // onFieldsChange: ,
