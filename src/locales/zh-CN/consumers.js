@@ -24,6 +24,7 @@ export default {
   'dashboard.consumers.form.plugin.select.placeholder': 'Plugin',
   'dashboard.consumers.form.plugin.select.required': 'Please select your plugin!',
   'dashboard.consumers.form.plugin.array.add': 'Add',
+  'dashboard.consumers.form.plugin.text.pattern': 'Value is not right!',
   'dashboard.consumers.form.submit': 'Submit',
   'dashboard.consumers.form.add.success': 'Create a consumer successfully!',
   'dashboard.consumers.form.edit.success': 'Update the consumer successfully!',

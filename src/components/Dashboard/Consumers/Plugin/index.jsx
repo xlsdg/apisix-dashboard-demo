@@ -8,7 +8,7 @@ import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { v1 as UUIDv1 } from 'uuid';
 
 import { useFetch } from '@/utils/hook';
-import { hasArray, hasString, hasPlainObject, getValue } from '@/utils/helper';
+import { hasArray, hasString, hasPlainObject, hasValue, getValue } from '@/utils/helper';
 
 import { getPlugin } from '@/transforms/consumers';
 
@@ -124,7 +124,7 @@ const NumberInput = React.memo(props => {
   const { values = {} } = props;
 
   const rules = [];
-  if (values.required) {
+  if (values.required === true) {
     rules.push({ required: true });
   }
 
@@ -137,7 +137,7 @@ const NumberInput = React.memo(props => {
     // help: ,
     // htmlFor: ,
     // noStyle: ,
-    label: values.name,
+    label: _.join(values.name, '-'),
     // labelAlign: ,
     // labelCol: ,
     name: values.name,
@@ -181,11 +181,36 @@ const NumberInput = React.memo(props => {
 const TextInput = React.memo(props => {
   const { values = {} } = props;
 
-  // TODO: min, pattern, anyOf rules
+  const { formatMessage } = useIntl();
 
   const rules = [];
-  if (values.required) {
+  if (values.required === true) {
     rules.push({ required: true, whitespace: true });
+  }
+
+  if (hasValue(values.min)) {
+    rules.push({ min: values.min });
+  }
+
+  if (hasString(values.pattern)) {
+    rules.push({ pattern: new RegExp(values.pattern) });
+  }
+
+  if (hasArray(values.anyOf)) {
+    rules.push({
+      validator: async (rule, value) => {
+        const result = _.some(values.anyOf, pattern => {
+          const regex = new RegExp(pattern);
+          return regex.test(value);
+        });
+
+        if (result === true) {
+          return value;
+        }
+
+        throw new Error(formatMessage({ id: 'dashboard.consumers.form.plugin.text.pattern' }));
+      },
+    });
   }
 
   const itemProps = {
@@ -197,7 +222,7 @@ const TextInput = React.memo(props => {
     // help: ,
     // htmlFor: ,
     // noStyle: ,
-    label: values.name,
+    label: _.join(values.name, '-'),
     // labelAlign: ,
     // labelCol: ,
     name: values.name,
@@ -243,7 +268,7 @@ const SelectText = React.memo(props => {
   const { values = {} } = props;
 
   const rules = [];
-  if (values.required) {
+  if (values.required === true) {
     rules.push({ required: true });
   }
 
@@ -256,7 +281,7 @@ const SelectText = React.memo(props => {
     // help: ,
     // htmlFor: ,
     // noStyle: ,
-    label: values.name,
+    label: _.join(values.name, '-'),
     // labelAlign: ,
     // labelCol: ,
     name: values.name,
@@ -342,20 +367,20 @@ const SwitchInput = React.memo(props => {
   const { values = {} } = props;
 
   const rules = [];
-  if (values.required) {
+  if (values.required === true) {
     rules.push({ required: true });
   }
 
   const itemProps = {
     // colon: ,
     // dependencies: ,
-    // extra: ,
+    extra: values.description,
     // getValueFromEvent: ,
     // hasFeedback: ,
     // help: ,
     // htmlFor: ,
     // noStyle: ,
-    label: values.name,
+    label: _.join(values.name, '-'),
     // labelAlign: ,
     // labelCol: ,
     name: values.name,
@@ -397,6 +422,8 @@ const ListArray = React.memo(props => {
 
   const { formatMessage } = useIntl();
 
+  // TODO: values.min, values.max
+
   const inputProps = {
     // addonAfter: ,
     // addonBefore: ,
@@ -417,7 +444,7 @@ const ListArray = React.memo(props => {
   };
 
   const rules = [];
-  if (values.required) {
+  if (values.required === true) {
     rules.push({ required: true, whitespace: true });
   }
 
@@ -498,16 +525,6 @@ function generateFormItem(values) {
   return null;
 }
 
-const Settings = React.memo(props => {
-  const { loading, values } = props;
-
-  if (loading) {
-    return <Skeleton active />;
-  }
-
-  return generateFormItem(values);
-});
-
 function Plugin(props) {
   const { className, form, data } = props;
 
@@ -586,10 +603,11 @@ function Plugin(props) {
     };
   }, [data.plugins, data.settings, form, getPluginSettings]);
 
+  const dynamicFormItems = React.useMemo(() => generateFormItem(settings), [settings]);
   return (
     <Form className={ClassNames(styles.container, className)} {...formProps}>
       <Plugins loading={loading} initialValues={data.plugins} />
-      <Settings loading={loading} values={settings} />
+      {loading ? <Skeleton active /> : dynamicFormItems}
     </Form>
   );
 }
