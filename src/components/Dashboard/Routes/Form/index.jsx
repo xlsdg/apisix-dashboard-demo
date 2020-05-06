@@ -57,15 +57,19 @@ const Description = React.memo(props => {
 const Uris = React.memo(props => {
   const { formatMessage } = useIntl();
 
-  // const rules = React.useMemo(
-  //   () => [
-  //     {
-  //       required: true,
-  //       message: formatMessage({ id: 'dashboard.routes.form.uris.required' }),
-  //     },
-  //   ],
-  //   [formatMessage]
-  // );
+  const rules = React.useMemo(
+    () => [
+      {
+        required: true,
+        message: formatMessage({ id: 'dashboard.routes.form.uris.required' }),
+      },
+      {
+        pattern: /^([\\*\\./0-9a-zA-Z-_~@\\?\\!#$\\(\\)]+)$/,
+        message: formatMessage({ id: 'dashboard.routes.form.uris.pattern' }),
+      },
+    ],
+    [formatMessage]
+  );
 
   const itemProps = {
     // colon: ,
@@ -82,7 +86,7 @@ const Uris = React.memo(props => {
     name: 'uris',
     // normalize: ,
     // required: ,
-    // rules,
+    rules,
     // shouldUpdate: ,
     // trigger: ,
     // validateFirst: ,
