@@ -150,7 +150,7 @@ function createPluginFormItem(parent = [], settings = {}) {
       description,
       min,
       max,
-      precision: getDecimalPrecision(min) || getDecimalPrecision(max) || 8, // 位数
+      precision: getDecimalPrecision(min) || getDecimalPrecision(max), // 位数
     };
   }
 

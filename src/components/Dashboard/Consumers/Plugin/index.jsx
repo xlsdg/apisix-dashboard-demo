@@ -5,6 +5,7 @@ import ClassNames from 'classnames';
 import { useIntl } from 'umi';
 import { Form, Select, Skeleton, InputNumber, Input, Switch, Button } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { v1 as UUIDv1 } from 'uuid';
 
 import { useFetch } from '@/utils/hook';
 import { hasArray, hasString, hasPlainObject, getValue } from '@/utils/helper';
@@ -122,6 +123,11 @@ const Plugins = React.memo(props => {
 const NumberInput = React.memo(props => {
   const { values = {} } = props;
 
+  const rules = [];
+  if (values.required) {
+    rules.push({ required: true });
+  }
+
   const itemProps = {
     // colon: ,
     // dependencies: ,
@@ -136,8 +142,8 @@ const NumberInput = React.memo(props => {
     // labelCol: ,
     name: values.name,
     // normalize: ,
-    required: values.required,
-    // rules,
+    // required: values.required,
+    rules,
     // shouldUpdate: ,
     // trigger: ,
     // validateFirst: ,
@@ -177,6 +183,11 @@ const TextInput = React.memo(props => {
 
   // TODO: min, pattern, anyOf rules
 
+  const rules = [];
+  if (values.required) {
+    rules.push({ required: true, whitespace: true });
+  }
+
   const itemProps = {
     // colon: ,
     // dependencies: ,
@@ -191,8 +202,8 @@ const TextInput = React.memo(props => {
     // labelCol: ,
     name: values.name,
     // normalize: ,
-    required: values.required,
-    // rules,
+    // required: values.required,
+    rules,
     // shouldUpdate: ,
     // trigger: ,
     // validateFirst: ,
@@ -231,6 +242,11 @@ const TextInput = React.memo(props => {
 const SelectText = React.memo(props => {
   const { values = {} } = props;
 
+  const rules = [];
+  if (values.required) {
+    rules.push({ required: true });
+  }
+
   const itemProps = {
     // colon: ,
     // dependencies: ,
@@ -245,8 +261,8 @@ const SelectText = React.memo(props => {
     // labelCol: ,
     name: values.name,
     // normalize: ,
-    required: values.required,
-    // rules,
+    // required: values.required,
+    rules,
     // shouldUpdate: ,
     // trigger: ,
     // validateFirst: ,
@@ -325,6 +341,11 @@ const SelectText = React.memo(props => {
 const SwitchInput = React.memo(props => {
   const { values = {} } = props;
 
+  const rules = [];
+  if (values.required) {
+    rules.push({ required: true });
+  }
+
   const itemProps = {
     // colon: ,
     // dependencies: ,
@@ -339,14 +360,14 @@ const SwitchInput = React.memo(props => {
     // labelCol: ,
     name: values.name,
     // normalize: ,
-    required: values.required,
-    // rules,
+    // required: values.required,
+    rules,
     // shouldUpdate: ,
     // trigger: ,
     // validateFirst: ,
     // validateStatus: ,
     // validateTrigger: ,
-    // valuePropName: ,
+    valuePropName: 'checked',
     // wrapperCol: ,
   };
 
@@ -547,10 +568,16 @@ function Plugin(props) {
   React.useEffect(() => {
     const pluginName = data.plugins[0];
 
-    form.setFieldsValue({
+    const initialValues = {
       plugin: pluginName,
       ...data.settings,
-    });
+    };
+
+    if (initialValues.plugin === 'key-auth' && !hasString(initialValues.key)) {
+      initialValues.key = UUIDv1();
+    }
+
+    form.setFieldsValue(initialValues);
 
     getPluginSettings(pluginName);
 
