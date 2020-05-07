@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { history } from 'umi';
 
 import NAMESPACES from '@/redux/namespaces';
-import PageActions, { generatePutStateAction, generateEffectStateSelector, setStateReducer } from '@/redux/actions';
+import { PageEvents, generatePutStateAction, generateEffectStateSelector, setStateReducer } from '@/redux/actions';
 
 import ConsumersActions from '@/redux/actions/consumers';
 import * as ConsumersTransforms from '@/transforms/consumers';
@@ -18,34 +18,8 @@ const StateAt = generatePutStateAction(InitialState, 0);
 const StateFrom = generateEffectStateSelector(InitialState, 0, NAMESPACES.CONSUMERS);
 
 const Routes = {
-  '/dashboard/consumers': {
-    onEnter: ({ dispatch, ...others }) => {
-      // console.log('Enter /');
-      return dispatch(PageActions.enterPage(others));
-    },
-    onChange: ({ dispatch, ...others }) => {
-      // console.log('Change /');
-      return dispatch(PageActions.changePage(others));
-    },
-    onLeave: ({ dispatch, ...others }) => {
-      // console.log('Leave /');
-      return dispatch(PageActions.leavePage(others));
-    },
-  },
-  '/dashboard/consumers/edit/:id': {
-    onEnter: ({ dispatch, ...others }) => {
-      // console.log('Enter /');
-      return dispatch(PageActions.enterPage(others));
-    },
-    onChange: ({ dispatch, ...others }) => {
-      // console.log('Change /');
-      return dispatch(PageActions.changePage(others));
-    },
-    onLeave: ({ dispatch, ...others }) => {
-      // console.log('Leave /');
-      return dispatch(PageActions.leavePage(others));
-    },
-  },
+  '/dashboard/consumers': PageEvents,
+  '/dashboard/consumers/edit/:id': PageEvents,
 };
 
 // action: error, type, payload, meta

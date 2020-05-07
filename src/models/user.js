@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { history } from 'umi';
 
 import NAMESPACES from '@/redux/namespaces';
-import PageActions, { generatePutStateAction, setStateReducer } from '@/redux/actions';
+import { PageEvents, setStateReducer } from '@/redux/actions';
 
 import * as UserTransforms from '@/transforms/user';
 
@@ -11,24 +11,11 @@ import { setToken, removeToken } from '@/utils/store';
 
 const InitialState = {};
 
-const StateAt = generatePutStateAction(InitialState, 0);
+// const StateAt = generatePutStateAction(InitialState, 0);
 // const StateFrom = generateEffectStateSelector(InitialState, 0, NAMESPACES.USER);
 
 const Routes = {
-  '/user/login': {
-    // onEnter: ({ dispatch, ...others }) => {
-    //   // console.log('Enter /');
-    //   return dispatch(PageActions.enterPage(others));
-    // },
-    // onChange: ({ dispatch, ...others }) => {
-    //   // console.log('Change /');
-    //   return dispatch(PageActions.changePage(others));
-    // },
-    onLeave: ({ dispatch, ...others }) => {
-      // console.log('Leave /');
-      return dispatch(PageActions.leavePage(others));
-    },
-  },
+  '/user/login': PageEvents,
 };
 
 // action: error, type, payload, meta
@@ -53,12 +40,12 @@ export default {
 
     //   yield put(UserActions.getData());
     // },
-    *leavePage(action, effects) {
-      // const { payload } = action;
-      const { put } = effects;
+    // *leavePage(action, effects) {
+    //   // const { payload } = action;
+    //   const { put } = effects;
 
-      yield put(StateAt(_.cloneDeep(InitialState)));
-    },
+    //   yield put(StateAt(_.cloneDeep(InitialState)));
+    // },
     *login(action, effects) {
       const { payload } = action;
       const { call } = effects;
