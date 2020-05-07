@@ -491,6 +491,7 @@ function generateFormItem(values) {
 
   // 对象
   if (tag === 'list' && type === 'object') {
+    // TODO: oneOf, min
     const items = getValue(values, 'items', []);
     return _.map(items, generateFormItem);
   }
