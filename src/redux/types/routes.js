@@ -1,4 +1,8 @@
+import _ from 'lodash';
+
 import { generateTypesByNames } from '@/redux/types';
 
-const NAMES = ['getRecords', 'addRecord', 'deleteRecord', 'editRecord', 'getRecord'];
+import Services from '@/services/routes';
+
+const NAMES = _.keys(Services);
 export default generateTypesByNames(NAMES);
