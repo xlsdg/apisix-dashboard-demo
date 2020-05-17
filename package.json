@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
-    "antd": "^4.2.2",
+    "antd": "^4.2.3",
     "classnames": "^2.2.6",
     "dva": "next",
     "fast-deep-equal": "^3.1.1",
@@ -23,7 +23,7 @@
     "@commitlint/config-conventional": "^8.3.4",
     "@umijs/plugin-antd": "^0.5.1",
     "@umijs/plugin-dva": "^0.6.5",
-    "@umijs/plugin-locale": "^0.4.5",
+    "@umijs/plugin-locale": "^0.6.0",
     "babel-eslint": "^10.1.0",
     "babel-plugin-lodash": "^3.3.4",
     "cross-env": "^7.0.2",
